@@ -4,6 +4,8 @@ import router from "./router";
 import store from "./store";
 // 导入elementui
 import "./plugins/elementui";
+// 导入Composition API模块
+import "./plugins/compositionApi";
 Vue.config.productionTip = false;
 
 new Vue({

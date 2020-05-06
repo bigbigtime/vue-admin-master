@@ -9,7 +9,13 @@
   </div>
 </template>
 <script>
+import { reactive } from "@vue/composition-api";
 export default {
-  name: "Home"
+  name: "Home",
+  props: {},
+  setup(props, { root }){
+    console.log(root)
+    return {}
+  }
 };
 </script>
