@@ -11,6 +11,10 @@
     <el-input v-model="form.name"></el-input>
   </el-form-item>
   <el-form-item>
+    <label class="form-label">密码</label>
+    <el-input v-model="form.password"></el-input>
+  </el-form-item>
+  <el-form-item>
     <el-button type="primary">立即创建</el-button>
   </el-form-item>
 </el-form>
@@ -24,7 +28,8 @@ export default {
   name: "Login",
 setup(props, { root }){
   const form = reactive({
-    name: ""
+    name: "",
+    password: ""
   });
   return {
     form
@@ -58,5 +63,6 @@ setup(props, { root }){
 .form-label {
   display: block;
   color: #fff;
+  font-size: 14px;
 }
 </style>
