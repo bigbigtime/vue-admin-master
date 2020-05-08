@@ -1,20 +1,35 @@
 <template>
 <div id="login">
 <div class="form-wrap">
-  <ul class="menu-tab">
-    <li class="current">登录</li>
-    <li>注册</li>
-  </ul>
+<ul class="menu-tab">
+  <li class="current">登录</li>
+  <li>注册</li>
+</ul>
+<el-form ref="form" :model="form">
+  <el-form-item>
+    <label class="form-label">用户名</label>
+    <el-input v-model="form.name"></el-input>
+  </el-form-item>
+  <el-form-item>
+    <el-button type="primary">立即创建</el-button>
+  </el-form-item>
+</el-form>
 </div>
 </div>
 </template>
 
 <script>
+import { reactive } from "@vue/composition-api";
 export default {
-  name: 'Login',
-  super(props, { root }){
-      console.log(root)
+  name: "Login",
+setup(props, { root }){
+  const form = reactive({
+    name: ""
+  });
+  return {
+    form
   }
+}
 };
 </script>
 <style lang="scss" scoped>
@@ -39,5 +54,9 @@ export default {
     cursor: pointer;
     &.current { background-color: rgba(0, 0, 0, .1);}
   }
+}
+.form-label {
+  display: block;
+  color: #fff;
 }
 </style>
