@@ -21,12 +21,12 @@
         <el-input v-model="form.code"></el-input>
       </el-col>
       <el-col :span="10">
-        <el-button type="primary">获取验证码</el-button>
+        <el-button type="success" class="el-button-block">获取验证码</el-button>
       </el-col>
     </el-row>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary">立即创建</el-button>
+    <el-button type="danger" class="el-button-block" disabled>登录</el-button>
   </el-form-item>
 </el-form>
 </div>
