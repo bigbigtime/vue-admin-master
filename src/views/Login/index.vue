@@ -37,16 +37,16 @@
 import { reactive } from "@vue/composition-api";
 export default {
   name: "Login",
-setup(props, { root }){
-  const form = reactive({
-    name: "",
-    password: "",
-    code: ""
-  });
-  return {
-    form
+  setup(props, { root }){
+    const form = reactive({
+      name: "",
+      password: "",
+      code: ""
+    });
+    return {
+      form
+    }
   }
-}
 };
 </script>
 <style lang="scss" scoped>
