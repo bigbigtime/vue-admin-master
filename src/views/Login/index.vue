@@ -2,7 +2,7 @@
 <div id="login">
 <div class="form-wrap">
 <ul class="menu-tab">
-  <li class="current" v-for="item in menu_switch_item" :key="item.type">{{ item.label }}</li>
+<li :class="{'current': current_menu === item.type}" v-for="item in menu_switch_item" :key="item.type">{{ item.label }}</li>
 </ul>
 <el-form ref="form" :model="form">
   <el-form-item>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { reactive } from "@vue/composition-api";
+import { reactive, ref } from "@vue/composition-api";
 export default {
   name: "Login",
   setup(props, { root }){
@@ -41,13 +41,14 @@ export default {
       { type: "login", label: "登录" },
       { type: "register", label: "注册" }
     ])
+    let current_menu = ref(menu_switch_item[0].type);
     const form = reactive({
       name: "",
       password: "",
       code: ""
     })
     return {
-      form, menu_switch_item
+      form, menu_switch_item, current_menu
     }
   }
 };
