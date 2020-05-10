@@ -41,6 +41,11 @@ export default {
       { type: "login", label: "登录" },
       { type: "register", label: "注册" }
     ])
+    const form = reactive({
+      name: "",
+      password: "",
+      code: ""
+    })
     return {
       form, menu_switch_item
     }
