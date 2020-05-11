@@ -9,7 +9,7 @@
     <label class="form-label">用户名</label>
     <el-input v-model="form.name"></el-input>
   </el-form-item>
-  <el-form-item>
+  <el-form-item prop="password">
     <label class="form-label">密码</label>
     <el-input v-model="form.password"></el-input>
   </el-form-item>
@@ -17,7 +17,7 @@
     <label class="form-label">确认密码</label>
     <el-input v-model="form.passwords"></el-input>
   </el-form-item>
-  <el-form-item>
+  <el-form-item prop="code">
     <label class="form-label">验证码</label>
     <el-row :gutter="10">
       <el-col :span="14">
@@ -56,6 +56,13 @@ export default {
     const form_rules = reactive({
       name: [
         { required: true, message: '请输入活动名称', trigger: 'blur' },
+        { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+      ],
+      password: [
+        { required: true, message: '请输入密码', trigger: 'blur' }
+      ],
+      code: [
+        { required: true, message: '请输入验证码', trigger: 'blur' }
       ]
     });
     // 切换样式方法
