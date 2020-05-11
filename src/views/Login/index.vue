@@ -38,6 +38,7 @@
 
 <script>
 import { reactive, ref } from "@vue/composition-api";
+import { validate_email, validate_password } from "../../utils/validate";
 export default {
   name: "Login",
   setup(props, { root, refs }){
@@ -57,10 +58,10 @@ export default {
      */
     // 检验邮箱
     const validate_name_rules = (rule, value, callback) => {
-      let regEmail = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+      let regEmail = validate_email(value);
       if (value === '') {
         callback(new Error("请输入邮箱"));
-      } else if(!regEmail.test(value)) {
+      } else if(!regEmail) {
         callback(new Error("邮箱格式不正确"));
       } else {
         callback();
@@ -68,10 +69,10 @@ export default {
     };
     // 检验密码
     const validate_password_rules = (rule, value, callback) => {
-      let regPassword = /^(?!\D+$)(?![^a-zA-Z]+$)\S{6,20}$/;
+      let regPassword = validate_password(value);
       if (value === '') {
         callback(new Error("请输入密码"));
-      } else if(!regPassword.test(value)) {
+      } else if(!regPassword) {
         callback(new Error("请输入 >=6 并且 <=20 位的密码，包含数字、字母"));
       } else {
         callback();
