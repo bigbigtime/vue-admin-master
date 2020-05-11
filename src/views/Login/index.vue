@@ -2,7 +2,7 @@
 <div id="login">
 <div class="form-wrap">
 <ul class="menu-tab">
-<li @click="toggleHigh(item.type)" :class="{'current': current_menu === item.type}" v-for="item in menu_switch_item" :key="item.type">{{ item.label }}</li>
+<li @click="toggleCurrent(item.type)" :class="{'current': current_menu === item.type}" v-for="item in menu_switch_item" :key="item.type">{{ item.label }}</li>
 </ul>
 <el-form ref="form" :model="form">
   <el-form-item>
@@ -48,12 +48,12 @@ export default {
       code: ""
     })
     // 切换样式方法
-    const toggleHigh = ((type) => {
+    const toggleCurrent = ((type) => {
       current_menu.value = type;
     })
     return {
       form, menu_switch_item, current_menu, 
-      toggleHigh
+      toggleCurrent
     }
   }
 };
