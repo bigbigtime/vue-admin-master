@@ -13,6 +13,10 @@
     <label class="form-label">密码</label>
     <el-input v-model="form.password"></el-input>
   </el-form-item>
+  <el-form-item v-show="current_menu === 'register'">
+    <label class="form-label">确认密码</label>
+    <el-input v-model="form.passwords"></el-input>
+  </el-form-item>
   <el-form-item>
     <label class="form-label">验证码</label>
     <el-row :gutter="10">
@@ -45,6 +49,7 @@ export default {
     const form = reactive({
       name: "",
       password: "",
+      passwords: "",
       code: ""
     })
     // 切换样式方法
