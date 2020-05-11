@@ -4,8 +4,8 @@
 <ul class="menu-tab">
 <li @click="toggleHigh(item.type)" :class="{'current': current_menu === item.type}" v-for="item in menu_switch_item" :key="item.type">{{ item.label }}</li>
 </ul>
-<el-form ref="form" :model="form">
-  <el-form-item>
+<el-form ref="form" :model="form" :rules="form_rules">
+  <el-form-item prop="name">
     <label class="form-label">用户名</label>
     <el-input v-model="form.name"></el-input>
   </el-form-item>
@@ -52,12 +52,18 @@ export default {
       passwords: "",
       code: ""
     })
+    // 检验规则
+    const form_rules = reactive({
+      name: [
+        { required: true, message: '请输入活动名称', trigger: 'blur' },
+      ]
+    });
     // 切换样式方法
     const toggleHigh = ((type) => {
       current_menu.value = type;
     })
     return {
-      form, menu_switch_item, current_menu, 
+      form, menu_switch_item, current_menu, form_rules,
       toggleHigh
     }
   }
