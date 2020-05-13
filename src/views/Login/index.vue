@@ -24,7 +24,7 @@
         <el-input v-model="form.code"></el-input>
       </el-col>
       <el-col :span="10">
-        <el-button type="success" class="el-button-block">获取验证码</el-button>
+        <el-button type="success" class="el-button-block" @click="getCodeFn()">获取验证码</el-button>
       </el-col>
     </el-row>
   </el-form-item>
@@ -39,6 +39,7 @@
 <script>
 import { reactive, ref } from "@vue/composition-api";
 import { validate_email, validate_password } from "../../utils/validate";
+import { GetCode } from "../../api/login";
 export default {
   name: "Login",
   setup(props, { root, refs }){
@@ -53,6 +54,7 @@ export default {
       passwords: "",
       code: ""
     })
+    
     /**
      * 自定义检验规则
      */
@@ -104,9 +106,14 @@ export default {
     const toggleHigh = ((type) => {
       current_menu.value = type;
     })
+    // 获取验证码方法
+    const getCodeFn = (() => {
+      let requestData = {};
+      GetCode(requestData).then(response => {}).catch(error => {})
+    })
     return {
       form, menu_switch_item, current_menu, form_rules,
-      toggleHigh
+      toggleHigh, getCodeFn
     }
   }
 };
