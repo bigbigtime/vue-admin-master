@@ -2,7 +2,7 @@
 <div id="login">
 <div class="form-wrap">
 <ul class="menu-tab">
-<li @click="toggleCurrent(item.type)" :class="{'current': current_menu === item.type}" v-for="item in menu_switch_item" :key="item.type">{{ item.label }}</li>
+<li @click="toggleHigh(item.type)" :class="{'current': current_menu === item.type}" v-for="item in menu_switch_item" :key="item.type">{{ item.label }}</li>
 </ul>
 <el-form ref="form" :model="form" :rules="form_rules">
   <el-form-item prop="name">
@@ -103,7 +103,7 @@ export default {
       ]
     });
     // 切换样式方法
-    const toggleCurrent = ((type) => {
+    const toggleHigh = ((type) => {
       current_menu.value = type;
     })
     // 获取验证码方法
