@@ -7,6 +7,7 @@ const service = axios.create({
 // 拦截器
 // 添加请求拦截器
 service.interceptors.request.use(function (config) {
+    console.log(config)
     // 在发送请求之前做些什么
     return config;
 }, function (error) {
