@@ -1,7 +1,7 @@
 import axios from "axios";
 // 创建实例
 const service = axios.create({
-    baseURL: "",    // 请求地址
+    baseURL: "/api",    // 请求地址
     timeout: 5000,  // 超时
 });
 // 拦截器
