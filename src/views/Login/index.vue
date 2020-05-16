@@ -13,7 +13,7 @@
     <label class="form-label">密码</label>
     <el-input v-model="form.password"></el-input>
   </el-form-item>
-  <el-form-item v-show="current_menu === 'register'">
+  <el-form-item prop="passwords" v-show="current_menu === 'register'">
     <label class="form-label">确认密码</label>
     <el-input v-model="form.passwords"></el-input>
   </el-form-item>
@@ -29,7 +29,7 @@
     </el-row>
   </el-form-item>
   <el-form-item>
-    <el-button type="danger" class="el-button-block" disabled>登录</el-button>
+    <el-button type="danger" class="el-button-block" disabled>{{ current_menu === "login" ? "登录": "注册"}}</el-button>
   </el-form-item>
 </el-form>
 </div>
@@ -61,7 +61,7 @@ export default {
     // 检验邮箱
     const validate_name_rules = (rule, value, callback) => {
       let regEmail = validate_email(value);
-      if (value === '') {
+      if (value === "") {
         callback(new Error("请输入邮箱"));
       } else if(!regEmail) {
         callback(new Error("邮箱格式不正确"));
@@ -71,18 +71,33 @@ export default {
     };
     // 检验密码
     const validate_password_rules = (rule, value, callback) => {
-      let regPassword = validate_password(value);
-      if (value === '') {
+      let passwords_value = form.passwords;
+      if (value === "") {
         callback(new Error("请输入密码"));
-      } else if(!regPassword) {
-        callback(new Error("请输入 >=6 并且 <=20 位的密码，包含数字、字母"));
+      } else if(passwords_value && passwords_value !== value) {
+        callback(new Error("两次密码不一致，请重新输入"));
       } else {
         callback();
       }
     };
+    // 检验确认密码
+    const validate_passwords_rules = (rule, value, callback) => {
+      let password_value = form.password;
+      if(current_menu === "login") {
+        callback();
+        return false;
+      }
+      if (value === "") {
+        callback(new Error("请输入确认密码"));
+      } else if(password_value !== value) {
+        callback(new Error("两次密码不一致，请重新输入"));
+      } else {
+        callback();
+      }
+    }; 
     // 检验验证码
     const validate_code_rules = (rule, value, callback) => {
-      if (value === '') {
+      if (value === "") {
         callback(new Error("请输入验证码"));
       } else if(value.length !== 6) {
         callback(new Error("请输入长度为6位数的验证码"));
@@ -97,6 +112,9 @@ export default {
       ],
       password: [
         { validator: validate_password_rules, trigger: 'blur' }
+      ],
+      passwords: [
+        { validator: validate_passwords_rules, trigger: 'blur' }
       ],
       code: [
         { validator: validate_code_rules, trigger: 'blur' }
