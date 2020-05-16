@@ -1,7 +1,8 @@
 import axios from "axios";
+console.log(process.env.VUE_APP_API);
 // 创建实例
 const service = axios.create({
-    baseURL: "/api",    // 请求地址
+    baseURL: process.env.VUE_APP_API,    // 请求地址
     timeout: 5000,  // 超时
 });
 // 拦截器

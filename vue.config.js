@@ -41,11 +41,11 @@ module.exports = {
     hot: true, // 开启热加载
     hotOnly: false,
     proxy: {
-      "/api": {
-          target: "http://www.web-jshtml.cn/api/vue3", //API服务器的地址
+      [process.env.VUE_APP_API]: {
+          target: process.env.VUE_API_DEV_TARGET, //API服务器的地址
           changeOrigin: true,
           pathRewrite: {
-              "^/api": ''
+              [`^${process.env.VUE_APP_API}`]: ''
           }
       }
 
