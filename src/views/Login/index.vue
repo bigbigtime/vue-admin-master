@@ -11,11 +11,11 @@
   </el-form-item>
   <el-form-item prop="password">
     <label class="form-label">密码</label>
-    <el-input v-model="form.password"></el-input>
+    <el-input type="password" v-model="form.password"></el-input>
   </el-form-item>
   <el-form-item prop="passwords" v-show="current_menu === 'register'">
     <label class="form-label">确认密码</label>
-    <el-input v-model="form.passwords"></el-input>
+    <el-input type="password" v-model="form.passwords"></el-input>
   </el-form-item>
   <el-form-item prop="code">
     <label class="form-label">验证码</label>
@@ -126,8 +126,23 @@ export default {
     })
     // 获取验证码方法
     const getCodeFn = (() => {
-      let requestData = {};
-      GetCode(requestData).then(response => {}).catch(error => {})
+      if(form.name === "") {
+        root.$message.error('邮箱不能为空！！');
+        return false;
+      }
+      if(!validate_email(form.name)) {
+        root.$message.error('邮箱格式有误，请重新输入！！');
+        return false;
+      }
+      let requestData = {
+        username: form.name,
+        module: 'register'
+      };
+      GetCode(requestData).then(response => {
+        console.log(response)
+      }).catch(error => {
+
+      })
     })
     return {
       form, menu_switch_item, current_menu, form_rules,
