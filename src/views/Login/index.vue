@@ -24,7 +24,7 @@
         <el-input v-model="form.code"></el-input>
       </el-col>
       <el-col :span="10">
-        <el-button type="success" class="el-button-block" @click="getCodeFn()">获取验证码</el-button>
+        <el-button type="success" class="el-button-block" @click="getCodeFn()" :disabled="code_disabled" :loading="code_loading">{{ code_text }}</el-button>
       </el-col>
     </el-row>
   </el-form-item>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { reactive, ref } from "@vue/composition-api";
+import { reactive, ref, set } from "@vue/composition-api";
 import { validate_email, validate_password } from "../../utils/validate";
 import { GetCode } from "../../api/login";
 export default {
@@ -54,7 +54,10 @@ export default {
       passwords: "",
       code: ""
     })
-    
+    let code_text = ref("获取验证码");
+    let code_loading = ref(false);
+    let code_disabled = ref(false);
+    let timer = ref(null);
     /**
      * 自定义检验规则
      */
@@ -124,6 +127,24 @@ export default {
     const toggleHigh = ((type) => {
       current_menu.value = type;
     })
+    // 倒计时
+    const countdown = ((number) => {
+      let second = number;
+      // 禁用按钮
+      code_disabled.value = true;
+      // 按钮文本
+      code_text.value = `倒计进${second}秒`;
+      timer = setInterval(() => {
+        second--;
+        code_text.value = `倒计进${second}秒`;
+        if(second < 0) {
+          code_text.value = `重新获取`;
+          // 启用按钮
+          code_disabled.value = false;
+          clearInterval(timer);
+        }
+      }, 1000)
+    })
     // 获取验证码方法
     const getCodeFn = (() => {
       if(form.name === "") {
@@ -141,14 +162,20 @@ export default {
         username: form.name,
         module: 'register'
       };
+      code_text.value = "发送中";
+      code_loading.value = true;
       GetCode(requestData).then(response => {
-        console.log(response)
+        // 清除加载
+        code_loading.value = false;
+        // 执行倒计时方法
+        countdown(5);
       }).catch(error => {
-
+        code_text.value = "重新获取";
+        code_loading.value = false;
       })
     })
     return {
-      form, menu_switch_item, current_menu, form_rules,
+      form, menu_switch_item, current_menu, form_rules, code_text, code_loading, code_disabled,
       toggleHigh, getCodeFn
     }
   }
