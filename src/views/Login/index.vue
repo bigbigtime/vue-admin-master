@@ -127,11 +127,14 @@ export default {
     // 获取验证码方法
     const getCodeFn = (() => {
       if(form.name === "") {
-        root.$message.error('邮箱不能为空！！');
+        root.$message.error("邮箱不能为空！！");
         return false;
       }
       if(!validate_email(form.name)) {
-        root.$message.error('邮箱格式有误，请重新输入！！');
+        root.$message({
+          message: "邮箱格式有误，请重新输入！！",
+          type: "error"
+        })
         return false;
       }
       let requestData = {
