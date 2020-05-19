@@ -29,7 +29,7 @@
     </el-row>
   </el-form-item>
   <el-form-item>
-    <el-button type="danger" class="el-button-block" disabled>{{ current_menu === "login" ? "登录": "注册"}}</el-button>
+    <el-button type="danger" class="el-button-block" :disabled="submit_disabled" @click="submitForm('form')">{{ current_menu === "login" ? "登录": "注册"}}</el-button>
   </el-form-item>
 </el-form>
 </div>
@@ -58,6 +58,7 @@ export default {
     let code_loading = ref(false);
     let code_disabled = ref(false);
     let timer = ref(null);
+    let submit_disabled = ref(true);
     /**
      * 自定义检验规则
      */
@@ -170,6 +171,8 @@ export default {
           message: response.message,
           type: "success"
         })
+        // 激活按钮
+        submit_disabled.value = false;
         // 清除加载
         code_loading.value = false;
         // 执行倒计时方法
@@ -179,9 +182,26 @@ export default {
         code_loading.value = false;
       })
     })
+    // 提交表单
+    const submitForm = (formName => {
+      refs[formName].validate((valid) => {
+        // 表单验证通过
+        if (valid) {
+          // 三元运算
+          model.value === 'login' ? login() : register()
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      })
+    }) 
+    // 登录
+    const login = (() => {})
+    // 注册
+    const register = (() => {})
     return {
-      form, menu_switch_item, current_menu, form_rules, code_text, code_loading, code_disabled,
-      toggleHigh, getCodeFn
+      form, menu_switch_item, current_menu, form_rules, code_text, code_loading, code_disabled, submit_disabled,
+      toggleHigh, getCodeFn, submitForm, login, register
     }
   }
 };
