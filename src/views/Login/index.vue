@@ -39,7 +39,7 @@
 <script>
 import { reactive, ref, set } from "@vue/composition-api";
 import { validate_email, validate_password } from "../../utils/validate";
-import { GetCode } from "../../api/login";
+import { GetCode, Register } from "../../api/login";
 export default {
   name: "Login",
   setup(props, { root, refs }){
@@ -198,7 +198,16 @@ export default {
     // 登录
     const login = (() => {})
     // 注册
-    const register = (() => {})
+    const register = (() => {
+      const requestData = {
+        username: fomr.username
+      }
+      Register(requestData).then(response => {
+
+      }).catch(error => {
+
+      })
+    })
     return {
       form, menu_switch_item, current_menu, form_rules, code_text, code_loading, code_disabled, submit_disabled,
       toggleHigh, getCodeFn, submitForm, login, register
