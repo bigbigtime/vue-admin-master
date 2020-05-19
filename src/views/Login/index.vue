@@ -165,7 +165,11 @@ export default {
       code_text.value = "发送中";
       code_loading.value = true;
       GetCode(requestData).then(response => {
-        console.log(response)
+        console.log(response)  // 这里打印拦截器返回的信息，response是自定义参数。
+        root.$message({
+          message: response.message,
+          type: "success"
+        })
         // 清除加载
         code_loading.value = false;
         // 执行倒计时方法
