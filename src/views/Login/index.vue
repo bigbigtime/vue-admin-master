@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import sha1 from "js-sha1";
 import { reactive, ref, set } from "@vue/composition-api";
 import { validate_email, validate_password } from "../../utils/validate";
 import { GetCode, Register } from "../../api/login";
@@ -204,7 +205,7 @@ export default {
     const register = (() => {
       const requestData = {
         username: form.name,
-        password: form.password,
+        password: sha1(form.password),
         code: form.code
       }
       Register(requestData).then(response => {
