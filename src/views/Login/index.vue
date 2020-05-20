@@ -75,9 +75,12 @@ export default {
     };
     // 检验密码
     const validate_password_rules = (rule, value, callback) => {
+      let regPassword = validate_password(value);
       let passwords_value = form.passwords;
       if (value === "") {
         callback(new Error("请输入密码"));
+      } else if(!regPassword){
+        callback(new Error("请入 >=6 并且 <= 20 位的密码，包含数字、字母"));
       } else if(passwords_value && passwords_value !== value) {
         callback(new Error("两次密码不一致，请重新输入"));
       } else {
@@ -188,7 +191,7 @@ export default {
         // 表单验证通过
         if (valid) {
           // 三元运算
-          model.value === 'login' ? login() : register()
+          current_menu.value === 'login' ? login() : register()
         } else {
           console.log('error submit!!');
           return false;
@@ -200,13 +203,16 @@ export default {
     // 注册
     const register = (() => {
       const requestData = {
-        username: fomr.username
+        username: form.name,
+        password: form.password,
+        code: form.code
       }
       Register(requestData).then(response => {
-
-      }).catch(error => {
-
-      })
+        root.$message({
+          message: response.message,
+          tyep: "success"
+        })
+      }).catch(error => {})
     })
     return {
       form, menu_switch_item, current_menu, form_rules, code_text, code_loading, code_disabled, submit_disabled,
