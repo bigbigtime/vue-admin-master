@@ -91,7 +91,7 @@ export default {
     // 检验确认密码
     const validate_passwords_rules = (rule, value, callback) => {
       let password_value = form.password;
-      if(current_menu === "login") {
+      if(current_menu.value === "login") {
         callback();
         return false;
       }
@@ -180,7 +180,7 @@ export default {
         // 清除加载
         code_loading.value = false;
         // 执行倒计时方法
-        countdown(5);
+        countdown(60);
       }).catch(error => {
         code_text.value = "重新获取";
         code_loading.value = false;
@@ -211,9 +211,23 @@ export default {
       Register(requestData).then(response => {
         root.$message({
           message: response.message,
-          tyep: "success"
+          type: "success"
         })
+        // 重置数据
+        reset();
       }).catch(error => {})
+    })
+    // 重置
+    const reset = (() => {
+      // 重置表单
+      refs["form"].resetFields();
+      // 修改模块
+      current_menu.value = "login";
+      // 判断定时器是否存在，存在则清除
+      if(timer) { clearInterval(timer); }
+      // 还原获取验码按钮状态
+      code_disabled.value = false;
+      code_text.value = "获取验证码";
     })
     return {
       form, menu_switch_item, current_menu, form_rules, code_text, code_loading, code_disabled, submit_disabled,
