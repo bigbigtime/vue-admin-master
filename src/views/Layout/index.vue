@@ -18,7 +18,7 @@ export default {
 </script>
 <style lang="scss" scpoed>
 #layout-container { height: 100vh; }
-#layout-aside { background-color: #344a5f; }
+#layout-aside { background-color: #77acbc; }
 #layout-header { background-color: #77bc99; }
 #layout-main { background-color: #bc77a1; }
 </style>
