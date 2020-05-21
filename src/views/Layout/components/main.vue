@@ -10,17 +10,17 @@ export default {
    props: {},
    setup(props, { root }){
        // 监听
-       watch(xxx, () => {})
+       //watch(xxx, () => {})
        // 生命周期
-       onBeforeMount(() => {})
-       onMounted(() => {})
-       onBeforeUpdate(() => {})
-       onUpdated(() => {})
-       onBeforeUnmount(() => {})
-       onUnmounted(() => {})
-       onErrorCaptured(() => {})
-       onRenderTracked(() => {})
-       onRenderTriggered(() => {})
+      //  onBeforeMount(() => {})
+      //  onMounted(() => {})
+      //  onBeforeUpdate(() => {})
+      //  onUpdated(() => {})
+      //  onBeforeUnmount(() => {})
+      //  onUnmounted(() => {})
+      //  onErrorCaptured(() => {})
+      //  onRenderTracked(() => {})
+      //  onRenderTriggered(() => {})
        return {}
   }
 }
