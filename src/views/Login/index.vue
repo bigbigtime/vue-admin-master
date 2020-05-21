@@ -83,7 +83,7 @@ export default {
     // 检验确认密码
     const validate_passwords_rules = (rule, value, callback) => {
       let password_value = form.password;
-      if(current_menu === "login") {
+      if(current_menu.value === "login") {
         callback();
         return false;
       }
