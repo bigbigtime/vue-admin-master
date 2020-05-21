@@ -40,7 +40,7 @@
 import sha1 from "js-sha1";
 import { reactive, ref, set } from "@vue/composition-api";
 import { validate_email, validate_password } from "../../utils/validate";
-import { GetCode, Register } from "../../api/login";
+import { GetCode, Register, Login } from "../../api/login";
 export default {
   name: "Login",
   setup(props, { root, refs }){
@@ -165,7 +165,7 @@ export default {
       }
       let requestData = {
         username: form.name,
-        module: 'register'
+        module: current_menu.value
       };
       code_text.value = "发送中";
       code_loading.value = true;
@@ -200,7 +200,19 @@ export default {
       })
     }) 
     // 登录
-    const login = (() => {})
+    const login = (() => {
+      const requestData = {
+        username: form.name,
+        password: sha1(form.password),
+        code: form.code
+      }
+      Login(requestData).then(response => {
+        root.$message({
+          message: response.message,
+          type: "success"
+        })
+      }).catch(error => {})
+    })
     // 注册
     const register = (() => {
       const requestData = {
