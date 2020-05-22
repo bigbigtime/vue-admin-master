@@ -1,12 +1,16 @@
 <template>
-  <el-menu default-active="2" class="el-menu-vertical-demo" background-color="#344a5f" text-color="#fff" active-text-color="#ffd04b">
+  <el-menu default-active="2" class="el-menu-vertical-demo" background-color="#344a5f" text-color="#fff" active-text-color="#ffd04b" router>
     <template v-for="(item, index) in router">
       <el-submenu v-if="!item.hidden" :key="item.id" :index="index + ''">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>{{ item.meta ? item.meta.title : "" }}</span>
         </template>
-        <el-menu-item index="1-4-1">选项1</el-menu-item>
+        <template v-if="item.children && item.children.length > 0">
+          <el-menu-item v-for="sub in item.children" :key="sub.id" :index="sub.path">
+            {{ sub.meta ? sub.meta.title : ""}}
+          </el-menu-item>
+        </template>
       </el-submenu>
     </template>
   </el-menu>
