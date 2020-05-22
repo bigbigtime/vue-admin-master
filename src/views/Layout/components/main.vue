@@ -1,28 +1,9 @@
 <template>
-  <div class="">数据内容</div>
+  <router-view />
 </template>
-
 <script>
-import { reactive, ref, onMounted, watch } from "@vue/composition-api";
 export default {
-   name: "LayoutAsice",
-   components: {},
-   props: {},
-   setup(props, { root }){
-       // 监听
-       //watch(xxx, () => {})
-       // 生命周期
-      //  onBeforeMount(() => {})
-      //  onMounted(() => {})
-      //  onBeforeUpdate(() => {})
-      //  onUpdated(() => {})
-      //  onBeforeUnmount(() => {})
-      //  onUnmounted(() => {})
-      //  onErrorCaptured(() => {})
-      //  onRenderTracked(() => {})
-      //  onRenderTriggered(() => {})
-       return {}
-  }
+   name: "LayoutMain",
 }
 </script>
 <style lang="scss" scoped>

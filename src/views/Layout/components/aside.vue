@@ -24,7 +24,6 @@ export default {
   props: {},
   setup(props, { root }){
     const router = reactive(root.$router.options.routes);
-    console.log(router)
     // 监听
     // watch(xxx, () => {})
     // 生命周期

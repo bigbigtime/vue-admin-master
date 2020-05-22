@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Layout from "../views/Layout"
 Vue.use(VueRouter);
 const routes = [
   {
@@ -20,7 +21,7 @@ const routes = [
       title: "控制台",
       icon: "console"
     },
-    component: () => import("../views/Layout/index.vue"),
+    component: Layout,
     children: [
       {
         path: "/consoleIndex",
@@ -39,7 +40,7 @@ const routes = [
       title: "信息管理",
       icon: "news"
     },
-    component: () => import("../views/Layout/index.vue"),
+    component: Layout,
     children: [
       {
         path: "/newsIndex",
@@ -58,7 +59,7 @@ const routes = [
       title: "用户管理",
       icon: "user"
     },
-    component: () => import("../views/Layout/index.vue"),
+    component: Layout,
     children: [
       {
         path: "/userIndex",
