@@ -4,11 +4,13 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "Login"
+    redirect: "Login",
+    hidden: true
   },
   {
     path: "/login",
     name: "Login",
+    hidden: true,
     component: () => import("../views/Login/index.vue")
   },
   {
