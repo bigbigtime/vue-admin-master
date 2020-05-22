@@ -20,7 +20,17 @@ const routes = [
       title: "控制台",
       icon: "console"
     },
-    component: () => import("../views/Layout/index.vue")
+    component: () => import("../views/Layout/index.vue"),
+    children: [
+      {
+        path: "/consoleIndex",
+        name: "ConsoleIndex",
+        meta: {
+          title: "首页"
+        },
+        component: () => import("../views/Console/index.vue"),
+      }
+    ]
   },
   {
     path: "/news",
@@ -29,7 +39,17 @@ const routes = [
       title: "信息管理",
       icon: "news"
     },
-    component: () => import("../views/Layout/index.vue")
+    component: () => import("../views/Layout/index.vue"),
+    children: [
+      {
+        path: "/newsIndex",
+        name: "NewsIndex",
+        meta: {
+          title: "信息列表"
+        },
+        component: () => import("../views/News/index.vue"),
+      }
+    ]
   },
   {
     path: "/user",
@@ -38,7 +58,17 @@ const routes = [
       title: "用户管理",
       icon: "user"
     },
-    component: () => import("../views/Layout/index.vue")
+    component: () => import("../views/Layout/index.vue"),
+    children: [
+      {
+        path: "/userIndex",
+        name: "UserIndex",
+        meta: {
+          title: "用户列表"
+        },
+        component: () => import("../views/User/index.vue"),
+      }
+    ]
   }
 ];
 
