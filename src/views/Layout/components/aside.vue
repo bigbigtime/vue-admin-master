@@ -1,6 +1,6 @@
 <template>
   <el-menu default-active="2" class="el-menu-vertical-demo" background-color="#344a5f" text-color="#fff" active-text-color="#ffd04b">
-<el-submenu v-for="(item, index) in router" :key="item.id" :index="index + ''">
+<el-submenu v-for="item in router" :key="item.id" index="1">
   <template slot="title">
     <i class="el-icon-location"></i>
     <span>{{ item.meta ? item.meta.title : "" }}</span>
