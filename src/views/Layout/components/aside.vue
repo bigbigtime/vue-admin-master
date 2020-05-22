@@ -3,7 +3,7 @@
     <template v-for="(item, index) in router">
       <el-submenu v-if="!item.hidden" :key="item.id" :index="index + ''">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i :class="item.meta.icon || ''"></i>
           <span>{{ item.meta ? item.meta.title : "" }}</span>
         </template>
         <template v-if="item.children && item.children.length > 0">
