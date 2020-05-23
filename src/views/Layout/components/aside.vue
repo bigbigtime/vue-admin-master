@@ -4,6 +4,7 @@
       <el-submenu v-if="!item.hidden" :key="item.id" :index="index + ''">
         <template slot="title">
           <i :class="item.meta.icon || ''"></i>
+          <svg-icon icon="console" className="aaa"></svg-icon>
           <span>{{ item.meta ? item.meta.title : "" }}</span>
         </template>
         <template v-if="item.children && item.children.length > 0">
