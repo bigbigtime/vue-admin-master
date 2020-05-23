@@ -19,7 +19,7 @@ export default {
     },
     setup(props){
         // 计算属性，得出最终结果，并返回
-        const iconName = computed(() => `#icon-${props.icon}`)
+        const iconName = computed(() => `#icon-${props.icon}`);
         return {
             props,
             iconName

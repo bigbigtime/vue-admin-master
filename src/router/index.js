@@ -39,7 +39,7 @@ const routes = [
     name: "News",
     meta: {
       title: "信息管理",
-      icon: "el-icon-platform-eleme"
+      icon: "news"
     },
     component: Layout,
     children: [
@@ -58,7 +58,7 @@ const routes = [
     name: "User",
     meta: {
       title: "用户管理",
-      icon: "el-icon-platform-eleme"
+      icon: "user",
     },
     component: Layout,
     children: [
