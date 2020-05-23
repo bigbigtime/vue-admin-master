@@ -8,7 +8,17 @@ module.exports = {
   /** vue3.0内置了webpack所有东西，
    * webpack配置,see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
    **/
-  chainWebpack: (config) => {},
+  chainWebpack: (config) => {
+    const svgRule = config.module.rule("svg");     
+    svgRule.uses.clear();     
+    svgRule
+    .use("svg-sprite-loader")
+    .loader("svg-sprite-loader")
+    .options({ 
+      symbolId: "icon-[name]",
+      include: ["./src/icons"] 
+    });
+  },
   configureWebpack: (config) => {},
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: false,
