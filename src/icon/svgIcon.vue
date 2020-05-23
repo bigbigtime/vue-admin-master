@@ -6,23 +6,20 @@
 <script>
 import { ref, computed, onMounted } from '@vue/composition-api';
 export default {
-    name: "svgIcon",
-    // props: ['iconClass', 'className'],
-    props: {
-        // 分页
+    name: "SvgIcon",
+    props: { // 接收父级传入的变量数据
         icon: {
-            type: String,  // 定义接收的值类型
-            default: ''
+            type: String,
+            default: ""
         },
         className : {
             type: String,
-            default: ''
+            default: ""
         }
     },
     setup(props){
         // 计算属性，得出最终结果，并返回
         const iconName = computed(() => `#icon-${props.icon}`)
-
         return {
             props,
             iconName

@@ -19,7 +19,8 @@ const routes = [
     name: "Home",
     meta: {
       title: "控制台",
-      icon: "el-icon-platform-eleme"
+      icon: "console",
+      iconClass: "icon_console"
     },
     component: Layout,
     children: [
