@@ -1,19 +1,22 @@
 <template>
-<el-menu :default-active="defalutActive" class="el-menu-vertical-demo" background-color="#344a5f" text-color="#fff" active-text-color="#fff" router unique-opened>
-    <template v-for="(item, index) in router">
-      <el-submenu v-if="!item.hidden" :key="item.id" :index="index + ''">
-        <template slot="title">
-          <svg-icon :icon="item.meta.icon" :className="item.meta && item.meta.iconClass"></svg-icon>
-          <span>{{ item.meta ? item.meta.title : "" }}</span>
-        </template>
-        <template v-if="item.children && item.children.length > 0">
-          <el-menu-item v-for="sub in item.children" :key="sub.id" :index="sub.path">
-            {{ sub.meta ? sub.meta.title : ""}}
-          </el-menu-item>
-        </template>
-      </el-submenu>
-    </template>
-  </el-menu>
+  <div>
+    <h1 class="logo"><img src="../../../assets/logo.png" alt=""></h1>
+    <el-menu :default-active="defalutActive" class="el-menu-vertical-demo" background-color="#344a5f" text-color="#fff" active-text-color="#fff" router unique-opened>
+      <template v-for="(item, index) in router">
+        <el-submenu v-if="!item.hidden" :key="item.id" :index="index + ''">
+          <template slot="title">
+            <svg-icon :icon="item.meta.icon" :className="item.meta && item.meta.iconClass"></svg-icon>
+            <span>{{ item.meta ? item.meta.title : "" }}</span>
+          </template>
+          <template v-if="item.children && item.children.length > 0">
+            <el-menu-item v-for="sub in item.children" :key="sub.id" :index="sub.path">
+              {{ sub.meta ? sub.meta.title : ""}}
+            </el-menu-item>
+          </template>
+        </el-submenu>
+      </template>
+    </el-menu>
+  </div>
 </template>
 
 <script>
@@ -51,4 +54,7 @@ const defalutActive = computed(() => {
 }
 </script>
 <style lang="scss" scoped>
+.logo {
+  img { margin: auto; }
+}
 </style>
