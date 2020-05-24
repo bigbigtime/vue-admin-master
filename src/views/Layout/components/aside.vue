@@ -1,5 +1,5 @@
 <template>
-  <el-menu default-active="2" class="el-menu-vertical-demo" background-color="#344a5f" text-color="#fff" active-text-color="#ffd04b" router>
+<el-menu :default-active="defalutActive" class="el-menu-vertical-demo" background-color="#344a5f" text-color="#fff" active-text-color="#fff" router unique-opened>
     <template v-for="(item, index) in router">
       <el-submenu v-if="!item.hidden" :key="item.id" :index="index + ''">
         <template slot="title">
@@ -17,13 +17,20 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted, watch } from "@vue/composition-api";
+import { reactive, computed } from "@vue/composition-api";
 export default {
   name: "LayoutAside",
   components: {},
   props: {},
   setup(props, { root }){
-    const router = reactive(root.$router.options.routes);
+const router = reactive(root.$router.options.routes);
+/**
+ * 监听路由变化
+ */
+const defalutActive = computed(() => {
+  const route = root.$route;
+  return route.path;
+})
     // 监听
     // watch(xxx, () => {})
     // 生命周期
@@ -37,7 +44,8 @@ export default {
     // onRenderTracked(() => {})
     // onRenderTriggered(() => {})
     return {
-      router
+      router,
+      defalutActive
     }
   }
 }
