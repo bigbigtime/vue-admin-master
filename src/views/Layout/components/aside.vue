@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="logo"><img src="../../../assets/logo.png" alt=""></h1>
+    <h1 class="logo"><img src="../../../assets/logo.png" alt="" :class="{'mini-logo': collapse}"></h1>
     <el-menu :collapse="collapse" :default-active="defalutActive" class="el-menu-vertical-demo" background-color="#344a5f" text-color="#fff" active-text-color="#fff" router unique-opened>
       <template v-for="(item, index) in router">
         <el-submenu v-if="!item.hidden" :key="item.id" :index="index + ''">
@@ -60,6 +60,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .logo {
-  img { margin: auto; }
+  img {
+    margin: auto;
+    height: 113px;
+    @include webkit(transition, all .3s ease 0s);
+  }
+  .mini-logo {  height: 50px; }
 }
 </style>
