@@ -41,6 +41,7 @@ import sha1 from "js-sha1";
 import { reactive, ref, set } from "@vue/composition-api";
 import { validate_email, validate_password } from "../../utils/validate";
 import { GetCode, Register, Login } from "../../api/login";
+import { mapStat } from "vuex";
 export default {
   name: "Login",
   setup(props, { root, refs }){
