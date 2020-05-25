@@ -19,6 +19,10 @@ export default {
 <style lang="scss" scpoed>
 #layout-container { height: 100vh; }
 #layout-aside { background-color: #344a5f; }
-#layout-header { background-color: #77bc99; }
+#layout-header {
+    position: relative;
+    z-index: 10;
+    @include webkit(box-shadow, 0 0 10px 0 rgba(0, 0, 0, .5));
+}
 #layout-main { background-color: #bc77a1; }
 </style>
