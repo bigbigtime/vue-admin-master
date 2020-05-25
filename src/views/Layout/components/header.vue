@@ -1,9 +1,9 @@
 <template>
 <el-row>
   <el-col :span="12">
-    <span class="menu-btn">
-      <svg-icon icon="menuBtn" className="icon-menu-btn"></svg-icon>
-    </span>
+  <span class="menu-btn" @click="switchAside">
+    <svg-icon icon="menuBtn" className="icon-menu-btn"></svg-icon>
+  </span>
   </el-col>
   <el-col :span="12">
     <span class="logout">
@@ -24,19 +24,10 @@ export default {
   components: {},
   props: {},
   setup(props, { root }){
-      // 监听
-      //watch(xxx, () => {})
-      // 生命周期
-      //  onBeforeMount(() => {})
-      //  onMounted(() => {})
-      //  onBeforeUpdate(() => {})
-      //  onUpdated(() => {})
-      //  onBeforeUnmount(() => {})
-      //  onUnmounted(() => {})
-      //  onErrorCaptured(() => {})
-      //  onRenderTracked(() => {})
-      //  onRenderTriggered(() => {})
-      return {}
+    const switchAside = (() => {
+      root.$store.commit('app/SET_COLLAPSE');
+    })
+    return { switchAside }
   }
 }
 </script>
