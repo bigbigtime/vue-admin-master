@@ -1,5 +1,12 @@
 <template>
-<div></div>
+<el-row>
+  <el-col :span="12">
+    <span class="menu-btn">
+      <svg-icon icon="menuBtn" className="icon-menu-btn"></svg-icon>
+    </span>
+  </el-col>
+  <el-col :span="12">用户头像</el-col>
+</el-row>
 </template>
 
 <script>
@@ -30,4 +37,10 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.menu-btn { 
+  display: inline-block;
+  padding-top: 24px;
+  cursor: pointer;
+}
+</style>
