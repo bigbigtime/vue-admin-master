@@ -1,6 +1,12 @@
-const state = {}
+const state = {
+    collapse: false
+}
 const getters = {}
-const mutations = {}
+const mutations = {
+    SET_COLLAPSE(state){
+        console.log(state)
+    }
+}
 const actions = {}
 
 export default {

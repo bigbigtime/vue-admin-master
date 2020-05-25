@@ -24,9 +24,6 @@ export default {
   components: {},
   props: {},
   setup(props, { root }){
-    const switchAside = (() => {
-      alert(11);
-    })
       // 监听
       //watch(xxx, () => {})
       // 生命周期
@@ -39,9 +36,7 @@ export default {
     //  onErrorCaptured(() => {})
     //  onRenderTracked(() => {})
     //  onRenderTriggered(() => {})
-      return {
-        switchAside
-      }
+      return {}
   }
 }
 </script>
