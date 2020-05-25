@@ -1,4 +1,6 @@
-const state = {}
+const state = {
+    collapse: false
+}
 const getters = {}
 const mutations = {}
 const actions = {}

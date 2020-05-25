@@ -24,24 +24,19 @@ export default {
   components: {},
   props: {},
   setup(props, { root }){
-    const switchAside = (() => {
-      alert(11);
-    })
       // 监听
       //watch(xxx, () => {})
       // 生命周期
-    //  onBeforeMount(() => {})
-    //  onMounted(() => {})
-    //  onBeforeUpdate(() => {})
-    //  onUpdated(() => {})
-    //  onBeforeUnmount(() => {})
-    //  onUnmounted(() => {})
-    //  onErrorCaptured(() => {})
-    //  onRenderTracked(() => {})
-    //  onRenderTriggered(() => {})
-      return {
-        switchAside
-      }
+      //  onBeforeMount(() => {})
+      //  onMounted(() => {})
+      //  onBeforeUpdate(() => {})
+      //  onUpdated(() => {})
+      //  onBeforeUnmount(() => {})
+      //  onUnmounted(() => {})
+      //  onErrorCaptured(() => {})
+      //  onRenderTracked(() => {})
+      //  onRenderTriggered(() => {})
+      return {}
   }
 }
 </script>

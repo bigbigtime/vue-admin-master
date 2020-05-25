@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="logo"><img src="../../../assets/logo.png" alt=""></h1>
-    <el-menu :default-active="defalutActive" class="el-menu-vertical-demo" background-color="#344a5f" text-color="#fff" active-text-color="#fff" router unique-opened>
+    <el-menu :collapse="collapse" :default-active="defalutActive" class="el-menu-vertical-demo" background-color="#344a5f" text-color="#fff" active-text-color="#fff" router unique-opened>
       <template v-for="(item, index) in router">
         <el-submenu v-if="!item.hidden" :key="item.id" :index="index + ''">
           <template slot="title">
@@ -26,14 +26,18 @@ export default {
   components: {},
   props: {},
   setup(props, { root }){
-const router = reactive(root.$router.options.routes);
-/**
- * 监听路由变化
- */
-const defalutActive = computed(() => {
-  const route = root.$route;
-  return route.path;
-})
+    const router = reactive(root.$router.options.routes);
+    /**
+     * 监听路由变化
+     */
+    const defalutActive = computed(() => {
+      const route = root.$route;
+      return route.path;
+    })
+    /**
+     * 菜单
+     */
+    const collapse = computed(() => root.$store.state.app.collapse);
     // 监听
     // watch(xxx, () => {})
     // 生命周期
@@ -48,7 +52,8 @@ const defalutActive = computed(() => {
     // onRenderTriggered(() => {})
     return {
       router,
-      defalutActive
+      defalutActive,
+      collapse
     }
   }
 }
