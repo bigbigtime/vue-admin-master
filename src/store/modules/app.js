@@ -1,3 +1,4 @@
+import { setToken, setUsername } from "../../utils/cookies";
 const state = {
     collapse: JSON.parse(sessionStorage.getItem('collapse')) || false,
     token: "",
@@ -9,6 +10,14 @@ const mutations = {
         state.collapse = !state.collapse;
         sessionStorage.setItem('collapse', String(state.collapse))
     },
+    SET_TOKEN(state, value){
+        state.token = value;
+        setToken(value);
+    },
+    SET_USERNAME(state, value){
+        state.username = value;
+        setUsername(value);
+    }
 }
 const actions = {}
 

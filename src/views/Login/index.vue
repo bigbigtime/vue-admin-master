@@ -212,6 +212,10 @@ export default {
           message: response.message,
           type: "success"
         })
+        root.$store.commit('app/SET_TOKEN', response.data.token);
+        root.$store.commit('app/SET_USERNAME', response.data.username);
+        // 页面跳转
+        root.$router.push({ name: 'ConsoleIndex' })
       }).catch(error => {})
     })
     // 注册
