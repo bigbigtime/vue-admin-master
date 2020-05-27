@@ -21,9 +21,7 @@ export default {
     // onErrorCaptured(() => {})
     // onRenderTracked(() => {})
     // onRenderTriggered(() => {})
-    return {
-      router
-    }
+    return {}
   }
 }
 </script>
