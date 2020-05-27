@@ -1,5 +1,5 @@
-import { setToken, setUsername } from "../../utils/cookies";
-import { Login } from "../../api/login";
+import { setToken, setUsername } from "@/utils/cookies";
+import { Login } from "@/api/login";
 const state = {
     collapse: JSON.parse(sessionStorage.getItem('collapse')) || false,
     token: "",
