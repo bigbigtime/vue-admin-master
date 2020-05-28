@@ -9,16 +9,16 @@
     <span class="logout">
       <svg-icon icon="logout" className="icon-logout"></svg-icon>
     </span>
-    <div class="face-info">
-      <img src="../../../assets/face.png" alt="410293095@qq.com">
-      <span class="name">410293095@qq.com</span>
-    </div>
+<div class="face-info">
+  <img src="../../../assets/face.png" :alt="username">
+  <span class="name">{{ username }}</span>
+</div>
   </el-col>
 </el-row>
 </template>
 
 <script>
-import { reactive, ref, onMounted, watch } from "@vue/composition-api";
+import { computed } from "@vue/composition-api";
 export default {
   name: "LayoutAsice",
   components: {},
@@ -27,7 +27,8 @@ export default {
     const switchAside = (() => {
       root.$store.commit('app/SET_COLLAPSE');
     })
-    return { switchAside }
+    const username = computed(() => root.$store.state.app.username)
+    return { switchAside, username }
   }
 }
 </script>
