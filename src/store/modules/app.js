@@ -16,7 +16,6 @@ const mutations = {
     },
     SET_USERNAME(state, value){
         state.username = value;
-        console.log(state.username)
     }
 }
 const actions = {
