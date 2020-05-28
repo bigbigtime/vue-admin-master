@@ -13,11 +13,10 @@ const mutations = {
     },
     SET_TOKEN(state, value){
         state.token = value;
-        setToken(value);
     },
     SET_USERNAME(state, value){
         state.username = value;
-        setUsername(value);
+        console.log(state.username)
     }
 }
 const actions = {
