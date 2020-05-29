@@ -12,3 +12,5 @@ export function removeToken(){ return Cookies.remove(tokenKey); }
 export function setUsername(value){ return Cookies.set(userNameKey, value); }
 // 获取userName
 export function getUsername(){ return Cookies.get(userNameKey); }
+// 删除userName
+export function removeUsername(){ return Cookies.remove(userNameKey); }

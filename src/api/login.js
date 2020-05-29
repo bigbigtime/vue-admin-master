@@ -31,3 +31,14 @@ export function Login(data){
         data
     })
 }
+
+/**
+ * 退出
+ */
+export function Logout(){
+    return service.request({
+        method: "post",
+        url: "/logout/",
+        data
+    })
+}

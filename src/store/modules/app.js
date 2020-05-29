@@ -1,4 +1,4 @@
-import { setToken, setUsername } from "@/utils/cookies";
+import { setToken, setUsername, removeToken, removeUsername } from "@/utils/cookies";
 import { Login } from "@/api/login";
 const state = {
     collapse: JSON.parse(sessionStorage.getItem('collapse')) || false,
@@ -16,7 +16,6 @@ const mutations = {
     },
     SET_USERNAME(state, value){
         state.username = value;
-        console.log(state.username)
     }
 }
 const actions = {
@@ -33,6 +32,19 @@ const actions = {
             }).catch(error => {
                 reject(error)
             })
+        })
+    },
+    logoutAction({ commit }){
+        return new Promise((resolve, reject) => {
+            Logout().then(response => {
+                const data = response.data
+                removeToken();
+                removeUsername();
+                commit('SET_TOKEN', '');
+                commit('SET_USERNAME', '');
+                resolve(data);
+            })
+            
         })
     }
 }
