@@ -1,9 +1,9 @@
-import { setToken, setUsername, removeToken, removeUsername } from "@/utils/cookies";
-import { Login } from "@/api/login";
+import { setToken, setUsername, getUsername, removeToken, removeUsername } from "@/utils/cookies";
+import { Login, Logout } from "@/api/login";
 const state = {
     collapse: JSON.parse(sessionStorage.getItem('collapse')) || false,
     token: "",
-    username: ""
+    username: "" || getUsername()
 }
 const getters = {}
 const mutations = {
@@ -37,12 +37,12 @@ const actions = {
     logoutAction({ commit }){
         return new Promise((resolve, reject) => {
             Logout().then(response => {
-                const data = response.data
+                console.log(response)
                 removeToken();
                 removeUsername();
                 commit('SET_TOKEN', '');
                 commit('SET_USERNAME', '');
-                resolve(data);
+                resolve(response);
             })
             
         })

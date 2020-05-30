@@ -35,7 +35,7 @@ export function Login(data){
 /**
  * 退出
  */
-export function Logout(){
+export function Logout(data){
     return service.request({
         method: "post",
         url: "/logout/",

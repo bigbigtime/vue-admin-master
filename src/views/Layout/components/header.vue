@@ -6,7 +6,7 @@
   </span>
   </el-col>
   <el-col :span="12">
-    <span class="logout">
+    <span class="logout" @click="logout">
       <svg-icon icon="logout" className="icon-logout"></svg-icon>
     </span>
     <div class="face-info">
@@ -26,7 +26,24 @@ export default {
   setup(props, { root }){
     const switchAside = (() => { root.$store.commit('app/SET_COLLAPSE'); })
     const username = computed(() => root.$store.state.app.username);
-    return { switchAside, username }
+const logout = (() => {
+  root.$confirm('确认退出管理后台', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    root.$store.dispatch('app/logoutAction').then(response => {
+      root.$message({
+        message: response.message,
+        type: "success"
+      })
+      root.$router.push({
+        name: "Login"
+      })
+    })
+  });
+})
+    return { switchAside, username, logout }
   }
 }
 </script>
