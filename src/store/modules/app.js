@@ -1,9 +1,9 @@
-import { setToken, setUsername } from "@/utils/cookies";
+import { setToken, setUsername, getUsername } from "@/utils/cookies";
 import { Login } from "@/api/login";
 const state = {
     collapse: JSON.parse(sessionStorage.getItem('collapse')) || false,
     token: "",
-    username: ""
+    username: "" || getUsername()
 }
 const getters = {}
 const mutations = {
