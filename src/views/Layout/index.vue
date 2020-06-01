@@ -32,7 +32,7 @@ export default {
 #layout-header {
     position: relative;
     z-index: 10;
-    @include webkit(box-shadow, 0 0 10px 0 rgba(0, 0, 0, .5));
+    @include webkit(box-shadow, 0 0 20px 0 rgba(0, 0, 0, .1));
 }
-#layout-main { background-color: #bc77a1; }
+#layout-main { background-color: #f7f7f7; }
 </style>
