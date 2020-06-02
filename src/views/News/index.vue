@@ -4,7 +4,7 @@
       <el-col :span="18">
       <div class="filter-wrap">
         <div class="inline">
-          <div class="filter-item mr-26">
+          <div class="filter-item">
             <label>类型：</label>
             <el-select v-model="data.category" style="width: 160px;">
               <el-option v-for="item in data.category_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
