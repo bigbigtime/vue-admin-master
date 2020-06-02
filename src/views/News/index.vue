@@ -1,7 +1,12 @@
 <template>
   <div class="news-list">
     <el-row>
-      <el-col :span="18">筛选区</el-col>
+      <el-col :span="18">
+        <div class="filter-wrap">
+          <div class="inline">类型</div>
+          <div class="inline">关键字</div>
+        </div>
+      </el-col>
       <el-col :span="6">
         <div class="text-right"><el-button type="danger">新增</el-button></div>
       </el-col>
@@ -33,4 +38,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.filter-wrap {
+  .inline { display: inline; }
+}
 </style>
