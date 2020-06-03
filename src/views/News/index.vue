@@ -4,14 +4,23 @@
       <el-col :span="18">
       <div class="filter-wrap">
         <div class="inline">
-          <div class="filter-item mr-26">
-            <label>类型：</label>
-            <el-select v-model="data.category" style="width: 160px;">
+          <div class="filter-item">
+            <label>类别：</label>
+            <el-select v-model="data.category" class="width-160">
               <el-option v-for="item in data.category_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
             </el-select>
           </div>
         </div>
-        <div class="inline">关键字</div>
+      <div class="inline">
+        <div class="filter-item">
+          <label>关键字：</label>
+          <el-select v-model="data.key" class="width-100">
+            <el-option v-for="item in data.keyword_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
+          </el-select>
+          <el-input v-model="keyword" placeholder="请输入关键字按enter搜索" class="width-200"></el-input>
+          <el-button type="danger">搜索</el-button>
+        </div>
+      </div>
       </div>
       </el-col>
       <el-col :span="6">
@@ -33,7 +42,13 @@ export default {
       category_opacity: [
         { label: "人工智能", value: 0 },
         { label: "技术", value: 1 }
-      ]
+      ],
+      key: "title",
+      keyword_opacity: [
+        { label: "标题", value: "title" },
+        { label: "ID", value: "id" }
+      ],
+      keyword: ""
     });
     return { data }
   }
@@ -52,4 +67,7 @@ export default {
     font-size: 14px;
   }
 }
+.width-160 { width: 160px; }
+.width-100 { width: 100px; }
+.width-200 { width: 200px; }
 </style>
