@@ -4,7 +4,7 @@
       <el-col :span="18">
       <div class="filter-wrap">
         <div class="inline">
-          <div class="filter-item">
+          <div class="filter-item mr-25">
             <label>类别：</label>
             <el-select v-model="data.category" class="width-160">
               <el-option v-for="item in data.category_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
@@ -14,10 +14,10 @@
       <div class="inline">
         <div class="filter-item">
           <label>关键字：</label>
-          <el-select v-model="data.key" class="width-100">
+          <el-select v-model="data.key" class="width-100 mr-15">
             <el-option v-for="item in data.keyword_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
           </el-select>
-          <el-input v-model="keyword" placeholder="请输入关键字按enter搜索" class="width-200"></el-input>
+          <el-input v-model="keyword" placeholder="请输入关键字按enter搜索" class="width-200 mr-15"></el-input>
           <el-button type="danger">搜索</el-button>
         </div>
       </div>
