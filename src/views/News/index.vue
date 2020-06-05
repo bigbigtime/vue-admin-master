@@ -27,6 +27,7 @@
     <div class="text-right"><el-button type="danger">新增</el-button></div>
   </el-col>
 </el-row>
+<div class="spacing-30"></div>
 <el-table ref="table" border :data="data.tableData" style="width: 100%" @selection-change="handleSelectionChange">
   <el-table-column type="selection" width="40"></el-table-column>
   <el-table-column prop="name" label="标题" width="500"></el-table-column>
