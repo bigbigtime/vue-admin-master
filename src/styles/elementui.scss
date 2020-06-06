@@ -9,3 +9,10 @@ li.el-submenu {
     .el-menu-item { background-color: #2f4357 !important;  }
     &.is-opened .el-submenu__title { background-color: #f56c6c !important; }
 }
+
+/* table */
+.table-ui {
+    .el-table-column--selection .cell { padding: 0 !important; }
+    th>.cell { font-weight: bold !important; color: #344a5f !important; }
+    td, th, .cell { text-align: center !important; }
+}
