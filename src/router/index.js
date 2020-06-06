@@ -50,6 +50,14 @@ const routes = [
           title: "信息列表"
         },
         component: () => import("../views/News/index.vue"),
+      },
+      {
+        path: "/newsCategory",
+        name: "NewsCategory",
+        meta: {
+          title: "信息分类"
+        },
+        component: () => import("../views/News/category.vue"),
       }
     ]
   },
