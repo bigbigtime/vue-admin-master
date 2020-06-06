@@ -17,7 +17,7 @@
         <el-select v-model="data.key" class="width-100 mr-15">
           <el-option v-for="item in data.keyword_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
         </el-select>
-        <el-input v-model="keyword" placeholder="请输入关键字按enter搜索" class="width-200 mr-15"></el-input>
+        <el-input v-model="data.keyword" placeholder="请输入关键字按enter搜索" class="width-200 mr-15"></el-input>
         <el-button type="danger">搜索</el-button>
       </div>
     </div>
@@ -40,6 +40,27 @@
       </template>
     </el-table-column>
   </el-table>
+  <div class="spacing-30"></div>
+  <el-row>
+    <el-col :span="6">
+      <el-button size="small">批量删除</el-button>
+    </el-col>
+    <el-col :span="18">
+      <el-pagination 
+        class="pull-right" 
+        sizs="small" 
+        background 
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="data.currentPage"
+        :page-size="10"
+        :page-sizes="[10, 20, 50, 100]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="100">
+      </el-pagination>
+    </el-col>
+  </el-row>
+
   </div>
 </template>
 
@@ -49,7 +70,7 @@ export default {
   name: "NewsIndex",
   components: {},
   props: {},
-setup(props, { root }){
+  setup(props, { root }){
   const data = reactive({
     category: 0,
     category_opacity: [
@@ -66,18 +87,24 @@ setup(props, { root }){
     tableData: [
       { name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', date: "2020-06-05 12:00:00" },
       { name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', date: "2020-06-05 12:00:00" }
-    ]
+    ],
+    // 当前页码
+    currentPage: 1
   });
 
-  const handleSelectionChange = (val) => {
+    const handleSelectionChange = (val) => {}
 
-  }
+    // 页码方法
+    const handleSizeChange = (val) => {}
+    const handleCurrentChange = (val) => {}
 
-  return { 
-    data,
-    handleSelectionChange
+    return { 
+      data,
+      handleSelectionChange,
+      handleSizeChange,
+      handleCurrentChange
+    }
   }
-}
 }
 </script>
 <style lang="scss" scoped>
