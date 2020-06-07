@@ -2,6 +2,10 @@
     <div class="category">
         <el-button type="danger">添加一级分类</el-button>
         <hr class="spacing-hr" />
+        <el-row :gutter="40">
+            <el-col :span="6">adf</el-col>
+            <el-col :span="18">adsf</el-col>
+        </el-row>
     </div>
 </template>
 
