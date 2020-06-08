@@ -1,5 +1,5 @@
 // 变量定义
-$color_main: red;
+$color_main: #f56c6c;
 // 定义指令
 @mixin webkit($type, $value){
     -webkit-#{$type}: $value;
