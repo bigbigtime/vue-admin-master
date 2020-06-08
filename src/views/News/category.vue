@@ -1,6 +1,6 @@
 <template>
     <div class="category">
-        <el-button type="danger">添加一级分类</el-button>
+        <el-button type="danger" @click="addCategory('first_add')">添加一级分类</el-button>
         <hr class="spacing-hr" />
         <el-row :gutter="40">
         <el-col :span="7">
@@ -10,7 +10,7 @@
                     <strong>人工智能</strong>
                     <span class="group-button">
                         <el-button round type="danger" class="category-button-mini">编辑</el-button>
-                        <el-button round type="success" class="category-button-mini">添加子级</el-button>
+                        <el-button round type="success" class="category-button-mini" @click="addCategory('sub_add')">添加子级</el-button>
                         <el-button round class="category-button-mini">删除</el-button>
                     </span>
                 </h4>
@@ -33,12 +33,12 @@
             </div>
         </el-col>
         <el-col :span="17">
-            <h4 class="column">一级分类编辑</h4>
+            <h4 class="column">{{ data[data.type].title }}</h4>
             <el-form label-width="140px">
-                <el-form-item label="一级分类名称：">
-                    <el-input style="width: 20%;"></el-input>
+                <el-form-item label="一级分类名称：" v-show="data[data.type].first_lev">
+                    <el-input style="width: 20%;" :disabled="data[data.type].first_disabled"></el-input>
                 </el-form-item>
-                <el-form-item label="子级分类名称：">
+                <el-form-item label="子级分类名称：" v-show="data[data.type].sub_lev">
                     <el-input style="width: 20%;"></el-input>
                 </el-form-item>
                 <el-form-item label="">
@@ -57,6 +57,29 @@ export default {
    components: {},
    props: {},
    setup(props, { root }){
+
+       const data = reactive({
+           type: "first_add",
+           first_add: {
+               title: "一级分类添加",
+               first_lev: true,
+               first_disabled: false,
+               sub_lev: false
+           },
+           sub_add: {
+               title: "添加子级",
+               first_lev: true,
+               first_disabled: true,
+               sub_lev: true
+           }
+       })
+
+       /**
+        * 添加分类
+        */
+       const addCategory = (type) => {
+           data.type = type;
+       }
        // 监听
        //watch(xxx, () => {})
        // 生命周期
@@ -69,7 +92,10 @@ export default {
     //    onErrorCaptured(() => {})
     //    onRenderTracked(() => {})
     //    onRenderTriggered(() => {})
-       return {}
+       return {
+           data,
+           addCategory
+       }
     }
 }
 </script>
