@@ -12,7 +12,6 @@ export default {
 #main-content {
   background-color: #fff;
   padding: 30px;
-  height: 100%;
   min-height: 100%;
   @include webkit(box-sizing, border-box);
 }

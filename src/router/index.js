@@ -62,6 +62,7 @@ const routes = [
       {
         path: "/newsDetailed",
         name: "NewsDetailed",
+        hidden: true,
         meta: {
           title: "信息详细页"
         },
