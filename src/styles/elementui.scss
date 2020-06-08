@@ -54,3 +54,6 @@ li.el-submenu {
     height: 178px;
     display: block;
 }
+
+/* DateTimePicker */
+.el-picker-panel { z-index: 20000 !important; }
