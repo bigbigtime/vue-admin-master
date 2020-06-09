@@ -7,3 +7,12 @@ export function FirstCategoryAdd(data){
         data
     })
 }
+
+/** 获取分类 */
+export function GetCategory(data = {}){
+    return service.request({
+        method: "post",
+        url: "/news/getCategoryAll/",
+        data
+    })
+}

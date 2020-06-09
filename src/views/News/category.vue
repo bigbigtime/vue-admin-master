@@ -4,23 +4,13 @@
     <hr class="spacing-hr" />
     <el-row :gutter="40">
       <el-col :span="7">
-        <div class="category-list">
+        <div class="category-list" v-for="item in data.category" :key="item.id">
           <h4 class="first">
             <i class="el-icon-circle-plus-outline"></i>
-            <strong>人工智能</strong>
+            <strong>{{ item.category_name }}</strong>
             <span class="group-button">
-              <el-button
-                round
-                type="danger"
-                class="category-button-mini"
-                @click="category('first_category_edit')"
-              >编辑</el-button>
-              <el-button
-                round
-                type="success"
-                class="category-button-mini"
-                @click="category('sub_category_add')"
-              >添加子级</el-button>
+              <el-button round type="danger" class="category-button-mini" @click="category('first_category_edit')">编辑</el-button>
+              <el-button round type="success" class="category-button-mini" @click="category('sub_category_add')">添加子级</el-button>
               <el-button round class="category-button-mini">删除</el-button>
             </span>
           </h4>
@@ -66,94 +56,103 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted, watch } from "@vue/composition-api";
+import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 //API
-import { FirstCategoryAdd } from "@/api/news";
+import { FirstCategoryAdd, GetCategory } from "@/api/news";
 export default {
-  name: "Category",
-  components: {},
-  props: {},
-  setup(props, { root }) {
-    const form = reactive({
-      first_category: "",
-      sub_category: ""
-    });
-    const data = reactive({
-      type: "first_category_add",
-      // 一级分类添加
-      first_category_add: {
-        title: "添加一级分类",
-        first_disabled: false,
-		sub_hidden: false
-      },
-      // 一级分类编辑
-      first_category_edit: {
-        title: "编辑一级分类",
-        first_disabled: false,
-        sub_hidden: false
-      },
-      // 添加子级
-      sub_category_add: {
-        title: "添加子级",
-        first_disabled: true,
-		sub_hidden: true
-      },
-      // 编辑子级
-      sub_category_edit: {
-        title: "编辑子级",
-        first_disabled: true,
-        sub_hidden: true
-      },
-      // loading
-      loading: false
-    });
-    /** 交互 */
-    const category = type => {
-	  data.type = type;
-	  // 判断是否清空输入框文本
-	  let clearkey = data[type].clear_value;
-	  if(clearkey) { form[clearkey] = "" }
-	  console.log()
-    };
-    /** 表单提交 */
-    const submit = () => {
-      if (data.type === "first_category_add") {
-        firstCategoryAdd();
-      }
-    };
-    /** 添加一级分类 */
-    const firstCategoryAdd = () => {
-      if (!form.first_category) {
-        root.$message({
-          message: "一级分类不能为空！！",
-          type: "error"
-        });
-        return false;
-      }
-      // 加载状态，防止多次点击
-      data.loading = true;
-      FirstCategoryAdd({ categoryName: form.first_category }).then(response => {
-          root.$message({
-            message: response.message,
-            type: "success"
-          });
-          // 清除加载状态
-          data.loading = false;
-          // 清空值
-          form.first_category = "";
-        })
-        .catch(error => {
-          // 清除加载状态
-          data.loading = false;
-        });
-    };
-    return {
-      data,
-      form,
-      category,
-      submit
-    };
-  }
+	name: "Category",
+	components: {},
+	props: {},
+	setup(props, { root }) {
+		const form = reactive({
+			first_category: "",
+			sub_category: ""
+		});
+		const data = reactive({
+			// 分类
+			category: [],
+			type: "first_category_add",
+			// 一级分类添加
+			first_category_add: {
+				title: "添加一级分类",
+				first_disabled: false,
+				sub_hidden: false
+			},
+			// 一级分类编辑
+			first_category_edit: {
+				title: "编辑一级分类",
+				first_disabled: false,
+				sub_hidden: false
+			},
+			// 添加子级
+			sub_category_add: {
+				title: "添加子级",
+				first_disabled: true,
+				sub_hidden: true
+			},
+			// 编辑子级
+			sub_category_edit: {
+				title: "编辑子级",
+				first_disabled: true,
+				sub_hidden: true
+			},
+			// loading
+			loading: false
+		});
+		/** 交互 */
+		const category = type => {
+			data.type = type;
+		};
+		/** 表单提交 */
+		const submit = () => {
+			if (data.type === "first_category_add") {
+				firstCategoryAdd();
+			}
+		};
+		/** 添加一级分类 */
+		const firstCategoryAdd = () => {
+			if (!form.first_category) {
+				root.$message({
+					message: "一级分类不能为空！！",
+					type: "error"
+				});
+				return false;
+			}
+			// 加载状态，防止多次点击
+			data.loading = true;
+			FirstCategoryAdd({ categoryName: form.first_category }).then(response => {
+				root.$message({
+					message: response.message,
+					type: "success"
+				});
+				// 清除加载状态
+				data.loading = false;
+				// 清空值
+				form.first_category = "";
+			}).catch(error => {
+				// 清除加载状态
+				data.loading = false;
+			});
+		};
+
+/** 获取分类 */
+const getCategory = () => {
+	GetCategory().then(response => {
+		if(response.data && response.data.length > 0) {
+			data.category = response.data
+		}
+	})
+}
+onBeforeMount(() => {
+	getCategory();
+})
+		return {
+			data,
+			form,
+			category,
+			submit
+		};
+	}
 };
 </script>
 <style lang="scss" scoped>
