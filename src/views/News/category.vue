@@ -51,14 +51,10 @@
         <h4 class="column">{{ data[data.type].title }}</h4>
         <el-form label-width="140px">
           <el-form-item label="一级分类名称：">
-            <el-input
-              v-model="form.first_category"
-              style="width: 20%;"
-              :disabled="data[data.type].first_disabled"
-            ></el-input>
+            <el-input v-model.trim="form.first_category" style="width: 20%;" :disabled="data[data.type].first_disabled"></el-input>
           </el-form-item>
           <el-form-item label="子级分类名称：" v-show="data[data.type].sub_hidden">
-            <el-input v-model="form.sub_category" style="width: 20%;"></el-input>
+            <el-input v-model.trim="form.sub_category" style="width: 20%;"></el-input>
           </el-form-item>
           <el-form-item label>
             <el-button type="danger" :loading="data.loading" @click="submit">确定</el-button>
