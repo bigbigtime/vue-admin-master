@@ -134,18 +134,18 @@ export default {
 				data.loading = false;
 			});
 		};
-
-/** 获取分类 */
-const getCategory = () => {
-	GetCategory().then(response => {
-		if(response.data && response.data.length > 0) {
-			data.category = response.data
+		/** 获取分类 */
+		const getCategory = () => {
+			GetCategory().then(response => {
+				if(response.data && response.data.length > 0) {
+					data.category = response.data
+				}
+			})
 		}
-	})
-}
-onBeforeMount(() => {
-	getCategory();
-})
+		/** 生命周期 渲染之前 */
+		onBeforeMount(() => {
+			getCategory();
+		})
 		return {
 			data,
 			form,
