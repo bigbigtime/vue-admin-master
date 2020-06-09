@@ -16,3 +16,12 @@ export function GetCategory(data = {}){
         data
     })
 }
+
+/** 添加子级分类 */
+export function ChildCategoryAdd(data = {}){
+    return service.request({
+        method: "post",
+        url: "/news/addChildrenCategory/",
+        data
+    })
+}

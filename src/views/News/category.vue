@@ -10,7 +10,7 @@
             <strong>{{ item.category_name }}</strong>
             <span class="group-button">
               <el-button round type="danger" class="category-button-mini" @click="category('first_category_edit')">编辑</el-button>
-              <el-button round type="success" class="category-button-mini" @click="category('sub_category_add')">添加子级</el-button>
+              <el-button round type="success" class="category-button-mini" @click="category('sub_category_add', item)">添加子级</el-button>
               <el-button round class="category-button-mini">删除</el-button>
             </span>
           </h4>
@@ -88,7 +88,8 @@ export default {
 			sub_category_add: {
 				title: "添加子级",
 				first_disabled: true,
-				sub_hidden: true
+        sub_hidden: true,
+        show_value: "first_category"
 			},
 			// 编辑子级
 			sub_category_edit: {
@@ -100,9 +101,12 @@ export default {
 			loading: false
 		});
 		/** 交互 */
-		const category = type => {
-			data.type = type;
-		};
+    const category = (type, categoryData) => {
+      data.type = type;
+      // 判断是否显示 value
+      let showKey = data[type].show_value;
+      if(showKey) { form[showKey] = categoryData.category_name; }
+    };
 		/** 表单提交 */
 		const submit = () => {
 			if (data.type === "first_category_add") {
