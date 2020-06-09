@@ -1,6 +1,6 @@
 <template>
 	<div class="category">
-		<el-button type="danger" @click="category('first_category_add')">添加一级分类</el-button>
+		<el-button type="danger">添加一级分类</el-button>
 		<hr class="spacing-hr" />
 		<el-row :gutter="40">
 		<el-col :span="7">
@@ -9,8 +9,8 @@
 				<i class="el-icon-circle-plus-outline"></i>
 				<strong>人工智能</strong>
 				<span class="group-button">
-					<el-button round type="danger" class="category-button-mini"  @click="category('first_category_edit')">编辑</el-button>
-					<el-button round type="success" class="category-button-mini" @click="category('sub_category_add')">添加子级</el-button>
+					<el-button round type="danger" class="category-button-mini">编辑</el-button>
+					<el-button round type="success" class="category-button-mini">添加子级</el-button>
 					<el-button round class="category-button-mini">删除</el-button>
 				</span>
 			</h4>
@@ -18,7 +18,7 @@
 				<li>
 					<span>无人机</span>
 					<span class="group-button">
-						<el-button round type="danger" class="category-button-mini" @click="category('sub_category_edit')">编辑</el-button>
+						<el-button round type="danger" class="category-button-mini">编辑</el-button>
 						<el-button round class="category-button-mini">删除</el-button>
 					</span>
 				</li>
@@ -89,10 +89,6 @@ export default {
 			}
 		});
 
-		const category = type => {
-			data.type = type;
-		};
-		
 		return {
 			data, form,
 			category
