@@ -58,7 +58,7 @@
 <script>
 import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 //API
-import { FirstCategoryAdd, GetCategory } from "@/api/news";
+import { FirstCategoryAdd, GetCategory, ChildCategoryAdd } from "@/api/news";
 export default {
 	name: "Category",
 	components: {},
@@ -69,6 +69,8 @@ export default {
 			sub_category: ""
 		});
 		const data = reactive({
+      // 存储分类数据对象
+      currentData: {},
 			// 分类
 			category: [],
 			type: "first_category_add",
@@ -100,19 +102,24 @@ export default {
 			// loading
 			loading: false
 		});
-		/** 交互 */
+    /** 交互 */
     const category = (type, categoryData) => {
       data.type = type;
+      // 存储分类数据
+      data.currentData = categoryData;
       // 判断是否显示 value
       let showKey = data[type].show_value;
       if(showKey) { form[showKey] = categoryData.category_name; }
     };
-		/** 表单提交 */
-		const submit = () => {
-			if (data.type === "first_category_add") {
-				firstCategoryAdd();
-			}
-		};
+    /** 表单提交 */
+    const submit = () => {
+      if (data.type === "first_category_add") {
+        firstCategoryAdd();
+      }
+      if(data.type === "sub_category_add") {
+        childCategoryAdd();
+      }
+    };
 		/** 添加一级分类 */
 		const firstCategoryAdd = () => {
 			if (!form.first_category) {
@@ -145,7 +152,36 @@ export default {
 					data.category = response.data
 				}
 			})
-		}
+    }
+    /** 添加子级分类 */
+    const childCategoryAdd = () => {
+      if (!form.sub_category) {
+				root.$message({
+					message: "子级分类不能为空！！",
+					type: "error"
+				});
+				return false;
+			}
+			// 加载状态，防止多次点击
+			data.loading = true;
+      const requestData = {
+        categoryName: form.sub_category,
+        parentId: data.currentData.id
+      }
+      ChildCategoryAdd(requestData).then(response => {
+        root.$message({
+					message: response.message,
+					type: "success"
+				});
+				// 清除加载状态
+				data.loading = false;
+				// 清空值
+				form.sub_category = "";
+      }).catch(error => {
+        // 清空值
+				form.sub_category = "";
+      })
+    }
 		/** 生命周期 渲染之前 */
 		onBeforeMount(() => {
 			getCategory();
