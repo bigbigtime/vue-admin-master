@@ -14,23 +14,11 @@
               <el-button round class="category-button-mini">删除</el-button>
             </span>
           </h4>
-          <ul>
-            <li>
-              <span>无人机</span>
+          <ul v-if="item.children && item.children.length > 0">
+            <li v-for="child in item.children" :key="child.id">
+              <span>{{ child.category_name }}</span>
               <span class="group-button">
-                <el-button
-                  round
-                  type="danger"
-                  class="category-button-mini"
-                  @click="category('sub_category_edit')"
-                >编辑</el-button>
-                <el-button round class="category-button-mini">删除</el-button>
-              </span>
-            </li>
-            <li>
-              <span>智能家具</span>
-              <span class="group-button">
-                <el-button round type="danger" class="category-button-mini">编辑</el-button>
+                <el-button round type="danger" class="category-button-mini" @click="category('sub_category_edit')">编辑</el-button>
                 <el-button round class="category-button-mini">删除</el-button>
               </span>
             </li>
