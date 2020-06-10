@@ -120,14 +120,10 @@ export default {
 			// 加载状态，防止多次点击
 			data.loading = true;
 			FirstCategoryAdd({ categoryName: form.first_category }).then(response => {
-				root.$message({
-					message: response.message,
-					type: "success"
-				});
-				// 清除加载状态
-				data.loading = false;
-				// 清空值
-				form.first_category = "";
+        message({
+          message: response.message,
+          key: "first_category"
+        })
 			}).catch(error => {
 				// 清除加载状态
 				data.loading = false;
@@ -157,18 +153,25 @@ export default {
         parentId: data.currentData.id
       }
       ChildCategoryAdd(requestData).then(response => {
-        root.$message({
-					message: response.message,
-					type: "success"
-				});
-				// 清除加载状态
-				data.loading = false;
-				// 清空值
-				form.sub_category = "";
+        message({
+          message: response.message,
+          key: "sub_category"
+        })
       }).catch(error => {
         // 清空值
 				form.sub_category = "";
       })
+    }
+    /** message 消息提示 */
+    const message = (params) => {
+      root.$message({
+        message: params.message,
+        type: "success"
+      });
+      // 清除加载状态
+      data.loading = false;
+      // 清空值
+      form[params.key] = "";
     }
 		/** 生命周期 渲染之前 */
 		onBeforeMount(() => {
