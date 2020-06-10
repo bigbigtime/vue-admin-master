@@ -9,7 +9,7 @@
             <i class="el-icon-circle-plus-outline"></i>
             <strong>{{ item.category_name }}</strong>
             <span class="group-button">
-              <el-button round type="danger" class="category-button-mini" @click="category('first_category_edit')">编辑</el-button>
+              <el-button round type="danger" class="category-button-mini" @click="category('first_category_edit', item)">编辑</el-button>
               <el-button round type="success" class="category-button-mini" @click="category('sub_category_add', item)">添加子级</el-button>
               <el-button round class="category-button-mini">删除</el-button>
             </span>
@@ -68,19 +68,20 @@ export default {
 				first_disabled: false,
 				sub_hidden: false
 			},
-			// 一级分类编辑
-			first_category_edit: {
-				title: "编辑一级分类",
-				first_disabled: false,
-				sub_hidden: false
-			},
-			// 添加子级
-			sub_category_add: {
-				title: "添加子级",
-				first_disabled: true,
+      // 一级分类编辑
+      first_category_edit: {
+        title: "编辑一级分类",
+        first_disabled: false,
+        sub_hidden: false,
+        show_value: ["first_category"]
+      },
+      // 添加子级
+      sub_category_add: {
+        title: "添加子级",
+        first_disabled: true,
         sub_hidden: true,
-        show_value: "first_category"
-			},
+        show_value: ["first_category"]
+      },
 			// 编辑子级
 			sub_category_edit: {
 				title: "编辑子级",
@@ -97,7 +98,11 @@ export default {
       data.currentData = categoryData;
       // 判断是否显示 value
       let showKey = data[type].show_value;
-      if(showKey) { form[showKey] = categoryData.category_name; }
+      if(showKey) {
+        showKey.forEach(item => {
+          form[item] = categoryData.category_name
+        });
+      }
     };
     /** 表单提交 */
     const submit = () => {
