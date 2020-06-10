@@ -25,3 +25,12 @@ export function ChildCategoryAdd(data = {}){
         data
     })
 }
+
+/** 分类编辑 */
+export function CategoryEdit(data = {}){
+    return service.request({
+        method: "post",
+        url: "news/editCategory/",
+        data
+    })
+}

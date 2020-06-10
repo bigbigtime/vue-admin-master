@@ -46,7 +46,7 @@
 <script>
 import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 //API
-import { FirstCategoryAdd, GetCategory, ChildCategoryAdd } from "@/api/news";
+import { FirstCategoryAdd, GetCategory, ChildCategoryAdd, CategoryEdit } from "@/api/news";
 export default {
 	name: "Category",
 	components: {},
@@ -112,6 +112,9 @@ export default {
       if(data.type === "sub_category_add") {
         childCategoryAdd();
       }
+      if(data.type === "first_category_edit") {
+        categoryEdit();
+      }
     };
 		/** 添加一级分类 */
 		const firstCategoryAdd = () => {
@@ -133,7 +136,33 @@ export default {
 				// 清除加载状态
 				data.loading = false;
 			});
-		};
+    };
+    /** 分类编辑 */
+		const categoryEdit = () => {
+			if (!form.first_category) {
+				root.$message({
+					message: "一级分类不能为空！！",
+					type: "error"
+				});
+				return false;
+			}
+			// 加载状态，防止多次点击
+      data.loading = true;
+      // 参数
+      const requeyst = {
+        id: data.currentData.id,
+        categoryName: form.first_category
+      }
+			CategoryEdit(requeyst).then(response => {
+        message({
+          message: response.message,
+          key: "first_category"
+        })
+			}).catch(error => {
+				// 清除加载状态
+				data.loading = false;
+			});
+    };
 		/** 获取分类 */
 		const getCategory = () => {
 			GetCategory().then(response => {
