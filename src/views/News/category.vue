@@ -120,7 +120,7 @@ export default {
       if(data.type === "sub_category_add") {
         childCategoryAdd();
       }
-      if(data.type === "first_category_edit") {
+      if(data.type === "first_category_edit" || data.type === "sub_category_edit") {
         categoryEdit();
       }
     };
@@ -147,9 +147,11 @@ export default {
     };
     /** 分类编辑 */
 		const categoryEdit = () => {
-			if (!form.first_category) {
+      let filed = data.type === "first_category_edit" ? "first_category" : "sub_category"
+      let level = data.type === "first_category_edit" ? "一级" : "子级";
+			if (!form[filed]) {
 				root.$message({
-					message: "一级分类不能为空！！",
+					message: `${level}分类不能为空！！`,
 					type: "error"
 				});
 				return false;
@@ -158,13 +160,13 @@ export default {
       data.loading = true;
       // 参数
       const requeyst = {
-        id: data.currentData.id,
-        categoryName: form.first_category
+        id: data.type === "first_category_edit" ? data.currentData.id : data.sub_category_data.id,
+        categoryName: data.type === "first_category_edit" ? form.first_category : form.sub_category
       }
 			CategoryEdit(requeyst).then(response => {
         message({
           message: response.message,
-          key: "first_category"
+          key: data.type === "first_category_edit" ? "first_category" : "sub_category"
         })
 			}).catch(error => {
 				// 清除加载状态
