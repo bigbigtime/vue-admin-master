@@ -18,7 +18,7 @@
             <li v-for="child in item.children" :key="child.id">
               <span>{{ child.category_name }}</span>
               <span class="group-button">
-                <el-button round type="danger" class="category-button-mini" @click="category('sub_category_edit')">编辑</el-button>
+                <el-button round type="danger" class="category-button-mini" @click="category('sub_category_edit', item, child)">编辑</el-button>
                 <el-button round class="category-button-mini">删除</el-button>
               </span>
             </li>
@@ -59,6 +59,7 @@ export default {
 		const data = reactive({
       // 存储分类数据对象
       currentData: {},
+      sub_category_data: {},
 			// 分类
 			category: [],
 			type: "first_category_add",
@@ -86,21 +87,28 @@ export default {
 			sub_category_edit: {
 				title: "编辑子级",
 				first_disabled: true,
-				sub_hidden: true
+        sub_hidden: true,
+        show_value: ["first_category", "sub_category"]
 			},
 			// loading
 			loading: false
 		});
     /** 交互 */
-    const category = (type, categoryData) => {
+    const category = (type, categoryData, sub_category) => {
       data.type = type;
       // 存储分类数据
       data.currentData = categoryData;
+      data.sub_category_data = sub_category;
       // 判断是否显示 value
       let showKey = data[type].show_value;
       if(showKey) {
         showKey.forEach(item => {
-          form[item] = categoryData.category_name
+          if(item === "first_category") {
+            form[item] = categoryData.category_name
+          }
+          if(item === "sub_category"){
+            form[item] = sub_category.category_name
+          }
         });
       }
     };
