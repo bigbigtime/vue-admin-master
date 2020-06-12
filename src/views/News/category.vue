@@ -9,7 +9,7 @@
             <i class="el-icon-circle-plus-outline"></i>
             <strong>{{ item.category_name }}</strong>
             <span class="group-button">
-              <el-button round type="danger" class="category-button-mini" @click="category('first_category_edit')">编辑</el-button>
+              <el-button round type="danger" class="category-button-mini" @click="category('first_category_edit', item)">编辑</el-button>
               <el-button round type="success" class="category-button-mini" @click="category('sub_category_add', item)">添加子级</el-button>
               <el-button round class="category-button-mini">删除</el-button>
             </span>
@@ -46,7 +46,7 @@
 <script>
 import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 //API
-import { FirstCategoryAdd, GetCategory, ChildCategoryAdd } from "@/api/news";
+import { FirstCategoryAdd, GetCategory, ChildCategoryAdd, CategoryEdit } from "@/api/news";
 export default {
 	name: "Category",
 	components: {},
@@ -68,19 +68,20 @@ export default {
 				first_disabled: false,
 				sub_hidden: false
 			},
-			// 一级分类编辑
-			first_category_edit: {
-				title: "编辑一级分类",
-				first_disabled: false,
-				sub_hidden: false
-			},
-			// 添加子级
-			sub_category_add: {
-				title: "添加子级",
-				first_disabled: true,
+      // 一级分类编辑
+      first_category_edit: {
+        title: "编辑一级分类",
+        first_disabled: false,
+        sub_hidden: false,
+        show_value: ["first_category"]
+      },
+      // 添加子级
+      sub_category_add: {
+        title: "添加子级",
+        first_disabled: true,
         sub_hidden: true,
-        show_value: "first_category"
-			},
+        show_value: ["first_category"]
+      },
 			// 编辑子级
 			sub_category_edit: {
 				title: "编辑子级",
@@ -97,7 +98,11 @@ export default {
       data.currentData = categoryData;
       // 判断是否显示 value
       let showKey = data[type].show_value;
-      if(showKey) { form[showKey] = categoryData.category_name; }
+      if(showKey) {
+        showKey.forEach(item => {
+          form[item] = categoryData.category_name
+        });
+      }
     };
     /** 表单提交 */
     const submit = () => {
@@ -106,6 +111,9 @@ export default {
       }
       if(data.type === "sub_category_add") {
         childCategoryAdd();
+      }
+      if(data.type === "first_category_edit") {
+        categoryEdit();
       }
     };
 		/** 添加一级分类 */
@@ -128,7 +136,33 @@ export default {
 				// 清除加载状态
 				data.loading = false;
 			});
-		};
+    };
+    /** 分类编辑 */
+		const categoryEdit = () => {
+			if (!form.first_category) {
+				root.$message({
+					message: "一级分类不能为空！！",
+					type: "error"
+				});
+				return false;
+			}
+			// 加载状态，防止多次点击
+      data.loading = true;
+      // 参数
+      const requeyst = {
+        id: data.currentData.id,
+        categoryName: form.first_category
+      }
+			CategoryEdit(requeyst).then(response => {
+        message({
+          message: response.message,
+          key: "first_category"
+        })
+			}).catch(error => {
+				// 清除加载状态
+				data.loading = false;
+			});
+    };
 		/** 获取分类 */
 		const getCategory = () => {
 			GetCategory().then(response => {
