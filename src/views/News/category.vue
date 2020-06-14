@@ -9,8 +9,8 @@
             <i class="el-icon-circle-plus-outline"></i>
             <strong>{{ item.category_name }}</strong>
             <span class="group-button">
-              <el-button round type="danger" class="category-button-mini" @click="category('first_category_edit', item)">编辑</el-button>
-              <el-button round type="success" class="category-button-mini" @click="category('sub_category_add', item)">添加子级</el-button>
+              <el-button round type="danger" class="category-button-mini" @click="category({type: 'first_category_edit', first_category: item})">编辑</el-button>
+              <el-button round type="success" class="category-button-mini" @click="category({type: 'sub_category_add', first_category: item})">添加子级</el-button>
               <el-button round class="category-button-mini">删除</el-button>
             </span>
           </h4>
@@ -18,7 +18,9 @@
             <li v-for="child in item.children" :key="child.id">
               <span>{{ child.category_name }}</span>
               <span class="group-button">
-                <el-button round type="danger" class="category-button-mini" @click="category('sub_category_edit', item, child)">编辑</el-button>
+                <el-button round type="danger" class="category-button-mini" @click="category(
+                  { type: 'sub_category_edit', first_category: item, sub_category: child}
+                )">编辑</el-button>
                 <el-button round class="category-button-mini">删除</el-button>
               </span>
             </li>
@@ -94,21 +96,16 @@ export default {
 			loading: false
 		});
     /** 交互 */
-    const category = (type, categoryData, sub_category) => {
-      data.type = type;
+    const category = (params) => {
+      data.type = params.type;
       // 存储分类数据
-      data.currentData = categoryData;
-      data.sub_category_data = sub_category;
+      data.currentData = params.first_category;
+      data.sub_category_data = params.sub_category;
       // 判断是否显示 value
-      let showKey = data[type].show_value;
+      let showKey = data[params.type].show_value;
       if(showKey) {
         showKey.forEach(item => {
-          if(item === "first_category") {
-            form[item] = categoryData.category_name
-          }
-          if(item === "sub_category"){
-            form[item] = sub_category.category_name
-          }
+          form[item] = params[item].category_name
         });
       }
     };
