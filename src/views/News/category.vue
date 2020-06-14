@@ -105,7 +105,9 @@ export default {
       let showKey = data[params.type].show_value;
       if(showKey) {
         showKey.forEach(item => {
-          form[item] = params[item].category_name
+          if(params[item]) {
+            form[item] = params[item].category_name
+          }
         });
       }
     };
