@@ -4,27 +4,30 @@
     <hr class="spacing-hr" />
     <el-row :gutter="40">
       <el-col :span="7">
-        <div class="category-list" v-for="item in data.category" :key="item.id">
-          <h4 class="first">
-            <i class="el-icon-circle-plus-outline"></i>
-            <strong>{{ item.category_name }}</strong>
-            <span class="group-button">
-              <el-button round type="danger" class="category-button-mini" @click="category({type: 'first_category_edit', first_category: item})">编辑</el-button>
-              <el-button round type="success" class="category-button-mini" @click="category({type: 'sub_category_add', first_category: item})">添加子级</el-button>
-              <el-button round class="category-button-mini" @click="categoryDelConfirm(item.id)">删除</el-button>
-            </span>
-          </h4>
-          <ul v-if="item.children && item.children.length > 0">
-            <li v-for="child in item.children" :key="child.id">
-              <span>{{ child.category_name }}</span>
+        <span v-if="data.loading_data">加载中...</span>
+        <div element-loading-text="加载中" v-loading="data.loading_data" :class="{loading: data.loading_data}">
+          <div class="category-list" v-for="item in data.category" :key="item.id">
+            <h4 class="first">
+              <i class="el-icon-circle-plus-outline"></i>
+              <strong>{{ item.category_name }}</strong>
               <span class="group-button">
-                <el-button round type="danger" class="category-button-mini" @click="category(
-                  { type: 'sub_category_edit', first_category: item, sub_category: child}
-                )">编辑</el-button>
-                <el-button round class="category-button-mini" @click="categoryDelConfirm(child.id)">删除</el-button>
+                <el-button round type="danger" class="category-button-mini" @click="category({type: 'first_category_edit', first_category: item})">编辑</el-button>
+                <el-button round type="success" class="category-button-mini" @click="category({type: 'sub_category_add', first_category: item})">添加子级</el-button>
+                <el-button round class="category-button-mini" @click="categoryDelConfirm(item.id)">删除</el-button>
               </span>
-            </li>
-          </ul>
+            </h4>
+            <ul v-if="item.children && item.children.length > 0">
+              <li v-for="child in item.children" :key="child.id">
+                <span>{{ child.category_name }}</span>
+                <span class="group-button">
+                  <el-button round type="danger" class="category-button-mini" @click="category(
+                    { type: 'sub_category_edit', first_category: item, sub_category: child}
+                  )">编辑</el-button>
+                  <el-button round class="category-button-mini" @click="categoryDelConfirm(child.id)">删除</el-button>
+                </span>
+              </li>
+            </ul>
+          </div>
         </div>
       </el-col>
       <el-col :span="17">
@@ -61,6 +64,8 @@ export default {
 			sub_category: ""
     });
 		const data = reactive({
+      // 加载状态
+      loading_data: true,
       // 存储分类数据对象
       currentData: {},
       sub_category_data: {},
@@ -199,7 +204,8 @@ export default {
 		const getCategory = () => {
 			GetCategory().then(response => {
 				if(response.data && response.data.length > 0) {
-					data.category = response.data
+          data.category = response.data
+          data.loading_data = false
 				}
 			})
     }
