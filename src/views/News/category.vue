@@ -136,16 +136,16 @@ export default {
         categoryDelete();
       }).catch(() => {});
     }
-    const categoryDelete = () => {
-      CategoryDel({categoryId: category_id.value}).then(response => {
-        root.$message({
-          message: response.message,
-          type: "success"
-        })
-        // 清空分类ID
-        category_id.value = ""
-      })
-    }
+const categoryDelete = () => {
+  CategoryDel({categoryId: category_id.value}).then(response => {
+    root.$message({
+      message: response.message,
+      type: "success"
+    })
+    // 清空分类ID
+    category_id.value = ""
+  })
+}
 		/** 添加一级分类 */
 		const firstCategoryAdd = () => {
 			if (!form.first_category) {
