@@ -1,6 +1,6 @@
 <template>
   <div class="category">
-    <el-button type="danger" @click="category('first_category_add')">添加一级分类</el-button>
+    <el-button type="danger" @click="category({type: 'first_category_add'})">添加一级分类</el-button>
     <hr class="spacing-hr" />
     <el-row :gutter="40">
       <el-col :span="7">
@@ -137,10 +137,14 @@ export default {
       }).catch(() => {});
     }
     const categoryDelete = () => {
-      // 判断是 ref 对象，并且是数字
-      console.log(Number(category_id.value))
-      // if(!isRef(form) && Number(category_id.value))
-      // console.log(isRef(form))
+      CategoryDel({categoryId: category_id.value}).then(response => {
+        root.$message({
+          message: response.message,
+          type: "success"
+        })
+        // 清空分类ID
+        category_id.value = ""
+      })
     }
 		/** 添加一级分类 */
 		const firstCategoryAdd = () => {
