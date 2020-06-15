@@ -67,7 +67,7 @@ export default {
       // 加载状态
       loading_data: true,
       // 存储分类数据对象
-      currentData: {},
+      first_category_data: {},
       sub_category_data: {},
 			// 分类
 			category: [],
@@ -106,7 +106,7 @@ export default {
     const category = (params) => {
       data.type = params.type;
       // 存储分类数据
-      data.currentData = params.first_category;
+      data.first_category_data = params.first_category;
       data.sub_category_data = params.sub_category;
       // 判断是否显示 value
       let showKey = data[params.type].show_value;
@@ -187,14 +187,20 @@ export default {
       data.loading = true;
       // 参数
       const requeyst = {
-        id: data.type === "first_category_edit" ? data.currentData.id : data.sub_category_data.id,
+        id: data.type === "first_category_edit" ? data.first_category_data.id : data.sub_category_data.id,
         categoryName: data.type === "first_category_edit" ? form.first_category : form.sub_category
       }
 			CategoryEdit(requeyst).then(response => {
+        if(data.type === "first_category_edit") {
+          data.first_category_data.category_name = form.first_category
+        }else{
+          data.sub_category_data.category_name = form.sub_category
+        }
         message({
           message: response.message,
           key: data.type === "first_category_edit" ? "first_category" : "sub_category"
         })
+        
 			}).catch(error => {
 				// 清除加载状态
 				data.loading = false;
@@ -222,7 +228,7 @@ export default {
 			data.loading = true;
       const requestData = {
         categoryName: form.sub_category,
-        parentId: data.currentData.id
+        parentId: data.first_category_data.id
       }
       ChildCategoryAdd(requestData).then(response => {
         message({
