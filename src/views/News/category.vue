@@ -1,6 +1,6 @@
 <template>
   <div class="category">
-    <el-button type="danger" @click="category('first_category_add')">添加一级分类</el-button>
+    <el-button type="danger" @click="category({type: 'first_category_add'})">添加一级分类</el-button>
     <hr class="spacing-hr" />
     <el-row :gutter="40">
       <el-col :span="7">
