@@ -77,7 +77,7 @@ export default {
 				title: "添加一级分类",
 				first_disabled: false,
 				sub_hidden: false,
-        clear_value: ["first_category"]
+        clear_value: ["first_category", "sub_category"]
 			},
       // 一级分类编辑
       first_category_edit: {
