@@ -30,7 +30,16 @@ export function ChildCategoryAdd(data = {}){
 export function CategoryEdit(data = {}){
     return service.request({
         method: "post",
-        url: "news/editCategory/",
+        url: "/news/editCategory/",
+        data
+    })
+}
+
+/** 分类删除 */
+export function CategoryDel(data = {}){
+    return service.request({
+        method: "post",
+        url: "/news/deleteCategory/",
         data
     })
 }

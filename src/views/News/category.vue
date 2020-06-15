@@ -11,7 +11,7 @@
             <span class="group-button">
               <el-button round type="danger" class="category-button-mini" @click="category({type: 'first_category_edit', first_category: item})">编辑</el-button>
               <el-button round type="success" class="category-button-mini" @click="category({type: 'sub_category_add', first_category: item})">添加子级</el-button>
-              <el-button round class="category-button-mini">删除</el-button>
+              <el-button round class="category-button-mini" @click="categoryDelConfirm(item.id)">删除</el-button>
             </span>
           </h4>
           <ul v-if="item.children && item.children.length > 0">
@@ -21,7 +21,7 @@
                 <el-button round type="danger" class="category-button-mini" @click="category(
                   { type: 'sub_category_edit', first_category: item, sub_category: child}
                 )">编辑</el-button>
-                <el-button round class="category-button-mini">删除</el-button>
+                <el-button round class="category-button-mini" @click="categoryDelConfirm(child.id)">删除</el-button>
               </span>
             </li>
           </ul>
@@ -46,18 +46,20 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
+import { reactive, ref, isRef, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 //API
-import { FirstCategoryAdd, GetCategory, ChildCategoryAdd, CategoryEdit } from "@/api/news";
+import { FirstCategoryAdd, GetCategory, ChildCategoryAdd, CategoryEdit, CategoryDel } from "@/api/news";
 export default {
 	name: "Category",
 	components: {},
 	props: {},
 	setup(props, { root }) {
+    // 分类ID
+    let category_id = ref("");
 		const form = reactive({
 			first_category: "",
 			sub_category: ""
-		});
+    });
 		const data = reactive({
       // 存储分类数据对象
       currentData: {},
@@ -123,6 +125,23 @@ export default {
         categoryEdit();
       }
     };
+    /** 删除分类 */
+    const categoryDelConfirm = (id) => {
+      root.$confirm('此操作将永久删除此分类, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        category_id.value = id;
+        categoryDelete();
+      }).catch(() => {});
+    }
+    const categoryDelete = () => {
+      // 判断是 ref 对象，并且是数字
+      console.log(Number(category_id.value))
+      // if(!isRef(form) && Number(category_id.value))
+      // console.log(isRef(form))
+    }
 		/** 添加一级分类 */
 		const firstCategoryAdd = () => {
 			if (!form.first_category) {
@@ -223,7 +242,8 @@ export default {
 		return {
 			data,
 			form,
-			category,
+      category,
+      categoryDelConfirm,
 			submit
 		};
 	}
