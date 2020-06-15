@@ -200,14 +200,14 @@ export default {
 				data.loading = false;
 			});
     };
-		/** 获取分类 */
-		const getCategory = () => {
-			GetCategory().then(response => {
-				if(response.data && response.data.length > 0) {
+    /** 获取分类 */
+    const getCategory = () => {
+      GetCategory().then(response => {
+        if(response.data && response.data.length > 0) {
           data.category = response.data
           data.loading_data = false
-				}
-			})
+        }
+      })
     }
     /** 添加子级分类 */
     const childCategoryAdd = () => {
