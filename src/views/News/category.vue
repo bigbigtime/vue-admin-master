@@ -76,7 +76,8 @@ export default {
 			first_category_add: {
 				title: "添加一级分类",
 				first_disabled: false,
-				sub_hidden: false
+				sub_hidden: false,
+        clear_value: ["first_category"]
 			},
       // 一级分类编辑
       first_category_edit: {
@@ -111,11 +112,12 @@ export default {
       // 判断是否显示 value
       let showKey = data[params.type].show_value;
       if(showKey) {
-        showKey.forEach(item => {
-          if(params[item]) {
-            form[item] = params[item].category_name
-          }
-        });
+        showKey.forEach(item => { if(params[item]) { form[item] = params[item].category_name } });
+      }
+      // 清除文本
+      let clearkey = data[params.type].clear_value;
+      if(clearkey) {
+        clearkey.forEach(item => { form[item] = "" });
       }
     };
     /** 表单提交 */
