@@ -91,7 +91,8 @@ export default {
         title: "添加子级",
         first_disabled: true,
         sub_hidden: true,
-        show_value: ["first_category"]
+        show_value: ["first_category"],
+        clear_value: ["sub_category"]
       },
 			// 编辑子级
 			sub_category_edit: {
