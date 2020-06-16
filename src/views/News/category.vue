@@ -23,7 +23,7 @@
                   <el-button round type="danger" class="category-button-mini" @click="category(
                     { type: 'sub_category_edit', first_category: item, sub_category: child}
                   )">编辑</el-button>
-                  <el-button round class="category-button-mini" @click="categoryDelConfirm(child.id)">删除</el-button>
+                  <el-button round class="category-button-mini" @click="categoryDelConfirm(child.id, 'sub_category')">删除</el-button>
                 </span>
               </li>
             </ul>
@@ -134,7 +134,7 @@ export default {
       }
     };
     /** 删除分类 */
-    const categoryDelConfirm = (id) => {
+    const categoryDelConfirm = (id, type) => {
       root.$confirm('此操作将永久删除此分类, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
