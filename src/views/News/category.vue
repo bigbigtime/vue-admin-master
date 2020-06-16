@@ -153,27 +153,27 @@ export default {
         category_id.value = ""
       })
     }
-		/** 添加一级分类 */
-		const firstCategoryAdd = () => {
-			if (!form.first_category) {
-				root.$message({
-					message: "一级分类不能为空！！",
-					type: "error"
-				});
-				return false;
-			}
-			// 加载状态，防止多次点击
-			data.loading = true;
-			FirstCategoryAdd({ categoryName: form.first_category }).then(response => {
+    /** 添加一级分类 */
+    const firstCategoryAdd = () => {
+      if (!form.first_category) {
+        root.$message({
+          message: "一级分类不能为空！！",
+          type: "error"
+        });
+        return false;
+      }
+      // 加载状态，防止多次点击
+      data.loading = true;
+      FirstCategoryAdd({ categoryName: form.first_category }).then(response => {
         message({
           message: response.message,
           key: "first_category"
         })
         data.category.unshift(response.data)
-			}).catch(error => {
-				// 清除加载状态
-				data.loading = false;
-			});
+      }).catch(error => {
+        // 清除加载状态
+        data.loading = false;
+      });
     };
     /** 分类编辑 */
 		const categoryEdit = () => {
@@ -238,6 +238,12 @@ export default {
           message: response.message,
           key: "sub_category"
         })
+        // 获取当前子级的父分类
+        let first_category_data = data.first_category_data
+        // 判断是不存在 children 对象
+        if(!first_category_data.children) { first_category_data.children = []; }
+        // 追加子级对象
+        first_category_data.children.unshift(response.data);
       }).catch(error => {
         // 清空值
 				form.sub_category = "";
