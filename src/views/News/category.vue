@@ -77,7 +77,7 @@ export default {
 				title: "添加一级分类",
 				first_disabled: false,
 				sub_hidden: false,
-        clear_value: ["first_category"]
+        clear_value: ["first_category", "sub_category"]
 			},
       // 一级分类编辑
       first_category_edit: {
@@ -169,6 +169,7 @@ export default {
           message: response.message,
           key: "first_category"
         })
+        data.category.unshift(response.data)
 			}).catch(error => {
 				// 清除加载状态
 				data.loading = false;
