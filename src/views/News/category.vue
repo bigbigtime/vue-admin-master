@@ -6,24 +6,26 @@
       <el-col :span="7">
         <span v-if="data.loading_data">加载中...</span>
         <div element-loading-text="加载中" v-loading="data.loading_data" :class="{loading: data.loading_data}">
-          <div class="category-list" v-for="item in data.category" :key="item.id">
+          <div class="category-list" v-for="(item, firstIndex) in data.category" :key="item.id">
             <h4 class="first">
               <i class="el-icon-circle-plus-outline"></i>
               <strong>{{ item.category_name }}</strong>
               <span class="group-button">
                 <el-button round type="danger" class="category-button-mini" @click="category({type: 'first_category_edit', first_category: item})">编辑</el-button>
                 <el-button round type="success" class="category-button-mini" @click="category({type: 'sub_category_add', first_category: item})">添加子级</el-button>
-                <el-button round class="category-button-mini" @click="categoryDelConfirm(item)">删除</el-button>
+                <el-button round class="category-button-mini" @click="categoryDelConfirm({ currentCategory: item, index: firstIndex })">删除</el-button>
               </span>
             </h4>
             <ul v-if="item.children && item.children.length > 0">
-              <li v-for="child in item.children" :key="child.id">
+              <li v-for="(child, childIndex) in item.children" :key="child.id">
                 <span>{{ child.category_name }}</span>
                 <span class="group-button">
                   <el-button round type="danger" class="category-button-mini" @click="category(
                     { type: 'sub_category_edit', first_category: item, sub_category: child}
                   )">编辑</el-button>
-                  <el-button round class="category-button-mini" @click="categoryDelConfirm(child, item)">删除</el-button>
+                  <el-button round class="category-button-mini" 
+                    @click="categoryDelConfirm({ currentCategory: child, parentCategory: item, index: childIndex })"
+                  >删除</el-button>
                 </span>
               </li>
             </ul>
@@ -66,6 +68,7 @@ export default {
 		const data = reactive({
       // 临时的父级分类
       parent_category: null,
+      category_index: null,
       // 加载状态
       loading_data: true,
       // 存储分类数据对象
@@ -136,17 +139,19 @@ export default {
       }
     };
     /** 删除分类 */
-    const categoryDelConfirm = (currentCategory, parentCategory) => {
+    const categoryDelConfirm = (params) => {
       root.$confirm('此操作将永久删除此分类, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         // 获取 parent_id
-        let parent_id = currentCategory.parent_id;
+        let parent_id = params.currentCategory.parent_id;
+        // 存储索引
+        data.category_index = params.index;
         // 存在 parent_id，侧存储父类数据
-        if(parent_id) { data.parent_category = parentCategory; }
-        if(!parent_id && currentCategory.children.length > 0) {
+        if(parent_id) { data.parent_category = params.parentCategory; }
+        if(!parent_id && params.currentCategory.children && params.currentCategory.children.length > 0) {
           root.$message({
             message: "当前分类存在子级分类，请先删除子级分类！！",
             type: "error"
@@ -154,11 +159,12 @@ export default {
           return false;
         }
         // 存储当前的分类id
-        category_id.value = currentCategory.id;
+        category_id.value = params.currentCategory.id;
         // 执行删除
         categoryDelete();
       }).catch(() => {
-        data.parent_category = null
+        data.category_index = null;
+        data.parent_category = null;
       });
     }
     const categoryDelete = () => {
@@ -167,20 +173,16 @@ export default {
           message: response.message,
           type: "success"
         })
-        // 存在父级分类
-        const parent_category = data.parent_category;
-        if(parent_category) { // 存在父类
-          // 获取索引
-          const index = parent_category.children.findIndex(item => item.id == category_id.value);
+        if(data.parent_category) { // 存在父类
           // splice 删除数组指定索引的对象
-          parent_category.children.splice(index, 1);
+          data.parent_category.children.splice(data.category_index, 1);
           // 清空临时变量数据
           data.parent_category = null;
+          data.category_index = null;
         }else{
-          // 获取索引
-          const index = data.category.findIndex(item => item.id == category_id.value);
           // splice 删除数组指定索引的对象
-          data.category.splice(index, 1);
+          data.category.splice(data.category_index, 1);
+          data.category_index = null;
         }
         // 清空分类ID
         category_id.value = ""
@@ -245,7 +247,7 @@ export default {
     /** 获取分类 */
     const getCategory = () => {
       GetCategory().then(response => {
-        if(response.data && response.data.length > 0) {
+        if(response.data) {
           data.category = response.data
           data.loading_data = false
         }
