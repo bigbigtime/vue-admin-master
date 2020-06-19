@@ -24,7 +24,9 @@
     </div>
     </el-col>
     <el-col :span="6">
-      <div class="text-right"><el-button type="danger">新增</el-button></div>
+      <div class="text-right">
+        <router-link to="/newsDetailed"><el-button type="danger">新增</el-button></router-link>
+      </div>
     </el-col>
   </el-row>
   <div class="spacing-30"></div>
