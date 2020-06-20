@@ -51,15 +51,17 @@ export default {
 			createDate: "",
 			editorContent: ""
 		})
-    const data = reactive({
+		const data = reactive({
 			cascader_props: {
-				expandTrigger: 'hover'
+				expandTrigger: 'hover',
+				label: "category_name",
+				value: "id"
 			},
-      category_option: [
-        { label: "人工智能", value: 0 },
-        { label: "技术", value: 1 }
-      ],
-      editor: null
+			category_option: [
+				{ label: "人工智能", value: 0 },
+				{ label: "技术", value: 1 }
+			],
+			editor: null
 		});
 		/** 获取分类 */
 		const getCategory = () => {
