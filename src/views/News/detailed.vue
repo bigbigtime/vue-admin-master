@@ -6,6 +6,7 @@
 					v-model="form.categoryId"
 					:options="data.category_option"
 					:props="data.cascader_props"
+					:show-all-levels="false"
 				>
 				</el-cascader>
       </el-form-item>
@@ -25,7 +26,7 @@
         <div ref="editorDom" style="text-align:left;"></div>
       </el-form-item>
       <el-form-item>
-        <el-button type="danger">确定</el-button>
+        <el-button type="danger" @click="submit" :loading="data.submit_loading">确定</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -34,7 +35,7 @@
 <script>
 import { reactive, ref, onMounted, onBeforeMount, watch } from "@vue/composition-api";
 // API
-import { GetCategory } from "@/api/news";
+import { GetCategory, AddInfo } from "@/api/news";
 // common
 import { getDateTime } from "@/utils/common"
 // 富文本编辑器
@@ -63,12 +64,56 @@ export default {
 				{ label: "人工智能", value: 0 },
 				{ label: "技术", value: 1 }
 			],
-			editor: null
+			editor: null,
+			submit_loading: false
 		});
 		/** 获取分类 */
 		const getCategory = () => {
 			GetCategory().then(response => {
 				data.category_option = response.data
+			})
+		}
+		/** 添加信息 */
+		const submit = () => {
+			if(!form.categoryId) {
+				root.$message({
+					message: "请选择类别！",
+					type: "error"
+				})
+				return false;
+			}
+			if(!form.title) {
+				root.$message({
+					message: "标题不能为空！",
+					type: "error"
+				})
+				return false;
+			}
+			// 深度拷贝
+			const requestData = JSON.parse(JSON.stringify(form));
+			console.log(requestData);
+			return false;
+			// 处理内容
+			requestData.content = form.editorContent;
+			// 处理分类ID
+			requestData.categoryId = requestData.categoryId[requestData.categoryId.length - 1];
+			// 按钮加载状态
+			data.submit_loading = true;
+			AddInfo(requestData).then(response => {
+				root.$message({
+					message: response.message,
+					type: "success"
+				})
+				// 清除按钮加载状态
+				data.submit_loading = false;
+				// 清除数据
+				form.categoryId = "";
+				form.title = "";
+				form.content = "";
+				data.editor.txt.clear();
+			}).catch(error => {
+				// 清除按钮加载状态
+				data.submit_loading = false;
 			})
 		}
 		onBeforeMount(() => {
@@ -83,7 +128,7 @@ export default {
 			data.editor.create(); // 创建富文本实例
 		});
     return {
-      data, form
+      data, form, submit
     };
   }
 };
