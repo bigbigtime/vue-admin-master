@@ -67,38 +67,59 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted, watch } from "@vue/composition-api";
+import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
+// API
+import { GetList } from "@/api/news"
 export default {
   name: "NewsIndex",
   components: {},
   props: {},
   setup(props, { root }){
-  const data = reactive({
-    category: 0,
-    category_opacity: [
-      { label: "人工智能", value: 0 },
-      { label: "技术", value: 1 }
-    ],
-    key: "title",
-    keyword_opacity: [
-      { label: "标题", value: "title" },
-      { label: "ID", value: "id" }
-    ],
-    keyword: "",
-    // table data
-    tableData: [
-      { name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', date: "2020-06-05 12:00:00" },
-      { name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', date: "2020-06-05 12:00:00" }
-    ],
-    // 当前页码
-    currentPage: 1
-  });
-
+    const requestParams = {
+      pageNumber: 1,
+      pageSize: 10
+    }
+    const data = reactive({
+      category: 0,
+      category_opacity: [
+        { label: "人工智能", value: 0 },
+        { label: "技术", value: 1 }
+      ],
+      key: "title",
+      keyword_opacity: [
+        { label: "标题", value: "title" },
+        { label: "ID", value: "id" }
+      ],
+      keyword: "",
+      // table data
+      tableData: [
+        { name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', date: "2020-06-05 12:00:00" },
+        { name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', date: "2020-06-05 12:00:00" }
+      ],
+      // 当前页码
+      currentPage: 1
+    });
+    /** 获取列表 */
+    const getData = () => {
+      const requestData = {
+        pageNumber: requestParams.pageNumber,
+        pageSize: requestParams.pageSize
+      }
+      GetList(requestData).then(response => {
+        const responseData = response.data;
+        if(responseData.data) { data.tableData = responseData.data; }
+      })
+    }
+    // 复选框
     const handleSelectionChange = (val) => {}
-
     // 页码方法
     const handleSizeChange = (val) => {}
     const handleCurrentChange = (val) => {}
+
+    /** 生命周期 */
+    onBeforeMount(() => {
+      getData();
+    })
 
     return { 
       data,

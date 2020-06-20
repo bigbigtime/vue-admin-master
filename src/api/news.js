@@ -52,3 +52,12 @@ export function AddInfo(data = {}){
         data
     })
 }
+
+/** 信息列表 */
+export function GetList(data = {}){
+    return service.request({
+        method: "post",
+        url: "/news/getList/",
+        data
+    })
+}
