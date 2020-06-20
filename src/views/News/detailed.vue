@@ -92,8 +92,6 @@ export default {
 			}
 			// 深度拷贝
 			const requestData = JSON.parse(JSON.stringify(form));
-			console.log(requestData);
-			return false;
 			// 处理内容
 			requestData.content = form.editorContent;
 			// 处理分类ID
