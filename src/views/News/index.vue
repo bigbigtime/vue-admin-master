@@ -30,7 +30,7 @@
     </el-col>
   </el-row>
   <div class="spacing-30"></div>
-  <el-table ref="table" border :data="data.tableData" style="width: 100%" @selection-change="handleSelectionChange" class="table-ui">
+  <el-table ref="table" border :data="data.tableData" v-loading="data.loading_table" style="width: 100%" @selection-change="handleSelectionChange" class="table-ui">
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="title" label="标题"></el-table-column>
     <el-table-column prop="categoryName" width="120" label="类别"></el-table-column>
@@ -93,10 +93,9 @@ export default {
       ],
       keyword: "",
       // table data
-      tableData: [
-        { name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', date: "2020-06-05 12:00:00" },
-        { name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', date: "2020-06-05 12:00:00" }
-      ],
+      tableData: [],
+      // table loading
+      loading_table: false,
       // 当前页码
       currentPage: 1
     });
@@ -106,9 +105,16 @@ export default {
         pageNumber: requestParams.pageNumber,
         pageSize: requestParams.pageSize
       }
+      // 加载状态
+      data.loading_table = true;
       GetList(requestData).then(response => {
         const responseData = response.data;
         if(responseData.data) { data.tableData = responseData.data; }
+        // 清除状态
+        data.loading_table = false;
+      }).catch(error => {
+        // 清除状态
+        data.loading_table = false;
       })
     }
     // 复选框
