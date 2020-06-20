@@ -58,7 +58,8 @@ export default {
 			cascader_props: {
 				expandTrigger: 'hover',
 				label: "category_name",
-				value: "id"
+				value: "id",
+				checkStrictly: true
 			},
 			category_option: [
 				{ label: "人工智能", value: 0 },
@@ -91,8 +92,6 @@ export default {
 			}
 			// 深度拷贝
 			const requestData = JSON.parse(JSON.stringify(form));
-			console.log(requestData);
-			return false;
 			// 处理内容
 			requestData.content = form.editorContent;
 			// 处理分类ID
