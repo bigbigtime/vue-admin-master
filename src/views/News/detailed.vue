@@ -58,7 +58,8 @@ export default {
 			cascader_props: {
 				expandTrigger: 'hover',
 				label: "category_name",
-				value: "id"
+				value: "id",
+				checkStrictly: true
 			},
 			category_option: [
 				{ label: "人工智能", value: 0 },
