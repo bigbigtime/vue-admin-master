@@ -10,7 +10,7 @@
 				</el-cascader>
       </el-form-item>
       <el-form-item label="信息标题：">
-        <el-input v-model="form.title"></el-input>
+        <el-input v-model.trim="form.title"></el-input>
       </el-form-item>
       <el-form-item label="缩略图：">
         <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false">
@@ -19,7 +19,7 @@
         </el-upload>
       </el-form-item>
       <el-form-item label="发布日期：">
-        <el-date-picker v-model="form.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
+        <el-date-picker v-model="form.createDate" type="datetime" disabled placeholder="选择日期时间"></el-date-picker>
       </el-form-item>
       <el-form-item label="内容：">
         <div ref="editorDom" style="text-align:left;"></div>
@@ -35,6 +35,8 @@
 import { reactive, ref, onMounted, onBeforeMount, watch } from "@vue/composition-api";
 // API
 import { GetCategory } from "@/api/news";
+// common
+import { getDateTime } from "@/utils/common"
 // 富文本编辑器
 import Editor from "wangeditor";
 export default {
@@ -48,7 +50,7 @@ export default {
 			title: "",
 			imgUrl: "",
 			content: "",
-			createDate: "",
+			createDate: getDateTime(),
 			editorContent: ""
 		})
 		const data = reactive({
@@ -73,6 +75,7 @@ export default {
 			getCategory();
 		})
 		onMounted(() => {
+			
 			data.editor = new Editor(refs.editorDom);
 			data.editor.customConfig.onchange = html => {
 				form.editorContent = html;
