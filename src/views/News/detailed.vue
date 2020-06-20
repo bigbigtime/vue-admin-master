@@ -16,7 +16,7 @@
         </el-upload>
       </el-form-item>
       <el-form-item label="发布日期：">
-        <el-date-picker v-model="form.createData" type="datetime" placeholder="选择日期时间"></el-date-picker>
+        <el-date-picker v-model="form.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
       </el-form-item>
       <el-form-item label="内容：">
         <div ref="editorDom" style="text-align:left;"></div>
@@ -41,6 +41,7 @@ export default {
 			categoryId: "",
 			title: "",
 			imgUrl: "",
+			createDate: "",
 			content: "",
 			editorContent: ""
 		})
