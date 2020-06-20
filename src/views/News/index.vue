@@ -32,10 +32,11 @@
   <div class="spacing-30"></div>
   <el-table ref="table" border :data="data.tableData" style="width: 100%" @selection-change="handleSelectionChange" class="table-ui">
     <el-table-column type="selection" width="40"></el-table-column>
-    <el-table-column prop="name" label="标题" width="500"></el-table-column>
-    <el-table-column prop="address" label="类别"></el-table-column>
-    <el-table-column prop="date" label="日期"></el-table-column>
-    <el-table-column prop="address" label="操作" width="200">
+    <el-table-column prop="title" label="标题"></el-table-column>
+    <el-table-column prop="categoryName" width="120" label="类别"></el-table-column>
+    <el-table-column prop="createDate" width="220" label="日期"></el-table-column>
+    <el-table-column prop="user_name" width="220" label="编辑人员"></el-table-column>
+    <el-table-column label="操作" width="200">
       <template>
         <el-button type="danger" size="mini">编辑</el-button>
         <el-button  size="mini">删除</el-button>
