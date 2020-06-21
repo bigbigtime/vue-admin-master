@@ -50,7 +50,7 @@
   <div class="spacing-30"></div>
   <el-row>
     <el-col :span="6">
-      <el-button size="small">批量删除</el-button>
+      <el-button size="small" :disabled="data.delete_id.length == 0" @click="delConfirm()">批量删除</el-button>
     </el-col>
     <el-col :span="18">
       <el-pagination 
@@ -112,7 +112,7 @@ export default {
       // 总条数
       total: 0,
       // 删除的id
-      delete_id: null
+      delete_id: []
     });
     /** 获取列表 */
     const getData = () => {
@@ -141,7 +141,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        data.delete_id = id;
+        if(id) { data.delete_id = id; }
         deleteInfo();
       }).catch(() => {
         data.delete_id = null;
@@ -154,13 +154,17 @@ export default {
           type: "success"
         })
         // 清空ID
-        data.delete_id = null;
+        data.delete_id = [];
         // 请求数据
         getData();
       })
     }
     // 复选框
-    const handleSelectionChange = (val) => {}
+    const handleSelectionChange = (val) => {
+      console.log(val)
+      const id = val.map(item => item.id);
+      data.delete_id = id;
+    }
     // 页码方法
     const handleSizeChange = (val) => {
       data.currentPage = 1;
