@@ -63,7 +63,7 @@
         :page-size="10"
         :page-sizes="[10, 20, 50, 100]"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="100">
+        :total="data.total">
       </el-pagination>
     </el-col>
   </el-row>
@@ -108,7 +108,9 @@ export default {
       // table loading
       loading_table: false,
       // 当前页码
-      currentPage: 1
+      currentPage: 1,
+      // 总条数
+      total: 0
     });
     /** 获取列表 */
     const getData = () => {
@@ -121,6 +123,8 @@ export default {
       GetList(requestData).then(response => {
         const responseData = response.data;
         if(responseData.data) { data.tableData = responseData.data; }
+        // 总条数赋值
+        data.total = responseData.total;
         // 清除状态
         data.loading_table = false;
       }).catch(error => {
