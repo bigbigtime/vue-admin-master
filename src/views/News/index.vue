@@ -135,9 +135,17 @@ export default {
     // 复选框
     const handleSelectionChange = (val) => {}
     // 页码方法
-    const handleSizeChange = (val) => {}
-    const handleCurrentChange = (val) => {}
-
+    const handleSizeChange = (val) => {
+      data.currentPage = 1;
+      requestParams.pageNumber = 1;
+      requestParams.pageSize = val;
+      getData();
+    }
+    const handleCurrentChange = (val) => {
+      requestParams.pageNumber = val;
+      requestParams.pageSize = 10;
+      getData();
+    }
     /** 生命周期 */
     onBeforeMount(() => {
       getData();
