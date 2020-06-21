@@ -34,7 +34,11 @@
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="title" label="标题"></el-table-column>
     <el-table-column prop="categoryName" width="120" label="类别"></el-table-column>
-    <el-table-column prop="createDate" width="220" label="日期"></el-table-column>
+    <el-table-column width="220" label="日期">
+      <template slot-scope="scoped">
+        {{ scoped.row.createDate | formatToDate}}
+      </template>
+    </el-table-column>
     <el-table-column prop="user_name" width="220" label="编辑人员"></el-table-column>
     <el-table-column label="操作" width="200">
       <template>
@@ -71,10 +75,17 @@
 import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 // API
 import { GetList } from "@/api/news"
+// common
+import { timestampToDate } from "@/utils/common"
 export default {
   name: "NewsIndex",
   components: {},
   props: {},
+  filters: {
+    formatToDate(val){
+      return timestampToDate(val);
+    }
+  },
   setup(props, { root }){
     const requestParams = {
       pageNumber: 1,

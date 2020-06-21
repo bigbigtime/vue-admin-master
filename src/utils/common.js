@@ -17,3 +17,19 @@ export function getDateTime() {
     let time = `${year}-${month}-${day} ${hour}:${minu}:${sec}`;
     return time;
 }
+
+/** 时间戳转日期 */
+export function timestampToDate(timestamp) {
+    let now   = new Date(timestamp * 1000);
+    let year  = now.getFullYear();  //年
+    let month = now.getMonth() + 1; //月
+    let day   = now.getDate();      //日
+    let hour  = now.getHours();     //时
+    let minu  = now.getMinutes();   //分
+    let sec   = now.getSeconds();   //秒
+    // 个位数时补0
+    if (month < 10) { month = `0${month}` }; 
+    // 返回日期
+    let time = `${year}-${month}-${day} ${hour}:${minu}:${sec}`;
+    return time;
+}
