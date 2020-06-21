@@ -41,9 +41,9 @@
     </el-table-column>
     <el-table-column prop="user_name" width="220" label="编辑人员"></el-table-column>
     <el-table-column label="操作" width="200">
-      <template>
+      <template slot-scope="scoped">
         <el-button type="danger" size="mini">编辑</el-button>
-        <el-button  size="mini">删除</el-button>
+        <el-button  size="mini" @click="delConfirm([scoped.row.id])">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -74,7 +74,7 @@
 <script>
 import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 // API
-import { GetList } from "@/api/news"
+import { GetList, DelInfo } from "@/api/news"
 // common
 import { timestampToDate } from "@/utils/common"
 export default {
@@ -110,7 +110,9 @@ export default {
       // 当前页码
       currentPage: 1,
       // 总条数
-      total: 0
+      total: 0,
+      // 删除的id
+      delete_id: null
     });
     /** 获取列表 */
     const getData = () => {
@@ -130,6 +132,31 @@ export default {
       }).catch(error => {
         // 清除状态
         data.loading_table = false;
+      })
+    }
+    /** 删除信息 */
+    const delConfirm = (id) => {
+      root.$confirm('此操作将永久删除此信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        data.delete_id = id;
+        deleteInfo();
+      }).catch(() => {
+        data.delete_id = null;
+      });
+    }
+    const deleteInfo = () => {
+      DelInfo({ id: data.delete_id }).then(response => {
+        root.$message({
+          message: response.message,
+          type: "success"
+        })
+        // 清空ID
+        data.delete_id = null;
+        // 请求数据
+        getData();
       })
     }
     // 复选框
@@ -155,7 +182,8 @@ export default {
       data,
       handleSelectionChange,
       handleSizeChange,
-      handleCurrentChange
+      handleCurrentChange,
+      delConfirm
     }
   }
 }

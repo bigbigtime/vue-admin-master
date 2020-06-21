@@ -61,3 +61,12 @@ export function GetList(data = {}){
         data
     })
 }
+
+/** 删除信息 */
+export function DelInfo(data = {}){
+    return service.request({
+        method: "post",
+        url: "/news/deleteInfo/",
+        data
+    })
+}
