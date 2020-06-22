@@ -43,14 +43,14 @@
     <el-table-column label="操作" width="200">
       <template slot-scope="scoped">
         <el-button type="danger" size="mini">编辑</el-button>
-        <el-button  size="mini" @click="delConfirm([scoped.row.id])">删除</el-button>
+        <el-button size="mini" @click="delConfirm([scoped.row.id])" :loading="data.button_loading == scoped.row.id">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
   <div class="spacing-30"></div>
   <el-row>
     <el-col :span="6">
-      <el-button size="small" :disabled="data.delete_id.length == 0" @click="delConfirm()">批量删除</el-button>
+      <el-button size="small" :disabled="data.delete_id.length == 0" @click="delConfirm()" :loading="data.button_loading == 'batch'">批量删除</el-button>
     </el-col>
     <el-col :span="18">
       <el-pagination 
@@ -112,7 +112,9 @@ export default {
       // 总条数
       total: 0,
       // 删除的id
-      delete_id: []
+      delete_id: [],
+      // 按钮加载
+      button_loading: true
     });
     /** 获取列表 */
     const getData = () => {
@@ -141,7 +143,12 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if(id) { data.delete_id = id; }
+        if(id) { 
+          data.delete_id = id;
+          data.button_loading = id[0];
+        }else{
+          data.button_loading = 'batch'
+        }
         deleteInfo();
       }).catch(() => {
         data.delete_id = null;
@@ -155,13 +162,15 @@ export default {
         })
         // 清空ID
         data.delete_id = [];
+        data.button_loading = null;
         // 请求数据
         getData();
+      }).catch(error => {
+        data.button_loading = null;
       })
     }
     // 复选框
     const handleSelectionChange = (val) => {
-      console.log(val)
       const id = val.map(item => item.id);
       data.delete_id = id;
     }
