@@ -13,7 +13,7 @@
     <label class="form-label">密码</label>
     <el-input v-model="form.password"></el-input>
   </el-form-item>
-  <el-form-item v-show="current_menu === 'register'">
+  <el-form-item v-if="current_menu === 'register'">
     <label class="form-label">确认密码</label>
     <el-input v-model="form.passwords"></el-input>
   </el-form-item>
