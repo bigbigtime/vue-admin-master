@@ -2,20 +2,25 @@
   <div class="news-list">
     <el-row>
       <el-col :span="18">
-      <div class="filter-wrap">
-        <div class="inline">
-          <div class="filter-item">
-            <label>类型：</label>
-            <el-select v-model="data.category" style="width: 160px;">
+        <el-form :inline="true" label-width="80px">
+          <el-form-item label="类别：">
+            <el-select v-model="data.category" placeholder="请选择" class="width-160">
               <el-option v-for="item in data.category_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
             </el-select>
-          </div>
-        </div>
-        <div class="inline">关键字</div>
-      </div>
+          </el-form-item>
+          <el-form-item label="关键字：">
+            <el-select placeholder="请选择" class="width-100"></el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-input placeholder="请输入关键字" class="width-180"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="danger">搜索</el-button>
+          </el-form-item>
+        </el-form>
       </el-col>
       <el-col :span="6">
-        <div class="text-right"><el-button type="danger">新增</el-button></div>
+        <el-button type="danger" class="pull-right">新增</el-button>
       </el-col>
     </el-row>
   </div>
@@ -40,16 +45,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.filter-wrap {
-  .inline { display: inline-block; }
-}
-.filter-item {
-  height: 40px;
-  label {
-    float: left;
-    padding-right: 10px;
-    line-height: 40px;
-    font-size: 14px;
-  }
-}
+.width-160 { width: 160px; }
+.width-100 { width: 100px; }
+.width-180 { width: 180px; }
 </style>
