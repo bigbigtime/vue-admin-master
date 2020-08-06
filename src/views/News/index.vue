@@ -5,7 +5,7 @@
         <el-form :inline="true" label-width="80px">
           <el-form-item label="类别：">
             <el-select v-model="data.category" placeholder="请选择" class="width-160">
-              <el-option v-for="item in data.category_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
+              <el-option v-for="item in data.category_options" :key="item.value" :value="item.value" :label="item.label"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="关键字：">
@@ -35,7 +35,7 @@ export default {
   setup(props, { root }){
     const data = reactive({
       category: 0,
-      category_opacity: [
+      category_options: [
         { label: "人工智能", value: 0 },
         { label: "技术", value: 1 }
       ]
