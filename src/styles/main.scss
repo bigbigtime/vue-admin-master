@@ -3,10 +3,11 @@
 @import "./normalize.scss";
 @import "./svgicon.scss";
 
-/* text-align */
-.text-right { text-align: right; }
+/* float */
+.pull-right { float: right; }
 
 /* margin */
 .mr-10 { margin-right: 10px; }
 .mr-15 { margin-right: 15px; }
 .mr-26 { margin-right: 26px; }
+
