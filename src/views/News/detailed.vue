@@ -22,7 +22,7 @@
                 <el-date-picker v-model="data.date" type="datetime" placeholder="选择日期时间"></el-date-picker>
             </el-form-item>
             <el-form-item label="内容：">
-                <div ref="editorElem" style="text-align:left;"></div>
+                <div ref="editorElem"></div>
             </el-form-item>
             <el-form-item>
                 <el-button type="danger">确定</el-button>
@@ -40,6 +40,7 @@ export default {
    components: {},
    props: {},
    setup(props, { root, refs }){
+        const editorElem = ref(null);
         const data = reactive({
             imageUrl: "",
             category: "",
@@ -50,7 +51,7 @@ export default {
                 { label: "技术", value: 1 }
             ],
             editor: null,
-            editorContent: ''
+            editorContent: '',
         })
         onMounted(() => {
             data.editor = new E(refs.editorElem);
