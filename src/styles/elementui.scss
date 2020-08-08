@@ -25,22 +25,22 @@ li.el-submenu {
 }
 
 /* info category */
-.category-button-mini {
-    padding: 8px 10px;
-    font-size: 12px;
+.category-list {
+    button {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
 }
 
 /* upload */
-.el-upload {
+.avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
     overflow: hidden;
 }
-.avatar-uploader .el-upload:hover {
-    border-color: $color_main;
-}
+.avatar-uploader .el-upload:hover { border-color: #409EFF; }
 .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
