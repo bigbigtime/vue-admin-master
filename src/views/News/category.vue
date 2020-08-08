@@ -3,38 +3,38 @@
         <el-button type="danger">添加一级分类</el-button>
         <hr class="spacing-hr" />
         <el-row :gutter="40">
-<el-col :span="7">
-    <div class="category-list">
-        <h4 class="first">
-            <i class="el-icon-circle-plus-outline"></i>
-            <strong>人工智能</strong>
-            <span class="group-button">
-                <el-button round type="danger" class="category-button-mini">编辑</el-button>
-                <el-button round type="success" class="category-button-mini">添加子级</el-button>
-                <el-button round class="category-button-mini">删除</el-button>
-            </span>
-        </h4>
-        <ul>
-            <li>
-                <span>无人机</span>
-                <span class="group-button">
-                    <el-button round type="danger" class="category-button-mini">编辑</el-button>
-                    <el-button round class="category-button-mini">删除</el-button>
-                </span>
-            </li>
-            <li>
-                <span>智能家具</span>
-                <span class="group-button">
-                    <el-button round type="danger" class="category-button-mini">编辑</el-button>
-                    <el-button round class="category-button-mini">删除</el-button>
-                </span>
-            </li>
-        </ul>
-    </div>
-</el-col>
-<el-col :span="17">输入框</el-col>
+            <el-col :span="7">
+                <div class="category-list">
+                    <h4 class="first">
+                        <i class="el-icon-circle-plus-outline"></i>
+                        <strong>人工智能</strong>
+                        <span class="group-button">
+                            <el-button round type="danger" class="category-button-mini">编辑</el-button>
+                            <el-button round type="success" class="category-button-mini">添加子级</el-button>
+                            <el-button round class="category-button-mini">删除</el-button>
+                        </span>
+                    </h4>
+                    <ul>
+                        <li>
+                            <span>无人机</span>
+                            <span class="group-button">
+                                <el-button round type="danger" class="category-button-mini">编辑</el-button>
+                                <el-button round class="category-button-mini">删除</el-button>
+                            </span>
+                        </li>
+                        <li>
+                            <span>智能家具</span>
+                            <span class="group-button">
+                                <el-button round type="danger" class="category-button-mini">编辑</el-button>
+                                <el-button round class="category-button-mini">删除</el-button>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </el-col>
+            <el-col :span="17">输入框</el-col>
         </el-row>
-    </div>
+        </div>
 </template>
 
 <script>
