@@ -25,9 +25,11 @@ li.el-submenu {
 }
 
 /* info category */
-.category-button-mini {
-    padding: 8px 10px;
-    font-size: 12px;
+.category-list {
+    button {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
 }
 
 /* upload */
