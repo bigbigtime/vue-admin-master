@@ -4,33 +4,26 @@
         <hr class="spacing-hr" />
         <el-row :gutter="40">
             <el-col :span="7">
-                <div class="category-list">
-                    <h4 class="first">
-                        <i class="el-icon-circle-plus-outline"></i>
-                        <strong>人工智能</strong>
-                        <span class="group-button">
-                            <el-button round type="danger" class="category-button-mini">编辑</el-button>
-                            <el-button round type="success" class="category-button-mini">添加子级</el-button>
-                            <el-button round class="category-button-mini">删除</el-button>
-                        </span>
-                    </h4>
-                    <ul>
-                        <li>
-                            <span>无人机</span>
-                            <span class="group-button">
-                                <el-button round type="danger" class="category-button-mini">编辑</el-button>
-                                <el-button round class="category-button-mini">删除</el-button>
-                            </span>
-                        </li>
-                        <li>
-                            <span>智能家具</span>
-                            <span class="group-button">
-                                <el-button round type="danger" class="category-button-mini">编辑</el-button>
-                                <el-button round class="category-button-mini">删除</el-button>
-                            </span>
-                        </li>
-                    </ul>
-                </div>
+            <div class="category-list">
+                <h4 class="first">
+                    人工智能
+                    <div class="pull-right">
+                        <el-button type="danger" size="mini" round>编辑</el-button>
+                        <el-button type="success" size="mini" round>添加子类</el-button>
+                        <el-button size="mini" round>删除</el-button>
+                    </div>
+                </h4>
+                <ul>
+                    <li>
+                        无人机
+                        <div class="pull-right">
+                            <el-button type="danger" size="mini" round>编辑</el-button>
+                            <el-button size="mini" round>删除</el-button>
+                        </div>
+                    </li>
+                    <li>智能家具</li>
+                </ul>
+            </div>
             </el-col>
             <el-col :span="17">输入框</el-col>
         </el-row>
@@ -67,15 +60,7 @@ export default {
     margin:30px 0;
 }
 .category-list {
-    &:last-child {
-        ul li:last-child::after { display: none; }
-    }
-    strong { 
-        margin-left: 10px;
-        font-size: 15px;
-    }
     h4, li {
-        position: relative;
         height: 44px;
         padding: 0 10px;
         line-height: 44px;
@@ -83,32 +68,12 @@ export default {
         @include webkit(transition, all .3s ease 0s);
         &:hover {
             background-color: #f3f3f3;
-            .group-button { display: block; }
         }
     }
     ul {
         padding-left: 45px;
-        li:last-child::after{
-            content: "";
-            position: absolute;
-            bottom: -15px;
-            left: -28px;
-            border-left: 1px dotted #000;
-            height: 35px;
-        }
     }
-    li::before {
-        content: "";
-        position: absolute;
-        top: -20px;
-        left: -28px;
-        border-left: 1px dotted #000;
-        border-bottom: 1px dotted #000;
-        width: 30px;
-        height: 42px;
-    }
-    .group-button { 
-        display: none;
+    .group-button {
         float: right;
     }
 }
