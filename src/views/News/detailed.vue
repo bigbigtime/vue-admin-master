@@ -36,10 +36,10 @@ import { reactive, ref, onMounted, watch } from '@vue/composition-api';
 // 富文本编辑器
 import E from "wangeditor";
 export default {
-   name: "NewsDetail",
-   components: {},
-   props: {},
-   setup(props, { root, refs }){
+    name: "NewsDetail",
+    components: {},
+    props: {},
+    setup(props, { root, refs }){
         const editorElem = ref(null);
         const data = reactive({
             imageUrl: "",
@@ -61,9 +61,9 @@ export default {
             };
             data.editor.create(); // 创建富文本实例
         })
-       return {
-           data
-       }
+        return {
+            data
+        }
     }
 }
 </script>
