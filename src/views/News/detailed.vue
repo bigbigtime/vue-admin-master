@@ -21,9 +21,7 @@
             <el-form-item label="发布日期：">
                 <el-date-picker v-model="data.date" type="datetime" placeholder="选择日期时间"></el-date-picker>
             </el-form-item>
-            <el-form-item label="内容：">
-                <div ref="editorDom" style="text-align:left;"></div>
-            </el-form-item>
+            <el-form-item label="内容："></el-form-item>
             <el-form-item>
                 <el-button type="danger">确定</el-button>
             </el-form-item>
@@ -33,7 +31,6 @@
 
 <script>
 import { reactive, ref, onMounted, watch } from '@vue/composition-api';
-import Editor from "wangeditor";
 export default {
    name: "NewsDetail",
    components: {},
@@ -47,16 +44,7 @@ export default {
             category_opacity: [
                 { label: "人工智能", value: 0 },
                 { label: "技术", value: 1 }
-            ],
-            editor: null,
-            editorContent: ''
-        })
-        onMounted(() => {
-            data.editor = new Editor(refs.editorDom);
-            data.editor.customConfig.onchange = html => {
-                date.editorContent = html;
-            };
-            data.editor.create(); // 创建富文本实例
+            ]
         })
        return {
            data
