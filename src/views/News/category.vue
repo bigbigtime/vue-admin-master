@@ -1,6 +1,6 @@
 <template>
     <div class="category">
-        <el-button type="danger">添加一级分类</el-button>
+        <el-button type="danger" @click="category('category_first_add')">添加一级分类</el-button>
         <hr class="spacing-hr" />
         <el-row :gutter="40">
         <el-col :span="7">
@@ -62,10 +62,21 @@ export default {
                 first_disabled: true,
                 sub_disabled: true,
                 sub_hidden: false
+            },
+            // 添加一级分类交互配置
+            category_first_add: {
+                title: "添加一级分类",
+                first_disabled: false,
+                sub_disabled: true,
+                sub_hidden: true
             }
         });
+        /** 更新 config.type */
+        const category = (type) => {
+            if(config[type]) { config.type = type; }
+        }
         return {
-            config, form
+            config, form, category
         };
     }
 };
