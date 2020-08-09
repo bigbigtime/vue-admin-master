@@ -1,6 +1,6 @@
 <template>
     <div class="category">
-        <el-button type="danger" @click="category('category_first_add')">添加一级分类</el-button>
+        <el-button type="danger" @click="category({type: 'category_first_add'})">添加一级分类</el-button>
         <hr class="spacing-hr" />
         <el-row :gutter="40">
         <el-col :span="7">
@@ -10,7 +10,7 @@
                     <strong>{{ item.category_name }}</strong>
                     <div class="pull-right">
                         <el-button type="danger" size="mini" round>编辑</el-button>
-                        <el-button type="success" size="mini" round @click="category('category_sub_add')">添加子类</el-button>
+                        <el-button type="success" size="mini" round @click="category({type: 'category_sub_add', first_category: item })">添加子类</el-button>
                         <el-button size="mini" round>删除</el-button>
                     </div>
                 </h4>
@@ -76,19 +76,40 @@ export default {
             title: "添加一级分类",
             first_disabled: false,
             sub_disabled: true,
-            sub_hidden: true
+            sub_hidden: true,
+            clear_value: ["first_category"]
         },
         // 添加子级分类交互配置
         category_sub_add: {
             title: "添加子级分类",
-            first_disabled: false,
+            first_disabled: true,
             sub_disabled: false,
-            sub_hidden: false
+            sub_hidden: false,
+            create_value: ["first_category"]
         },
     });
     /** 交互 */
-    const category = type => {
-	  if(config[type]) { config.type = type; }
+    const category = params => {
+        // 不存在 key 阻止
+        if(!config[params.type]) { return false; }
+        // 更新值
+        config.type = params.type;
+        // 获取显示文本对象
+        const createValue = config[params.type].create_value;
+        // 获取清除文本对象
+        const clearValue = config[params.type].clear_value;
+        // 判断存在执行文本显示
+        if(createValue) {
+            createValue.forEach(item => {
+                form[item] = params[item].category_name
+            })
+        }
+        // 判断存在执行文本清除
+        if(clearValue) {
+            clearValue.forEach(item => {
+                form[item] = ""
+            })
+        }
     };
     /** 表单提交 */
     const submit = () => {
