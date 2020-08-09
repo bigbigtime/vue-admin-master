@@ -86,7 +86,8 @@ export default {
             first_disabled: true,
             sub_disabled: false,
             sub_hidden: false,
-            create_value: ["first_category"]
+            create_value: ["first_category"],
+            clear_value: ["sub_category"]
         },
     });
     /** 交互 */
