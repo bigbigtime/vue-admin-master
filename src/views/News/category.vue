@@ -36,7 +36,7 @@
 					<el-input v-model="form.sub_category" style="width: 200px;" :disabled="config[config.type].sub_disabled"></el-input>
 				</el-form-item>
 				<el-form-item label>
-					<el-button type="danger" @click="submit">确定</el-button>
+					<el-button type="danger" @click="submit" :loading="data.loading">确定</el-button>
 				</el-form-item>
 			</el-form>
         </el-col>
@@ -57,6 +57,10 @@ export default {
       first_category: "",
       sub_category: ""
     });
+    const data = reactive({
+        // loading
+        loading: false
+    })
     const config = reactive({
         type: "default",
         default: {
@@ -71,9 +75,7 @@ export default {
             first_disabled: false,
             sub_disabled: true,
             sub_hidden: true
-        },
-        // loading
-        loading: false
+        }
     });
     /** 交互 */
     const category = type => {
@@ -95,27 +97,28 @@ export default {
         return false;
       }
       // 加载状态，防止多次点击
-      config.loading = true;
+      data.loading = true;
       FirstCategoryAdd({ categoryName: form.first_category }).then(response => {
           root.$message({
             message: response.message,
             type: "success"
           });
           // 清除加载状态
-          config.loading = false;
+          data.loading = false;
           // 清空值
           form.first_category = "";
         })
         .catch(error => {
           // 清除加载状态
-          config.loading = false;
+          data.loading = false;
         });
     };
     return {
-      config,
-      form,
-      category,
-      submit
+        data,
+        config,
+        form,
+        category,
+        submit
     };
   }
 };
