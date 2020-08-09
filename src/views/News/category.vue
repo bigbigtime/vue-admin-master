@@ -4,10 +4,10 @@
         <hr class="spacing-hr" />
         <el-row :gutter="40">
         <el-col :span="7">
-            <div class="category-list">
+            <div class="category-list" v-for="item in data.category" :key="item.id">
                 <h4 class="first">
                     <svg-icon icon="categoryReduce" className="categoryReduce"></svg-icon>
-                    <strong>人工智能</strong>
+                    <strong>{{ item.category_name }}</strong>
                     <div class="pull-right">
                         <el-button type="danger" size="mini" round>编辑</el-button>
                         <el-button type="success" size="mini" round>添加子类</el-button>
@@ -36,7 +36,7 @@
 					<el-input v-model="form.sub_category" style="width: 200px;" :disabled="config[config.type].sub_disabled"></el-input>
 				</el-form-item>
 				<el-form-item label>
-					<el-button type="danger" @click="submit">确定</el-button>
+					<el-button type="danger" @click="submit" :loading="data.loading">确定</el-button>
 				</el-form-item>
 			</el-form>
         </el-col>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { reactive, ref, onMounted, watch } from "@vue/composition-api";
+import { reactive, ref, onBeforeMount, watch } from "@vue/composition-api";
 //API
 import { FirstCategoryAdd, GetCategory } from "@/api/news";
 export default {
@@ -57,6 +57,12 @@ export default {
       first_category: "",
       sub_category: ""
     });
+    const data = reactive({
+        // loading
+        loading: false,
+        // 分类
+        category: []
+    })
     const config = reactive({
         type: "default",
         default: {
@@ -71,9 +77,7 @@ export default {
             first_disabled: false,
             sub_disabled: true,
             sub_hidden: true
-        },
-        // loading
-        loading: false
+        }
     });
     /** 交互 */
     const category = type => {
@@ -95,27 +99,39 @@ export default {
         return false;
       }
       // 加载状态，防止多次点击
-      config.loading = true;
+      data.loading = true;
       FirstCategoryAdd({ categoryName: form.first_category }).then(response => {
           root.$message({
             message: response.message,
             type: "success"
           });
           // 清除加载状态
-          config.loading = false;
+          data.loading = false;
           // 清空值
           form.first_category = "";
         })
         .catch(error => {
           // 清除加载状态
-          config.loading = false;
+          data.loading = false;
         });
     };
+    /** 获取分类 */
+    const getCategory = () => {
+        GetCategory().then(response => {
+            if(response.data) {
+                data.category = response.data
+            }
+        })
+    }
+    onBeforeMount(() => {
+        getCategory();
+    })
     return {
-      config,
-      form,
-      category,
-      submit
+        data,
+        config,
+        form,
+        category,
+        submit
     };
   }
 };
