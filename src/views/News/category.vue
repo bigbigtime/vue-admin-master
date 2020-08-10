@@ -90,7 +90,7 @@ export default {
             clear_value: ["sub_category"]
         },
         category_first_edit: {
-            title: "编辑子级分类",
+            title: "编辑一级分类",
             first_disabled: false,
             sub_disabled: true,
             sub_hidden: true,
