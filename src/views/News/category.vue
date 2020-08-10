@@ -227,11 +227,11 @@ export default {
 
     /** 获取分类 */
     const getCategory = () => {
-        GetCategory().then(response => {
-            if(response.data) {
-                data.category = response.data
-            }
-        })
+      GetCategory().then(response => {
+        if(response.data) {
+          data.category = response.data
+        }
+      })
     }
     onBeforeMount(() => {
         getCategory();
