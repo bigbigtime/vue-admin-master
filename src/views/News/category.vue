@@ -68,7 +68,9 @@ export default {
         // 分类
         category: [],
         // 当前的分类对象
-        current_category_data: null
+        current_category_data: null,
+        // 父级分类对象
+        parent_category_data: null
     })
     const config = reactive({
         type: "default",
@@ -124,6 +126,8 @@ export default {
         const createValue = config[params.type].create_value;
         // 获取清除文本对象
         const clearValue = config[params.type].clear_value;
+        // 存储父级分类
+        data.parent_category_data = params.first_category || null;
         // 判断存在执行文本显示
         if(createValue) {
             createValue.forEach(item => {
@@ -198,12 +202,12 @@ export default {
         // 清空值
         form.sub_category = "";
         // 获取父级分类
-        const parentCategory = data.category.filter(item => item.id == response.data.parent_id);
-        if(parentCategory.length > 0 && parentCategory[0].children) {
-          parentCategory[0].children.unshift(response.data)
+        if(data.parent_category_data.children) {
+          data.parent_category_data.children.unshift(response.data)
         }else{
-          parentCategory[0].children = [response.data]
+          data.parent_category_data.children = [response.data]
         }
+        data.parent_category_data = null
       }).catch(error => {
         // 清空值
         form.sub_category = "";
