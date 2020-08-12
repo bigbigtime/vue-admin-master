@@ -3,11 +3,7 @@
         <el-button type="danger" @click="category({type: 'category_first_add'})">添加一级分类</el-button>
         <hr class="spacing-hr" />
         <el-row :gutter="40">
-<<<<<<< HEAD
-          <el-col :span="7">
-=======
           <el-col :span="7" class="min-height-1">
->>>>>>> aa84032f62ab3b739ea98e2ed2ea66f9c2b2c415
             <div v-loading="data.loading_data" element-loading-text="加载中">
               <div v-if="data.category.length > 0">
                 <div class="category-list" v-for="item in data.category" :key="item.id">
@@ -68,10 +64,6 @@ export default {
     const data = reactive({
         // loading
         loading: false,
-<<<<<<< HEAD
-        // 类别加载状态
-=======
->>>>>>> aa84032f62ab3b739ea98e2ed2ea66f9c2b2c415
         loading_data: false,
         // 分类
         category: [],
@@ -244,13 +236,9 @@ export default {
       data.loading_data = true;
       GetCategory().then(response => {
         if(response.data) {
-          data.category = response.data;
-          data.loading_data = false;
+          data.category = response.data
         }
-<<<<<<< HEAD
-=======
         data.loading_data = false;
->>>>>>> aa84032f62ab3b739ea98e2ed2ea66f9c2b2c415
       }).catch(error => {
         data.loading_data = false;
       })
