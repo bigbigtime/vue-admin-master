@@ -285,7 +285,6 @@ export default {
           const index = data.category.findIndex(item => item.id == data.current_category_data.id);
           data.category.splice(index, 1);
         }
-        data.parent_category_data = null;
         category({type: "default", current: ""});
       })
     }
