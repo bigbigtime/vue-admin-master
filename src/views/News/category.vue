@@ -1,193 +1,155 @@
 <template>
-  <div class="category">
-    <el-button type="danger" @click="category({type: 'first_category_add'})">添加一级分类</el-button>
-    <hr class="spacing-hr" />
-    <el-row :gutter="40">
-      <el-col :span="7">
-        <span v-if="data.loading_data">加载中...</span>
-        <div element-loading-text="加载中" v-loading="data.loading_data" :class="{loading: data.loading_data}">
-          <div class="category-list" v-for="(item, firstIndex) in data.category" :key="item.id">
-            <h4 class="first">
-              <i class="el-icon-circle-plus-outline"></i>
-              <strong>{{ item.category_name }}</strong>
-              <span class="group-button">
-                <el-button round type="danger" class="category-button-mini" @click="category({type: 'first_category_edit', first_category: item})">编辑</el-button>
-                <el-button round type="success" class="category-button-mini" @click="category({type: 'sub_category_add', first_category: item})">添加子级</el-button>
-                <el-button round class="category-button-mini" @click="categoryDelConfirm({ currentCategory: item, index: firstIndex })">删除</el-button>
-              </span>
-            </h4>
-            <ul v-if="item.children && item.children.length > 0">
-              <li v-for="(child, childIndex) in item.children" :key="child.id">
-                <span>{{ child.category_name }}</span>
-                <span class="group-button">
-                  <el-button round type="danger" class="category-button-mini" @click="category(
-                    { type: 'sub_category_edit', first_category: item, sub_category: child}
-                  )">编辑</el-button>
-                  <el-button round class="category-button-mini" 
-                    @click="categoryDelConfirm({ currentCategory: child, parentCategory: item, index: childIndex })"
-                  >删除</el-button>
-                </span>
-              </li>
-            </ul>
-          </div>
+    <div class="category">
+        <el-button type="danger" @click="category({type: 'category_first_add'})">添加一级分类</el-button>
+        <hr class="spacing-hr" />
+        <el-row :gutter="40">
+          <el-col :span="7" class="min-height-1">
+            <div v-loading="data.loading_data" element-loading-text="加载中">
+              <div v-if="data.category.length > 0">
+                <div class="category-list" v-for="item in data.category" :key="item.id">
+                    <h4 class="first">
+                        <svg-icon icon="categoryReduce" className="categoryReduce"></svg-icon>
+                        <strong>{{ item.category_name }}</strong>
+                        <div class="pull-right">
+                            <el-button type="danger" size="mini" round @click="category({type: 'category_first_edit', first_category: item, current: item })">编辑</el-button>
+                            <el-button type="success" size="mini" round @click="category({type: 'category_sub_add', first_category: item, current: item })">添加子类</el-button>
+                            <el-button size="mini" round @click="deleteConfirm({current: item})">删除</el-button>
+                        </div>
+                    </h4>
+                    <ul v-if="item.children && item.children.length > 0">
+                      <li v-for="child in item.children" :key="child.id">
+                        <span>{{ child.category_name }}</span>
+                        <span class="pull-right">
+                          <el-button round type="danger" @click="category({type: 'category_sub_edit', first_category: item, sub_category: child, current: child })">编辑</el-button>
+                          <el-button round @click="deleteConfirm({current: child, first_category: item})">删除</el-button>
+                        </span>
+                      </li>
+                    </ul>
+                </div>
+              </div>
+              <div v-else>没有分类</div>
+            </div>
+          </el-col>
+          <el-col :span="17">
+              <h4 class="column">{{ config[config.type].title }}</h4>
+            <el-form label-width="140px">
+              <el-form-item label="一级分类名称：">
+                <el-input v-model="form.first_category" style="width: 200px;" :disabled="config[config.type].first_disabled"></el-input>
+              </el-form-item>
+              <el-form-item label="子级分类名称：" v-show="!config[config.type].sub_hidden">
+                <el-input v-model="form.sub_category" style="width: 200px;" :disabled="config[config.type].sub_disabled"></el-input>
+              </el-form-item>
+              <el-form-item label>
+                <el-button type="danger" @click="submit" :loading="data.loading">确定</el-button>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
         </div>
-      </el-col>
-      <el-col :span="17">
-        <h4 class="column">{{ data[data.type].title }}</h4>
-        <el-form label-width="140px">
-          <el-form-item label="一级分类名称：">
-            <el-input v-model.trim="form.first_category" style="width: 20%;" :disabled="data[data.type].first_disabled"></el-input>
-          </el-form-item>
-          <el-form-item label="子级分类名称：" v-show="data[data.type].sub_hidden">
-            <el-input v-model.trim="form.sub_category" style="width: 20%;"></el-input>
-          </el-form-item>
-          <el-form-item label>
-            <el-button type="danger" :loading="data.loading" @click="submit">确定</el-button>
-          </el-form-item>
-        </el-form>
-      </el-col>
-    </el-row>
-  </div>
 </template>
 
 <script>
-import { reactive, ref, isRef, onMounted, watch, onBeforeMount } from "@vue/composition-api";
+import { reactive, ref, onBeforeMount, watch } from "@vue/composition-api";
 //API
 import { FirstCategoryAdd, GetCategory, ChildCategoryAdd, CategoryEdit, CategoryDel } from "@/api/news";
 export default {
-	name: "Category",
-	components: {},
-	props: {},
-	setup(props, { root }) {
-    // 分类ID
-    let category_id = ref("");
-		const form = reactive({
-			first_category: "",
-			sub_category: ""
+  name: "Category",
+  components: {},
+  props: {},
+  setup(props, { root }) {
+    const form = reactive({
+      first_category: "",
+      sub_category: ""
     });
-		const data = reactive({
-      // 临时的父级分类
-      parent_category: null,
-      category_index: null,
-      // 加载状态
-      loading_data: true,
-      // 存储分类数据对象
-      first_category_data: {},
-      sub_category_data: {},
-			// 分类
-			category: [],
-			type: "first_category_add",
-			// 一级分类添加
-			first_category_add: {
-				title: "添加一级分类",
-				first_disabled: false,
-				sub_hidden: false,
-        clear_value: ["first_category", "sub_category"]
-			},
-      // 一级分类编辑
-      first_category_edit: {
-        title: "编辑一级分类",
-        first_disabled: false,
-        sub_hidden: false,
-        show_value: ["first_category"]
-      },
-      // 添加子级
-      sub_category_add: {
-        title: "添加子级",
-        first_disabled: true,
-        sub_hidden: true,
-        show_value: ["first_category"],
-        clear_value: ["sub_category"]
-      },
-			// 编辑子级
-			sub_category_edit: {
-				title: "编辑子级",
-				first_disabled: true,
-        sub_hidden: true,
-        show_value: ["first_category", "sub_category"]
-			},
-			// loading
-			loading: false
-		});
+    const data = reactive({
+        // loading
+        loading: false,
+        loading_data: false,
+        // 分类
+        category: [],
+        // 当前的分类对象
+        current_category_data: null,
+        // 父级分类对象
+        parent_category_data: null
+    })
+    const config = reactive({
+        type: "default",
+        default: {
+            title: "添加分类",
+            first_disabled: true,
+            sub_disabled: true,
+            sub_hidden: false,
+            clear_value: ["first_category", "sub_category"]
+        },
+        // 添加一级分类交互配置
+        category_first_add: {
+            title: "添加一级分类",
+            first_disabled: false,
+            sub_disabled: true,
+            sub_hidden: true,
+            clear_value: ["first_category"]
+        },
+        // 添加子级分类交互配置
+        category_sub_add: {
+            title: "添加子级分类",
+            first_disabled: true,
+            sub_disabled: false,
+            sub_hidden: false,
+            create_value: ["first_category"],
+            clear_value: ["sub_category"]
+        },
+        category_first_edit: {
+            title: "编辑一级分类",
+            first_disabled: false,
+            sub_disabled: true,
+            sub_hidden: true,
+            create_value: ["first_category"],
+            clear_value: ["sub_category"]
+        },
+        category_sub_edit: {
+            title: "编辑子级分类",
+            first_disabled: true,
+            sub_disabled: false,
+            sub_hidden: false,
+            create_value: ["first_category", "sub_category"]
+        }
+    });
     /** 交互 */
-    const category = (params) => {
-      data.type = params.type;
-      // 存储分类数据
-      data.first_category_data = params.first_category;
-      data.sub_category_data = params.sub_category;
-      // 判断是否显示 value
-      let showKey = data[params.type].show_value;
-      if(showKey) {
-        showKey.forEach(item => { if(params[item]) { form[item] = params[item].category_name } });
-      }
-      // 清除文本
-      let clearkey = data[params.type].clear_value;
-      if(clearkey) {
-        clearkey.forEach(item => { form[item] = "" });
-      }
+    const category = params => {
+        // 不存在 key 阻止
+        if(!config[params.type]) { return false; }
+        // 更新值
+        config.type = params.type;
+        // 存储当前分类对象
+        data.current_category_data = params.current;
+        // 获取显示文本对象
+        const createValue = config[params.type].create_value;
+        // 获取清除文本对象
+        const clearValue = config[params.type].clear_value;
+        // 存储父级分类
+        data.parent_category_data = params.first_category || null;
+        // 判断存在执行文本显示
+        if(createValue) {
+            createValue.forEach(item => {
+                form[item] = params[item].category_name
+            })
+        }
+        // 判断存在执行文本清除
+        if(clearValue) {
+            clearValue.forEach(item => {
+                form[item] = ""
+            })
+        }
     };
     /** 表单提交 */
     const submit = () => {
-      if (data.type === "first_category_add") {
-        firstCategoryAdd();
-      }
-      if(data.type === "sub_category_add") {
-        childCategoryAdd();
-      }
-      if(data.type === "first_category_edit" || data.type === "sub_category_edit") {
-        categoryEdit();
+      if (config.type === "category_first_add") { firstCategoryAdd(); }
+      if (config.type === "category_sub_add") { childCategoryAdd(); }
+      if (config.type === "category_first_edit" || config.type === "category_sub_edit") { 
+        let key = config.type === "category_first_edit" ? "first_category" : "sub_category";
+        categoryEdit(key);
       }
     };
-    /** 删除分类 */
-    const categoryDelConfirm = (params) => {
-      root.$confirm('此操作将永久删除此分类, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        // 获取 parent_id
-        let parent_id = params.currentCategory.parent_id;
-        // 存储索引
-        data.category_index = params.index;
-        // 存在 parent_id，侧存储父类数据
-        if(parent_id) { data.parent_category = params.parentCategory; }
-        if(!parent_id && params.currentCategory.children && params.currentCategory.children.length > 0) {
-          root.$message({
-            message: "当前分类存在子级分类，请先删除子级分类！！",
-            type: "error"
-          })
-          return false;
-        }
-        // 存储当前的分类id
-        category_id.value = params.currentCategory.id;
-        // 执行删除
-        categoryDelete();
-      }).catch(() => {
-        data.category_index = null;
-        data.parent_category = null;
-      });
-    }
-    const categoryDelete = () => {
-      CategoryDel({categoryId: category_id.value}).then(response => {
-        root.$message({
-          message: response.message,
-          type: "success"
-        })
-        if(data.parent_category) { // 存在父类
-          // splice 删除数组指定索引的对象
-          data.parent_category.children.splice(data.category_index, 1);
-          // 清空临时变量数据
-          data.parent_category = null;
-          data.category_index = null;
-        }else{
-          // splice 删除数组指定索引的对象
-          data.category.splice(data.category_index, 1);
-          data.category_index = null;
-        }
-        // 清空分类ID
-        category_id.value = ""
-      })
-    }
     /** 添加一级分类 */
     const firstCategoryAdd = () => {
       if (!form.first_category) {
@@ -200,113 +162,138 @@ export default {
       // 加载状态，防止多次点击
       data.loading = true;
       FirstCategoryAdd({ categoryName: form.first_category }).then(response => {
-        message({
+        root.$message({
           message: response.message,
-          key: "first_category"
-        })
-        data.category.unshift(response.data)
+          type: "success"
+        });
+        // 清除加载状态
+        data.loading = false;
+        // 清空值
+        form.first_category = "";
+        // 更新数据
+        data.category.unshift(response.data);
       }).catch(error => {
         // 清除加载状态
         data.loading = false;
       });
     };
-    /** 分类编辑 */
-		const categoryEdit = () => {
-      let filed = data.type === "first_category_edit" ? "first_category" : "sub_category"
-      let level = data.type === "first_category_edit" ? "一级" : "子级";
-			if (!form[filed]) {
-				root.$message({
-					message: `${level}分类不能为空！！`,
-					type: "error"
-				});
-				return false;
-			}
-			// 加载状态，防止多次点击
-      data.loading = true;
-      // 参数
-      const requeyst = {
-        id: data.type === "first_category_edit" ? data.first_category_data.id : data.sub_category_data.id,
-        categoryName: data.type === "first_category_edit" ? form.first_category : form.sub_category
-      }
-			CategoryEdit(requeyst).then(response => {
-        if(data.type === "first_category_edit") {
-          data.first_category_data.category_name = form.first_category
-        }else{
-          data.sub_category_data.category_name = form.sub_category
-        }
-        message({
-          message: response.message,
-          key: data.type === "first_category_edit" ? "first_category" : "sub_category"
-        })
-        
-			}).catch(error => {
-				// 清除加载状态
-				data.loading = false;
-			});
-    };
-    /** 获取分类 */
-    const getCategory = () => {
-      GetCategory().then(response => {
-        if(response.data) {
-          data.category = response.data
-          data.loading_data = false
-        }
-      })
-    }
     /** 添加子级分类 */
     const childCategoryAdd = () => {
       if (!form.sub_category) {
-				root.$message({
-					message: "子级分类不能为空！！",
-					type: "error"
-				});
-				return false;
-			}
-			// 加载状态，防止多次点击
-			data.loading = true;
+        root.$message({
+          message: "子级分类不能为空！！",
+          type: "error"
+        });
+        return false;
+      }
+      // 加载状态，防止多次点击
+      data.loading = true;
       const requestData = {
         categoryName: form.sub_category,
-        parentId: data.first_category_data.id
+        parentId: data.current_category_data.id
       }
       ChildCategoryAdd(requestData).then(response => {
-        message({
+        root.$message({
           message: response.message,
-          key: "sub_category"
-        })
-        // 获取当前子级的父分类
-        let first_category_data = data.first_category_data
-        // 判断是不存在 children 对象
-        if(!first_category_data.children) { first_category_data.children = []; }
-        // 追加子级对象
-        first_category_data.children.unshift(response.data);
+          type: "success"
+        });
+        // 清除加载状态
+        data.loading = false;
+        // 清空值
+        form.sub_category = "";
+        // 获取父级分类
+        if(data.parent_category_data.children) {
+          data.parent_category_data.children.unshift(response.data)
+        }else{
+          data.parent_category_data.children = [response.data]
+        }
+        data.parent_category_data = null
       }).catch(error => {
         // 清空值
-				form.sub_category = "";
+        form.sub_category = "";
       })
     }
-    /** message 消息提示 */
-    const message = (params) => {
-      root.$message({
-        message: params.message,
-        type: "success"
+    /** 编辑分类 */
+    const categoryEdit = (key) => {
+      if (!form[key]) {
+        root.$message({
+          message: `${key==='first_category' ? '一级' : '子级'}分类不能为空！！`,
+          type: "error"
+        });
+        return false;
+      }
+      // 加载状态，防止多次点击
+      data.loading = true;
+      // 参数
+      const requeyst = {
+        id: data.current_category_data.id,
+        categoryName: form[key]
+      }
+      CategoryEdit(requeyst).then(response => {
+        root.$message({
+          message: response.message,
+          type: "success"
+        });
+        // 更新值
+        data.current_category_data.category_name = form[key];
+        // 清除加载状态
+        data.loading = false;
+        // 清空值
+        form[key] = "";
+      }).catch(error => {
+        // 清除加载状态
+        data.loading = false;
       });
-      // 清除加载状态
-      data.loading = false;
-      // 清空值
-      form[params.key] = "";
+    };
+    /** 获取分类 */
+    const getCategory = () => {
+      data.loading_data = true;
+      GetCategory().then(response => {
+        if(response.data) {
+          data.category = response.data
+        }
+        data.loading_data = false;
+      }).catch(error => {
+        data.loading_data = false;
+      })
     }
-		/** 生命周期 渲染之前 */
-		onBeforeMount(() => {
-			getCategory();
-		})
-		return {
-			data,
-			form,
-      category,
-      categoryDelConfirm,
-			submit
-		};
-	}
+    /** 弹窗确认 */
+    const deleteConfirm = (params) => {
+      root.$confirm('此操作将此分类删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 存储分类数据
+        data.current_category_data = params.current;
+        // 存储父级数据
+        data.parent_category_data = params.first_category || null
+        return false;
+        categoryDelete();
+      })
+    }
+    /** 删除分类 */
+    const categoryDelete = () => {
+      CategoryDel({categoryId: data.current_category_data.id}).then(response => {
+        root.$message({
+          message: response.message,
+          type: "success"
+        });
+        category({type: "default", current: ""});
+      })
+    }
+    onBeforeMount(() => {
+        getCategory();
+    })
+    return {
+        data,
+        config,
+        form,
+        category,
+        submit,
+        deleteConfirm
+    };
+  }
 };
 </script>
 <style lang="scss" scoped>
