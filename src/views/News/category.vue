@@ -277,12 +277,9 @@ export default {
           message: response.message,
           type: "success"
         });
-
         const currentData = data.parent_category_data ? data.parent_category_data.children : data.category;
         const index = currentData.findIndex(item => item.id == data.current_category_data.id);
         currentData.splice(index, 1);
-        data.parent_category_data = null;
-
         category({type: "default", current: ""});
       })
     }
