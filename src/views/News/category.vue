@@ -8,7 +8,7 @@
           <h4 class="first">
             <i class="el-icon-circle-plus-outline"></i>
             <strong>{{ item.category_name }}</strong>
-            <span class="group-button">
+            <span class="pull-right">
               <el-button round type="danger" class="category-button-mini" @click="category({type: 'first_category_edit', first_category: item})">编辑</el-button>
               <el-button round type="success" class="category-button-mini" @click="category({type: 'sub_category_add', first_category: item})">添加子级</el-button>
               <el-button round class="category-button-mini" @click="categoryDelConfirm(item.id)">删除</el-button>
@@ -17,7 +17,7 @@
           <ul v-if="item.children && item.children.length > 0">
             <li v-for="child in item.children" :key="child.id">
               <span>{{ child.category_name }}</span>
-              <span class="group-button">
+              <span class="pull-right">
                 <el-button round type="danger" class="category-button-mini" @click="category(
                   { type: 'sub_category_edit', first_category: item, sub_category: child}
                 )">编辑</el-button>
