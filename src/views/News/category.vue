@@ -1,34 +1,46 @@
 <template>
-  <div class="category">
-    <el-button type="danger" @click="category({type: 'first_category_add'})">添加一级分类</el-button>
-    <hr class="spacing-hr" />
-    <el-row :gutter="40">
-      <el-col :span="7">
-        <div class="category-list" v-for="item in data.category" :key="item.id">
-          <h4 class="first">
-            <i class="el-icon-circle-plus-outline"></i>
-            <strong>{{ item.category_name }}</strong>
-            <span class="pull-right">
-              <el-button round type="danger" class="category-button-mini" @click="category({type: 'first_category_edit', first_category: item})">编辑</el-button>
-              <el-button round type="success" class="category-button-mini" @click="category({type: 'sub_category_add', first_category: item})">添加子级</el-button>
-              <el-button round class="category-button-mini" @click="categoryDelConfirm(item.id)">删除</el-button>
-            </span>
-          </h4>
-          <ul v-if="item.children && item.children.length > 0">
-            <li v-for="child in item.children" :key="child.id">
-              <span>{{ child.category_name }}</span>
-              <span class="pull-right">
-                <el-button round type="danger" class="category-button-mini" @click="category(
-                  { type: 'sub_category_edit', first_category: item, sub_category: child}
-                )">编辑</el-button>
-                <el-button round class="category-button-mini" @click="categoryDelConfirm(child.id)">删除</el-button>
-              </span>
-            </li>
-          </ul>
+    <div class="category">
+        <el-button type="danger" @click="category({type: 'category_first_add'})">添加一级分类</el-button>
+        <hr class="spacing-hr" />
+        <el-row :gutter="40">
+          <el-col :span="7">
+            <div class="category-list" v-for="item in data.category" :key="item.id">
+                <h4 class="first">
+                    <svg-icon icon="categoryReduce" className="categoryReduce"></svg-icon>
+                    <strong>{{ item.category_name }}</strong>
+                    <div class="pull-right">
+                        <el-button type="danger" size="mini" round @click="category({type: 'category_first_edit', first_category: item, current: item })">编辑</el-button>
+                        <el-button type="success" size="mini" round @click="category({type: 'category_sub_add', first_category: item, current: item })">添加子类</el-button>
+                        <el-button size="mini" round @click="deleteConfirm({current: item})">删除</el-button>
+                    </div>
+                </h4>
+                <ul v-if="item.children && item.children.length > 0">
+                  <li v-for="child in item.children" :key="child.id">
+                    <span>{{ child.category_name }}</span>
+                    <span class="pull-right">
+                      <el-button round type="danger" @click="category({type: 'category_sub_edit', first_category: item, sub_category: child, current: child })">编辑</el-button>
+                      <el-button round @click="deleteConfirm({current: child})">删除</el-button>
+                    </span>
+                  </li>
+                </ul>
+            </div>
+          </el-col>
+          <el-col :span="17">
+              <h4 class="column">{{ config[config.type].title }}</h4>
+            <el-form label-width="140px">
+              <el-form-item label="一级分类名称：">
+                <el-input v-model="form.first_category" style="width: 200px;" :disabled="config[config.type].first_disabled"></el-input>
+              </el-form-item>
+              <el-form-item label="子级分类名称：" v-show="!config[config.type].sub_hidden">
+                <el-input v-model="form.sub_category" style="width: 200px;" :disabled="config[config.type].sub_disabled"></el-input>
+              </el-form-item>
+              <el-form-item label>
+                <el-button type="danger" @click="submit" :loading="data.loading">确定</el-button>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
         </div>
-      </el-col>
-    </el-row>
-  </div>
 </template>
 
 <script>
