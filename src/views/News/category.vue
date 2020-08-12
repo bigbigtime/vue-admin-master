@@ -207,7 +207,6 @@ export default {
         }else{
           data.parent_category_data.children = [response.data]
         }
-        data.parent_category_data = null
       }).catch(error => {
         // 清空值
         form.sub_category = "";
