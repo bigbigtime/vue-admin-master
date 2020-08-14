@@ -10,6 +10,9 @@ import "./icon";
 import "./plugins/elementui";
 // 导入Composition API模块
 import "./plugins/compositionApi";
+// 全局方法
+import globalUI from "@/utils/globalUI";
+Vue.use(globalUI);
 Vue.config.productionTip = false;
 
 new Vue({

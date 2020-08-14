@@ -153,8 +153,8 @@ export default {
     /** 添加一级分类 */
     const firstCategoryAdd = () => {
       if (!form.first_category) {
-        root.$message({
-          message: "一级分类不能为空！！",
+        root.gMessage({
+          msg: "一级分类不能为空！！",
           type: "error"
         });
         return false;
@@ -162,8 +162,8 @@ export default {
       // 加载状态，防止多次点击
       data.loading = true;
       FirstCategoryAdd({ categoryName: form.first_category }).then(response => {
-        root.$message({
-          message: response.message,
+        root.gMessage({
+          msg: response.message,
           type: "success"
         });
         // 清除加载状态
@@ -180,10 +180,9 @@ export default {
     /** 添加子级分类 */
     const childCategoryAdd = () => {
       if (!form.sub_category) {
-        root.$message({
-          message: "子级分类不能为空！！",
-          type: "error"
-        });
+        root.gMessage({
+          msg: "子级分类不能为空！！"
+        })
         return false;
       }
       // 加载状态，防止多次点击
@@ -193,10 +192,9 @@ export default {
         parentId: data.current_category_data.id
       }
       ChildCategoryAdd(requestData).then(response => {
-        root.$message({
-          message: response.message,
-          type: "success"
-        });
+        root.gMessage({
+          msg: response.message
+        })
         // 清除加载状态
         data.loading = false;
         // 清空值
@@ -215,10 +213,10 @@ export default {
     /** 编辑分类 */
     const categoryEdit = (key) => {
       if (!form[key]) {
-        root.$message({
-          message: `${key==='first_category' ? '一级' : '子级'}分类不能为空！！`,
+        root.gMessage({
+          msg: `${key==='first_category' ? '一级' : '子级'}分类不能为空！！`,
           type: "error"
-        });
+        })
         return false;
       }
       // 加载状态，防止多次点击
@@ -229,10 +227,9 @@ export default {
         categoryName: form[key]
       }
       CategoryEdit(requeyst).then(response => {
-        root.$message({
-          message: response.message,
-          type: "success"
-        });
+        root.gMessage({
+          msg: response.message
+        })
         // 更新值
         data.current_category_data.category_name = form[key];
         // 清除加载状态
@@ -273,10 +270,9 @@ export default {
     /** 删除分类 */
     const categoryDelete = () => {
       CategoryDel({categoryId: data.current_category_data.id}).then(response => {
-        root.$message({
-          message: response.message,
-          type: "success"
-        });
+        root.gMessage({
+          msg: response.message
+        })
         const currentData = data.parent_category_data ? data.parent_category_data.children : data.category;
         const index = currentData.findIndex(item => item.id == data.current_category_data.id);
         currentData.splice(index, 1);
