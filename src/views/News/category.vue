@@ -255,16 +255,15 @@ export default {
     }
     /** 弹窗确认 */
     const deleteConfirm = (params) => {
-      root.$confirm('此操作将此分类删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        // 存储分类数据
-        data.current_category_data = params.current;
-        // 存储父级分类
-        data.parent_category_data = params.first_category || null;
-        categoryDelete();
+      root.gComfirm({
+        thenFun: () => {
+          // 存储分类数据
+          data.current_category_data = params.current;
+          // 存储父级分类
+          data.parent_category_data = params.first_category || null;
+          // 删除接口调用
+          categoryDelete();
+        }
       })
     }
     /** 删除分类 */
