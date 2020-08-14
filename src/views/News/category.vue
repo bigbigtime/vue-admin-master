@@ -153,8 +153,8 @@ export default {
     /** 添加一级分类 */
     const firstCategoryAdd = () => {
       if (!form.first_category) {
-        root.$message({
-          message: "一级分类不能为空！！",
+        root.gMessage({
+          msg: "一级分类不能为空！！",
           type: "error"
         });
         return false;
@@ -162,8 +162,8 @@ export default {
       // 加载状态，防止多次点击
       data.loading = true;
       FirstCategoryAdd({ categoryName: form.first_category }).then(response => {
-        root.$message({
-          message: response.message,
+        root.gMessage({
+          msg: response.message,
           type: "success"
         });
         // 清除加载状态
