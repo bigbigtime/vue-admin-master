@@ -10,7 +10,7 @@
                     <h4 class="first">
                         <svg-icon icon="categoryReduce" className="categoryReduce"></svg-icon>
                         <strong>{{ item.category_name }}</strong>
-                        <div class="pull-right">
+                        <div class="pull-right group-button">
                             <el-button type="danger" size="mini" round @click="category({type: 'category_first_edit', first_category: item, current: item })">编辑</el-button>
                             <el-button type="success" size="mini" round @click="category({type: 'category_sub_add', first_category: item, current: item })">添加子类</el-button>
                             <el-button size="mini" round @click="deleteConfirm({current: item})">删除</el-button>
@@ -19,10 +19,10 @@
                     <ul v-if="item.children && item.children.length > 0">
                       <li v-for="child in item.children" :key="child.id">
                         <span>{{ child.category_name }}</span>
-                        <span class="pull-right">
+                        <div class="pull-right group-button">
                           <el-button round type="danger" @click="category({type: 'category_sub_edit', first_category: item, sub_category: child, current: child })">编辑</el-button>
                           <el-button round @click="deleteConfirm({current: child, first_category: item})">删除</el-button>
-                        </span>
+                        </div>
                       </li>
                     </ul>
                 </div>
