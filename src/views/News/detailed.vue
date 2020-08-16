@@ -2,7 +2,7 @@
 	<div class="news-detailed">
 		<el-form label-width="100px">
 			<el-form-item label="信息类别：">
-				<el-cascader :options="data.category_option" :props="data.cascader_props"></el-cascader>
+				<el-cascader v-model="value" :options="options" @change="handleChange"></el-cascader>
 			</el-form-item>
 			<el-form-item label="信息标题：">
 				<el-input v-model="form.title"></el-input>
@@ -61,21 +61,10 @@ setup(props, { root, refs }) {
 	});
 	const data = reactive({
 		category_option: [],
-		cascader_props: {
-			label: "category_name",
-			value: "id"
-		},
 		editor: null
 	});
-	/** 获取分类 */
-	const getCategory = () => {
-		root.$store.dispatch("news/categoryAction").then(response => {
-			data.category_option = response;
-		});
-	};
-	onBeforeMount(() => {
-		getCategory()
-	});
+	
+	onBeforeMount(() => {});
 	onMounted(() => {
 		data.editor = new Editor(refs.editorDom);
 		data.editor.customConfig.onchange = html => {
