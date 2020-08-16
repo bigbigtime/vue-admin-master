@@ -244,9 +244,9 @@ export default {
     /** 获取分类 */
     const getCategory = () => {
       data.loading_data = true;
-      GetCategory().then(response => {
-        if(response.data) {
-          data.category = response.data
+      root.$store.dispatch("news/categoryAction").then(response => {
+        if(response) {
+          data.category = response
         }
         data.loading_data = false;
       }).catch(error => {
