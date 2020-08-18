@@ -34,15 +34,10 @@
 </template>
 
 <script>
-import {
-  reactive,
-  ref,
-  onMounted,
-  onBeforeMount,
-  watch
-} from "@vue/composition-api";
+import { reactive, ref, onMounted, onBeforeMount, watch } from "@vue/composition-api";
 // API
 import { GetCategory } from "@/api/news";
+import { GetQiniuToken } from "@/api/common";
 // common
 import { getDateTime } from "@/utils/common"
 // 富文本编辑器
@@ -67,7 +62,10 @@ export default {
 				label: "category_name",
 				value: "id"
 			},
-			editor: null
+			editor: null,
+			uploadData: {
+				token: ""
+			}
 		});
 		/** 获取分类 */
 		const getCategory = () => {
@@ -75,8 +73,22 @@ export default {
 				data.category_option = response;
 			});
 		};
+		const getQiniuToken = () => {
+			const requestData = {
+				accessKey: "Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj",
+				secretKey: "l9AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw",
+				buckety: "bigbigtime"
+			}
+			GetQiniuToken(requestData).then(response => {
+				const responseData = response.data;
+				if(responseData) {
+					data.uploadData.token = responseData.token
+				}
+			})
+		}
 		onBeforeMount(() => {
 			getCategory()
+			getQiniuToken();
 		});
 		onMounted(() => {
 			data.editor = new Editor(refs.editorDom);
