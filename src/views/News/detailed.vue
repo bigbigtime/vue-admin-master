@@ -77,7 +77,10 @@ export default {
 				data.category_option = response;
 			});
 		};
-		const handlerOnSuccess = (res, file) => {}
+		const handlerOnSuccess = (res, file) => {
+			let image = `http://qf7nt7g8b.hn-bkt.clouddn.com/${res.key}`;
+            form.imgUrl = image;
+		}
 		const handlerOnError = (res, file) => {}
         const handlerBeforeOnUpload = (file) => {
 			console.log(file)
@@ -97,8 +100,8 @@ export default {
         }
 		const getQiniuToken = () => {
 			const requestData = {
-				accessKey: "Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj",
-				secretKey: "l9AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw",
+				ak: "Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj",
+				sk: "l9AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw",
 				buckety: "bigbigtime"
 			}
 			GetQiniuToken(requestData).then(response => {
