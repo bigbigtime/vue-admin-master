@@ -9,9 +9,13 @@
 			</el-form-item>
 			<el-form-item label="缩略图：">
 				<el-upload
-				class="avatar-uploader"
-				action="https://jsonplaceholder.typicode.com/posts/"
-				:show-file-list="false"
+					class="avatar-uploader"
+					action="http://up-z2.qiniup.com"
+					:data="data.uploadData"
+					:on-success="handlerOnSuccess"
+					:before-upload="handlerBeforeOnUpload"
+					:on-error="handlerOnError"
+					:show-file-list="false"
 				>
 				<img v-if="form.imgUrl" :src="form.imgUrl" class="avatar" />
 				<i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -34,15 +38,10 @@
 </template>
 
 <script>
-import {
-  reactive,
-  ref,
-  onMounted,
-  onBeforeMount,
-  watch
-} from "@vue/composition-api";
+import { reactive, ref, onMounted, onBeforeMount, watch } from "@vue/composition-api";
 // API
 import { GetCategory } from "@/api/news";
+import { GetQiniuToken } from "@/api/common";
 // common
 import { getDateTime } from "@/utils/common"
 // 富文本编辑器
@@ -67,7 +66,10 @@ export default {
 				label: "category_name",
 				value: "id"
 			},
-			editor: null
+			editor: null,
+			uploadData: {
+				token: ""
+			}
 		});
 		/** 获取分类 */
 		const getCategory = () => {
@@ -75,8 +77,43 @@ export default {
 				data.category_option = response;
 			});
 		};
+		const handlerOnSuccess = (res, file) => {
+			let image = `http://qf7nt7g8b.hn-bkt.clouddn.com/${res.key}`;
+            form.imgUrl = image;
+		}
+		const handlerOnError = (res, file) => {}
+        const handlerBeforeOnUpload = (file) => {
+			console.log(file)
+            const isJPG = file.type === 'image/jpeg';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isJPG) {
+                root.$message.error('上传头像图片只能是 JPG 格式!');
+            }
+            if (!isLt2M) {
+                root.$message.error('上传头像图片大小不能超过 2MB!');
+            }
+            // 文件名转码
+            let suffix = file.name;
+            let key = encodeURI(`${suffix}`);
+            data.uploadData.key = key;
+            return isJPG && isLt2M;
+        }
+		const getQiniuToken = () => {
+			const requestData = {
+				ak: "Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj",
+				sk: "l9AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw",
+				buckety: "bigbigtime"
+			}
+			GetQiniuToken(requestData).then(response => {
+				const responseData = response.data;
+				if(responseData) {
+					data.uploadData.token = responseData.token
+				}
+			})
+		}
 		onBeforeMount(() => {
 			getCategory()
+			getQiniuToken();
 		});
 		onMounted(() => {
 			data.editor = new Editor(refs.editorDom);
@@ -87,7 +124,8 @@ export default {
 		});
 		return {
 			data,
-			form
+			form,
+			handlerOnSuccess, handlerOnError, handlerBeforeOnUpload
 		};
 	}
 };
