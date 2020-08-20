@@ -9,9 +9,13 @@
 			</el-form-item>
 			<el-form-item label="缩略图：">
 				<el-upload
-				class="avatar-uploader"
-				action="https://jsonplaceholder.typicode.com/posts/"
-				:show-file-list="false"
+					class="avatar-uploader"
+					action="http://up-z2.qiniup.com"
+					:data="data.uploadData"
+					:on-success="handlerOnSuccess"
+					:before-upload="handlerBeforeOnUpload"
+					:on-error="handlerOnError"
+					:show-file-list="false"
 				>
 				<img v-if="form.imgUrl" :src="form.imgUrl" class="avatar" />
 				<i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -73,6 +77,24 @@ export default {
 				data.category_option = response;
 			});
 		};
+		const handlerOnSuccess = (res, file) => {}
+		const handlerOnError = (res, file) => {}
+        const handlerBeforeOnUpload = (file) => {
+			console.log(file)
+            const isJPG = file.type === 'image/jpeg';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isJPG) {
+                root.$message.error('上传头像图片只能是 JPG 格式!');
+            }
+            if (!isLt2M) {
+                root.$message.error('上传头像图片大小不能超过 2MB!');
+            }
+            // 文件名转码
+            let suffix = file.name;
+            let key = encodeURI(`${suffix}`);
+            data.uploadData.key = key;
+            return isJPG && isLt2M;
+        }
 		const getQiniuToken = () => {
 			const requestData = {
 				accessKey: "Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj",
@@ -99,7 +121,8 @@ export default {
 		});
 		return {
 			data,
-			form
+			form,
+			handlerOnSuccess, handlerOnError, handlerBeforeOnUpload
 		};
 	}
 };
