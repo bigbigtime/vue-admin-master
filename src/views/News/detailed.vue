@@ -25,7 +25,10 @@
 				<el-date-picker v-model="form.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
 			</el-form-item>
 			<el-form-item label="是否发布：">
-				<el-date-picker v-model="form.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
+			<el-radio-group v-model="form.status">
+				<el-radio :label="'2'">是</el-radio>
+				<el-radio :label="'1'">否</el-radio>
+			</el-radio-group>
 			</el-form-item>
 			<el-form-item label="内容：">
 				<div ref="editorDom" style="text-align:left;"></div>
@@ -58,7 +61,8 @@ export default {
 			imgUrl: "",
 			content: "",
 			createDate: getDateTime(),
-			editorContent: ""
+			editorContent: "",
+			status: "1"
 		});
 		const data = reactive({
 			category_option: [],
