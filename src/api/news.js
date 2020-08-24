@@ -1,4 +1,14 @@
 import service from "../utils/request";
+/** 添加信息 */
+export function Add(data){
+    return service.request({
+        method: "post",
+        url: "/news/add/",
+        data
+    })
+}
+
+
 /** 添加一级分类 */
 export function FirstCategoryAdd(data){
     return service.request({
