@@ -1,4 +1,14 @@
 import service from "../utils/request";
+/** 添加信息 */
+export function Add(data){
+    return service.request({
+        method: "post",
+        url: "/news/add/",
+        data
+    })
+}
+
+
 /** 添加一级分类 */
 export function FirstCategoryAdd(data){
     return service.request({
@@ -44,29 +54,11 @@ export function CategoryDel(data = {}){
     })
 }
 
-/** 新增信息 */
-export function AddInfo(data = {}){
-    return service.request({
-        method: "post",
-        url: "/news/add/",
-        data
-    })
-}
-
 /** 信息列表 */
 export function GetList(data = {}){
     return service.request({
         method: "post",
         url: "/news/getList/",
-        data
-    })
-}
-
-/** 删除信息 */
-export function DelInfo(data = {}){
-    return service.request({
-        method: "post",
-        url: "/news/deleteInfo/",
         data
     })
 }

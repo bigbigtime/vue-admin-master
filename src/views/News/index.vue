@@ -30,27 +30,27 @@
     </el-col>
   </el-row>
   <div class="spacing-30"></div>
-  <el-table ref="table" border :data="data.tableData" v-loading="data.loading_table" style="width: 100%" @selection-change="handleSelectionChange" class="table-ui">
+  <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui">
     <el-table-column type="selection" width="40"></el-table-column>
-    <el-table-column prop="title" label="标题"></el-table-column>
-    <el-table-column prop="categoryName" width="120" label="类别"></el-table-column>
-    <el-table-column width="220" label="日期">
-      <template slot-scope="scoped">
-        {{ scoped.row.createDate | formatToDate}}
+    <el-table-column prop="title" label="标题" width="500"></el-table-column>
+    <el-table-column prop="category_name" label="类别"></el-table-column>
+    <el-table-column prop="createDate" label="日期" :formatter="formatDate"></el-table-column>
+    <el-table-column prop="status" label="发布状态">
+      <template slot-scope="scope">
+        <el-switch v-model="scope.row.status" active-value="2" inactive-value="1"></el-switch>
       </template>
     </el-table-column>
-    <el-table-column prop="user_name" width="220" label="编辑人员"></el-table-column>
-    <el-table-column label="操作" width="200">
-      <template slot-scope="scoped">
+    <el-table-column prop="address" label="操作" width="200">
+      <template>
         <el-button type="danger" size="mini">编辑</el-button>
-        <el-button size="mini" @click="delConfirm([scoped.row.id])" :loading="data.button_loading == scoped.row.id">删除</el-button>
+        <el-button size="mini">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
   <div class="spacing-30"></div>
   <el-row>
     <el-col :span="6">
-      <el-button size="small" :disabled="data.delete_id.length == 0" @click="delConfirm()" :loading="data.button_loading == 'batch'">批量删除</el-button>
+      <el-button size="small">批量删除</el-button>
     </el-col>
     <el-col :span="18">
       <el-pagination 
@@ -74,9 +74,8 @@
 <script>
 import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 // API
-import { GetList, DelInfo } from "@/api/news"
-// common
-import { timestampToDate } from "@/utils/common"
+import { GetList } from "@/api/news";
+import { getDateTime } from "@/utils/common";
 export default {
   name: "NewsIndex",
   components: {},
@@ -105,19 +104,13 @@ export default {
       keyword: "",
       // table data
       tableData: [],
-      // table loading
-      loading_table: false,
       // 当前页码
       currentPage: 1,
-      // 总条数
-      total: 0,
-      // 删除的id
-      delete_id: [],
-      // 按钮加载
-      button_loading: true
+      // 页码统计
+      total: 0
     });
     /** 获取列表 */
-    const getData = () => {
+    const loadData = () => {
       const requestData = {
         pageNumber: requestParams.pageNumber,
         pageSize: requestParams.pageSize
@@ -126,77 +119,29 @@ export default {
       data.loading_table = true;
       GetList(requestData).then(response => {
         const responseData = response.data;
-        if(responseData.data) { data.tableData = responseData.data; }
-        // 总条数赋值
-        data.total = responseData.total;
-        // 清除状态
-        data.loading_table = false;
-      }).catch(error => {
-        // 清除状态
-        data.loading_table = false;
-      })
-    }
-    /** 删除信息 */
-    const delConfirm = (id) => {
-      root.$confirm('此操作将永久删除此信息, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        if(id) { 
-          data.delete_id = id;
-          data.button_loading = id[0];
-        }else{
-          data.button_loading = 'batch'
+        if(responseData.data) { 
+          data.tableData = responseData.data;
+          data.total = responseData.total;
         }
-        deleteInfo();
-      }).catch(() => {
-        data.delete_id = null;
-      });
-    }
-    const deleteInfo = () => {
-      DelInfo({ id: data.delete_id }).then(response => {
-        root.$message({
-          message: response.message,
-          type: "success"
-        })
-        // 清空ID
-        data.delete_id = [];
-        data.button_loading = null;
-        // 请求数据
-        getData();
-      }).catch(error => {
-        data.button_loading = null;
       })
-    }
-    // 复选框
-    const handleSelectionChange = (val) => {
-      const id = val.map(item => item.id);
-      data.delete_id = id;
     }
     // 页码方法
-    const handleSizeChange = (val) => {
-      data.currentPage = 1;
-      requestParams.pageNumber = 1;
-      requestParams.pageSize = val;
-      getData();
+    const handleSizeChange = (val) => {}
+    const handleCurrentChange = (val) => {}
+    const formatDate = (row) => {
+      return getDateTime(row.createDate * 1000)
     }
-    const handleCurrentChange = (val) => {
-      requestParams.pageNumber = val;
-      requestParams.pageSize = 10;
-      getData();
-    }
+
     /** 生命周期 */
     onBeforeMount(() => {
-      getData();
+      loadData();
     })
 
     return { 
       data,
-      handleSelectionChange,
       handleSizeChange,
       handleCurrentChange,
-      delConfirm
+      formatDate
     }
   }
 }
