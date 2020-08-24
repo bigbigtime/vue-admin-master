@@ -1,6 +1,7 @@
 /** 获取当前日期时间 */
-export function getDateTime() {
-    let now   = new Date();
+export function getDateTime(timestamp) {
+    timestamp = timestamp ? new Date(timestamp) : new Date();
+    let now   = timestamp;
     let year  = now.getFullYear();  //年
     let month = now.getMonth() + 1; //月
     let day   = now.getDate();      //日

@@ -32,9 +32,14 @@
   <div class="spacing-30"></div>
   <el-table ref="table" border :data="data.tableData" style="width: 100%" @selection-change="handleSelectionChange" class="table-ui">
     <el-table-column type="selection" width="40"></el-table-column>
-    <el-table-column prop="name" label="标题" width="500"></el-table-column>
-    <el-table-column prop="address" label="类别"></el-table-column>
-    <el-table-column prop="date" label="日期"></el-table-column>
+    <el-table-column prop="title" label="标题" width="500"></el-table-column>
+    <el-table-column prop="category_name" label="类别"></el-table-column>
+    <el-table-column prop="createDate" label="日期" :formatter="formatDate"></el-table-column>
+    <el-table-column prop="status" label="发布状态">
+      <template slot-scope="scope">
+        <el-switch v-model="scope.row.status" active-value="2" inactive-value="1"></el-switch>
+      </template>
+    </el-table-column>
     <el-table-column prop="address" label="操作" width="200">
       <template>
         <el-button type="danger" size="mini">编辑</el-button>
@@ -58,7 +63,7 @@
         :page-size="10"
         :page-sizes="[10, 20, 50, 100]"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="100">
+        :total="data.total">
       </el-pagination>
     </el-col>
   </el-row>
@@ -69,7 +74,8 @@
 <script>
 import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 // API
-import { GetList } from "@/api/news"
+import { GetList } from "@/api/news";
+import { getDateTime } from "@/utils/common";
 export default {
   name: "NewsIndex",
   components: {},
@@ -92,22 +98,24 @@ export default {
       ],
       keyword: "",
       // table data
-      tableData: [
-        { name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', date: "2020-06-05 12:00:00" },
-        { name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', date: "2020-06-05 12:00:00" }
-      ],
+      tableData: [],
       // 当前页码
-      currentPage: 1
+      currentPage: 1,
+      // 页码统计
+      total: 0
     });
     /** 获取列表 */
-    const getData = () => {
+    const loadData = () => {
       const requestData = {
         pageNumber: requestParams.pageNumber,
         pageSize: requestParams.pageSize
       }
       GetList(requestData).then(response => {
         const responseData = response.data;
-        if(responseData.data) { data.tableData = responseData.data; }
+        if(responseData.data) { 
+          data.tableData = responseData.data;
+          data.total = responseData.total;
+        }
       })
     }
     // 复选框
@@ -115,17 +123,21 @@ export default {
     // 页码方法
     const handleSizeChange = (val) => {}
     const handleCurrentChange = (val) => {}
+    const formatDate = (row) => {
+      return getDateTime(row.createDate * 1000)
+    }
 
     /** 生命周期 */
     onBeforeMount(() => {
-      getData();
+      loadData();
     })
 
     return { 
       data,
       handleSelectionChange,
       handleSizeChange,
-      handleCurrentChange
+      handleCurrentChange,
+      formatDate
     }
   }
 }
