@@ -125,9 +125,17 @@ export default {
         }
       })
     }
-    // 页码方法
-    const handleSizeChange = (val) => {}
-    const handleCurrentChange = (val) => {}
+    // 页码下拉选项
+    const handleSizeChange = (val) => {
+      requestParams.pageSize = val;
+      requestParams.pageNumber = 1;
+      loadData();
+    }
+    // 点击页码
+    const handleCurrentChange = (val) => {
+      requestParams.pageNumber = val;
+      loadData();
+    }
     const formatDate = (row) => {
       return getDateTime(row.createDate * 1000)
     }
