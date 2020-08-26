@@ -137,15 +137,15 @@ export default {
       loadData();
     }
     /** 发布状态 */
-  const changeStatus = (event, data) => {
-    Status({iad: data.id, status: data.status}).then(response => {
-      root.gMessage({
-        msg: response.message
+    const changeStatus = (event, data) => {
+      Status({id: data.id, status: data.status}).then(response => {
+        root.gMessage({
+          msg: response.message
+        })
+      }).catch(error => {
+        data.status = event == "2" ? "1" : "2";
       })
-    }).catch(error => {
-      data.status = event == "2" ? "1" : "2";
-    })
-  }
+    }
     const formatDate = (row) => {
       return getDateTime(row.createDate * 1000)
     }
