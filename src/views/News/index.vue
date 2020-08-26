@@ -30,7 +30,7 @@
     </el-col>
   </el-row>
   <div class="spacing-30"></div>
-  <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui">
+  <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="title" label="标题" width="500"></el-table-column>
     <el-table-column prop="category_name" label="类别"></el-table-column>
@@ -50,7 +50,7 @@
   <div class="spacing-30"></div>
   <el-row>
     <el-col :span="6">
-      <el-button size="small">批量删除</el-button>
+      <el-button size="small" :disabled="!data.row_data_id" @click="deleteConfirm(data.row_data_id)">批量删除</el-button>
     </el-col>
     <el-col :span="18">
       <el-pagination 
@@ -170,6 +170,15 @@ export default {
         data.row_data_id = "";
       })
     }
+  /** 复选框 */
+  const changeCheckbox = (val) => {
+    if(val && val.length > 0) {
+      const idItem = val.map(item => item.id);
+      data.row_data_id = idItem.join();
+    }else{
+      data.row_data_id = ""
+    }
+  }
     const formatDate = (row) => {
       return getDateTime(row.createDate * 1000)
     }
@@ -185,7 +194,8 @@ export default {
       handleCurrentChange,
       formatDate,
       changeStatus,
-      deleteConfirm
+      deleteConfirm,
+      changeCheckbox
     }
   }
 }
