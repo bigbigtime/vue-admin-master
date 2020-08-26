@@ -138,7 +138,7 @@ export default {
     }
     /** 发布状态 */
   const changeStatus = (event, data) => {
-    Status({iad: data.id, status: data.status}).then(response => {
+    Status({id: data.id, status: data.status}).then(response => {
       root.gMessage({
         msg: response.message
       })
