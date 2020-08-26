@@ -41,9 +41,9 @@
       </template>
     </el-table-column>
     <el-table-column prop="address" label="操作" width="200">
-      <template>
+      <template slot-scope="scope">
         <el-button type="danger" size="mini">编辑</el-button>
-        <el-button size="mini">删除</el-button>
+        <el-button size="mini" @click="deleteConfirm(scope.row.id)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -74,7 +74,7 @@
 <script>
 import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 // API
-import { GetList, Status } from "@/api/news";
+import { GetList, Status, Delete } from "@/api/news";
 import { getDateTime } from "@/utils/common";
 export default {
   name: "NewsIndex",
@@ -107,7 +107,9 @@ export default {
       // 当前页码
       currentPage: 1,
       // 页码统计
-      total: 0
+      total: 0,
+      // id
+      row_data_id: ""
     });
     /** 获取列表 */
     const loadData = () => {
@@ -146,6 +148,28 @@ export default {
         data.status = event == "2" ? "1" : "2";
       })
     }
+    /** 删除确认提示 */
+    const deleteConfirm = (id) => {
+      root.gComfirm({
+        msg: "确认删除此信息吗？",
+        thenFun: () => {
+          data.row_data_id = id;
+          handlerDelete();
+        }
+      })
+    }
+    const handlerDelete = () => {
+      Delete({id: data.row_data_id}).then(response =>{
+        root.gMessage({
+          msg: response.message
+        })
+        data.row_data_id = ""; // 清除ID
+        loadData()             // 请求接口加开列表
+      }).catch(error => {
+        // 清除ID
+        data.row_data_id = "";
+      })
+    }
     const formatDate = (row) => {
       return getDateTime(row.createDate * 1000)
     }
@@ -160,7 +184,8 @@ export default {
       handleSizeChange,
       handleCurrentChange,
       formatDate,
-      changeStatus
+      changeStatus,
+      deleteConfirm
     }
   }
 }

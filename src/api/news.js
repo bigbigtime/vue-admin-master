@@ -71,3 +71,12 @@ export function Status(data = {}){
         data
     })
 }
+
+/** 发布状态 */
+export function Delete(data = {}){
+    return service.request({
+        method: "post",
+        url: "/news/delete/",
+        data
+    })
+}
