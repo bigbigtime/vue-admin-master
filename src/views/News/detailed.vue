@@ -54,6 +54,10 @@ export default {
 	components: {},
 	props: {},
 	setup(props, { root, refs }) {
+		let id = root.$route.params.id || sessionStorage.getItem("id");
+		let name = root.$route.params.name || sessionStorage.getItem("name");
+		console.log(id)
+		console.log(name)
 		// form 表单
 		const form = reactive({
 			categoryId: "",

@@ -218,9 +218,16 @@ export default {
     }
 
     const toLink = () => {
+      let id = 100;
+      let name = "张三";
+      sessionStorage.setItem("id", id);
+      sessionStorage.setItem("name", name);
       root.$router.push({
         name: "NewsDetailed",
-        //path: "/newsDetailed"
+        params: {
+          id, // 等价于 id: id
+          name // 等价于 name: name
+        }
       })
     }
 
