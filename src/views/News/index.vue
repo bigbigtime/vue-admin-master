@@ -6,9 +6,7 @@
       <div class="inline">
         <div class="filter-item mr-25">
           <label>类别：</label>
-          <el-select v-model="data.category" class="width-160">
-            <el-option v-for="item in data.category_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
-          </el-select>
+          <el-cascader v-model="data.category_id" :options="data.category_option" :props="data.cascader_props"></el-cascader>
         </div>
       </div>
     <div class="inline">
@@ -18,7 +16,7 @@
           <el-option v-for="item in data.keyword_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
         </el-select>
         <el-input v-model="data.keyword" placeholder="请输入关键字按enter搜索" class="width-200 mr-15"></el-input>
-        <el-button type="danger">搜索</el-button>
+        <el-button type="danger" @click="search">搜索</el-button>
       </div>
     </div>
     </div>
@@ -90,6 +88,7 @@ export default {
       pageNumber: 1,
       pageSize: 10
     }
+    let form_search = {}
     const data = reactive({
       category: 0,
       category_opacity: [
@@ -109,13 +108,42 @@ export default {
       // 页码统计
       total: 0,
       // id
-      row_data_id: ""
+      row_data_id: "",
+      category_option: [],
+			cascader_props: {
+				label: "category_name",
+				value: "id"
+      },
+      category_id: ""
     });
+    // 搜索
+    const search = () => {
+      form_search = {};
+      // 重置页码为1
+      requestParams.pageNumber = 1;
+      // 类别
+      if(data.category_id) {
+        form_search.categoryId = data.category_id[data.category_id.length - 1];
+      }
+      // 关键字
+      if(data.key && data.keyword) {
+        form_search[data.key] = data.keyword;
+      }
+      loadData();
+    }
     /** 获取列表 */
     const loadData = () => {
       const requestData = {
         pageNumber: requestParams.pageNumber,
         pageSize: requestParams.pageSize
+      }
+      // 检测搜索的参数
+      if(Object.keys(form_search).length > 0) {
+      for(let key in form_search) {
+        if(form_search.hasOwnProperty(key)) {
+          requestData[key] = form_search[key]
+        }
+      }
       }
       // 加载状态
       data.loading_table = true;
@@ -170,15 +198,21 @@ export default {
         data.row_data_id = "";
       })
     }
-  /** 复选框 */
-  const changeCheckbox = (val) => {
-    if(val && val.length > 0) {
-      const idItem = val.map(item => item.id);
-      data.row_data_id = idItem.join();
-    }else{
-      data.row_data_id = ""
+    /** 复选框 */
+    const changeCheckbox = (val) => {
+      if(val && val.length > 0) {
+        const idItem = val.map(item => item.id);
+        data.row_data_id = idItem.join();
+      }else{
+        data.row_data_id = ""
+      }
     }
-  }
+    /** 获取分类 */
+		const getCategory = () => {
+			root.$store.dispatch("news/categoryAction").then(response => {
+				data.category_option = response;
+			});
+		};
     const formatDate = (row) => {
       return getDateTime(row.createDate * 1000)
     }
@@ -186,6 +220,7 @@ export default {
     /** 生命周期 */
     onBeforeMount(() => {
       loadData();
+      getCategory();
     })
 
     return { 
@@ -195,7 +230,8 @@ export default {
       formatDate,
       changeStatus,
       deleteConfirm,
-      changeCheckbox
+      changeCheckbox,
+      search
     }
   }
 }
