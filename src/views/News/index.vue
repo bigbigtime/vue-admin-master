@@ -23,7 +23,7 @@
     </el-col>
     <el-col :span="6">
       <div class="text-right">
-        <router-link to="/newsDetailed"><el-button type="danger">新增</el-button></router-link>
+        <el-button type="danger" @click="toLink">新增</el-button>
       </div>
     </el-col>
   </el-row>
@@ -217,6 +217,13 @@ export default {
       return getDateTime(row.createDate * 1000)
     }
 
+    const toLink = () => {
+      root.$router.push({
+        name: "NewsDetailed",
+        //path: "/newsDetailed"
+      })
+    }
+
     /** 生命周期 */
     onBeforeMount(() => {
       loadData();
@@ -231,7 +238,8 @@ export default {
       changeStatus,
       deleteConfirm,
       changeCheckbox,
-      search
+      search,
+      toLink
     }
   }
 }
