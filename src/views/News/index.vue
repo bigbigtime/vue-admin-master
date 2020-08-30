@@ -35,7 +35,7 @@
     <el-table-column prop="createDate" label="日期" :formatter="formatDate"></el-table-column>
     <el-table-column prop="status" label="发布状态">
       <template slot-scope="scope">
-        <el-switch v-model="scope.row.status" active-value="2" inactive-value="1" @change="changeStatus($event,scope.row)"></el-switch>
+        <el-switch v-model="scope.row.status" active-value="2" inactive-value="1" @change="changeStatus($event, scope.row)"></el-switch>
       </template>
     </el-table-column>
     <el-table-column prop="address" label="操作" width="200">
@@ -86,11 +86,13 @@ export default {
     }
   },
   setup(props, { root }){
-    const requestParams = {
+    const requestParams = reactive({
       pageNumber: 1,
       pageSize: 10
-    }
-    let form_search = {}
+    })
+    const form_search = reactive({
+      filter: {},
+    });
     const data = reactive({
       category: 0,
       category_opacity: [
@@ -120,16 +122,16 @@ export default {
     });
     // 搜索
     const search = () => {
-      form_search = {};
+      form_search.filter = {};
       // 重置页码为1
       requestParams.pageNumber = 1;
       // 类别
       if(data.category_id) {
-        form_search.categoryId = data.category_id[data.category_id.length - 1];
+        form_search.filter.categoryId = data.category_id[data.category_id.length - 1];
       }
       // 关键字
       if(data.key && data.keyword) {
-        form_search[data.key] = data.keyword;
+        form_search.filter[data.key] = data.keyword;
       }
       loadData();
     }
@@ -140,10 +142,10 @@ export default {
         pageSize: requestParams.pageSize
       }
       // 检测搜索的参数
-      if(Object.keys(form_search).length > 0) {
-      for(let key in form_search) {
-        if(form_search.hasOwnProperty(key)) {
-          requestData[key] = form_search[key]
+      if(Object.keys(form_search.filter).length > 0) {
+      for(let key in form_search.filter) {
+        if(form_search.filter.hasOwnProperty(key)) {
+          requestData[key] = form_search.filter[key]
         }
       }
       }
@@ -218,7 +220,6 @@ export default {
     const formatDate = (row) => {
       return getDateTime(row.createDate * 1000)
     }
-
     /** 生命周期 */
     onBeforeMount(() => {
       loadData();
