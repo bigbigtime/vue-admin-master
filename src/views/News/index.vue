@@ -37,7 +37,7 @@
     <el-table-column prop="createDate" label="日期" :formatter="formatDate"></el-table-column>
     <el-table-column prop="status" label="发布状态">
       <template slot-scope="scope">
-        <el-switch v-model="scope.row.status" active-value="2" inactive-value="1"></el-switch>
+        <el-switch v-model="scope.row.status" active-value="2" inactive-value="1" @change="changeStatus($event, scope.row)"></el-switch>
       </template>
     </el-table-column>
     <el-table-column prop="address" label="操作" width="200">
@@ -74,7 +74,7 @@
 <script>
 import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 // API
-import { GetList } from "@/api/news";
+import { GetList, Status } from "@/api/news";
 import { getDateTime } from "@/utils/common";
 export default {
   name: "NewsIndex",
@@ -139,7 +139,16 @@ export default {
     const formatDate = (row) => {
       return getDateTime(row.createDate * 1000)
     }
-
+     /** 发布状态 */
+    const changeStatus = (event, data) => {
+      Status({id: data.id, status: data.status}).then(response => {
+        root.gMessage({
+          msg: response.message
+        })
+      }).catch(error => {
+        data.status = event == "2" ? "1" : "2";
+      })
+    }
     /** 生命周期 */
     onBeforeMount(() => {
       loadData();
@@ -149,7 +158,8 @@ export default {
       data,
       handleSizeChange,
       handleCurrentChange,
-      formatDate
+      formatDate,
+      changeStatus
     }
   }
 }
