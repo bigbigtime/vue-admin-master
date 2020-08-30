@@ -4,7 +4,7 @@
 			<el-form-item label="信息类别：" prop="categoryId">
 				<el-cascader v-model="form.field.categoryId" :options="data.category_option" :props="data.cascader_props"></el-cascader>
 			</el-form-item>
-			<el-form-item label="信息标题：">
+			<el-form-item label="信息标题：" prop="title">
 				<el-input v-model="form.field.title"></el-input>
 			</el-form-item>
 			<el-form-item label="缩略图：" prop="imgUrl">
@@ -25,7 +25,10 @@
 				<el-date-picker v-model="form.field.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
 			</el-form-item>
 			<el-form-item label="是否发布：">
-				<el-date-picker v-model="form.field.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
+				<el-radio-group v-model="form.field.status">
+					<el-radio :label="'2'">是</el-radio>
+					<el-radio :label="'1'">否</el-radio>
+				</el-radio-group>
 			</el-form-item>
 			<el-form-item label="内容：" prop="content">
 				<div ref="editorDom" style="text-align:left;"></div>
@@ -59,6 +62,7 @@ export default {
 				title: "",
 				imgUrl: "",
 				content: "",
+				status: "2",
 				createDate: getDateTime(),
 				editorContent: ""
 			},
@@ -91,7 +95,9 @@ export default {
 		/** 获取详情 */
 		const getDetailed = () => {
 			GetDetailed({id: form.field.id}).then(response => {
+				console.log(response.data)
 				form.field = response.data
+				data.editor.txt.html(form.field.content);
 			})
 		}
 		const handlerOnSuccess = (res, file) => {
@@ -132,9 +138,7 @@ export default {
 			refs[formName].validate((valid) => {
 				// 表单验证通过
 				if (valid) {
-					// 深度拷贝
 					const requestData = JSON.parse(JSON.stringify(form.field));
-					console.log(requestData)
 					// categoryId 重新赋值
 					requestData.categoryId = requestData.categoryId[requestData.categoryId.length - 1];
 					// 接口请求
@@ -155,7 +159,7 @@ export default {
 		onBeforeMount(() => {
 			getCategory();
 			getQiniuToken();
-			getDetailed();
+			form.field.id && getDetailed();
 		});
 		onMounted(() => {
 			data.editor = new Editor(refs.editorDom);

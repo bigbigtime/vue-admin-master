@@ -72,7 +72,7 @@ export function Status(data = {}){
     })
 }
 
-/** 发布状态 */
+/** 删除 */
 export function Delete(data = {}){
     return service.request({
         method: "post",
@@ -81,7 +81,7 @@ export function Delete(data = {}){
     })
 }
 
-/** 发布状态 */
+/** 获取详情 */
 export function GetDetailed(data = {}){
     return service.request({
         method: "post",
