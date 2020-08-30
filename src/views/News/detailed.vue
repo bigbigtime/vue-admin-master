@@ -5,7 +5,7 @@
 				<el-cascader v-model="value" :options="options" @change="handleChange"></el-cascader>
 			</el-form-item>
 			<el-form-item label="信息标题：">
-				<el-input v-model="form.title"></el-input>
+				<el-input v-model="form.field.title"></el-input>
 			</el-form-item>
 			<el-form-item label="缩略图：">
 				<el-upload
@@ -13,15 +13,15 @@
 				action="https://jsonplaceholder.typicode.com/posts/"
 				:show-file-list="false"
 				>
-				<img v-if="form.imgUrl" :src="form.imgUrl" class="avatar" />
+				<img v-if="form.field.imgUrl" :src="form.field.imgUrl" class="avatar" />
 				<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
 			</el-form-item>
 			<el-form-item label="发布日期：">
-				<el-date-picker v-model="form.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
+				<el-date-picker v-model="form.field.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
 			</el-form-item>
 			<el-form-item label="是否发布：">
-				<el-date-picker v-model="form.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
+				<el-date-picker v-model="form.field.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
 			</el-form-item>
 			<el-form-item label="内容：">
 				<div ref="editorDom" style="text-align:left;"></div>
@@ -49,34 +49,36 @@ export default {
 	name: "NewsDetail",
 	components: {},
 	props: {},
-setup(props, { root, refs }) {
-	// form 表单
-	const form = reactive({
-		categoryId: "",
-		title: "",
-		imgUrl: "",
-		content: "",
-		createDate: "",
-		editorContent: ""
-	});
-	const data = reactive({
-		category_option: [],
-		editor: null
-	});
-	
-	onBeforeMount(() => {});
-	onMounted(() => {
-		data.editor = new Editor(refs.editorDom);
-		data.editor.customConfig.onchange = html => {
-			form.editorContent = html;
+	setup(props, { root, refs }) {
+		// form 表单
+		const form = reactive({
+			field: {
+				categoryId: "",
+				title: "",
+				imgUrl: "",
+				content: "",
+				createDate: "",
+				editorContent: ""
+			}
+		});
+		const data = reactive({
+			category_option: [],
+			editor: null
+		});
+		
+		onBeforeMount(() => {});
+		onMounted(() => {
+			data.editor = new Editor(refs.editorDom);
+			data.editor.customConfig.onchange = html => {
+				form.field.editorContent = html;
+			};
+			data.editor.create(); // 创建富文本实例
+		});
+		return {
+			data,
+			form
 		};
-		data.editor.create(); // 创建富文本实例
-	});
-	return {
-		data,
-		form
-	};
-}
+	}
 };
 </script>
 <style lang='scss' scoped>
