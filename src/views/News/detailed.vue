@@ -77,8 +77,8 @@ export default {
 		};
 		const getQiniuToken = () => {
 			const requestData = {
-				accessKey: "Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj",
-				secretKey: "l9AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw",
+				ak: "Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj",
+				sk: "l9AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw",
 				buckety: "bigbigtime"
 			}
 			GetQiniuToken(requestData).then(response => {
