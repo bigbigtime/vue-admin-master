@@ -80,3 +80,12 @@ export function Delete(data = {}){
         data
     })
 }
+
+/** 发布状态 */
+export function GetDetailed(data = {}){
+    return service.request({
+        method: "post",
+        url: "/news/detailed/",
+        data
+    })
+}

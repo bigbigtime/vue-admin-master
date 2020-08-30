@@ -43,7 +43,7 @@
 <script>
 import { reactive, ref, onMounted, onBeforeMount, watch } from "@vue/composition-api";
 // API
-import { GetCategory, Add } from "@/api/news";
+import { GetCategory, Add, GetDetailed } from "@/api/news";
 import { GetQiniuToken } from "@/api/common";
 // common
 import { getDateTime } from "@/utils/common";
@@ -54,12 +54,9 @@ export default {
 	components: {},
 	props: {},
 	setup(props, { root, refs }) {
-		let id = root.$route.params.id || sessionStorage.getItem("id");
-		let name = root.$route.params.name || sessionStorage.getItem("name");
-		console.log(id)
-		console.log(name)
 		// form 表单
-		const form = reactive({
+		let form = reactive({
+			id: root.$route.query.id,
 			categoryId: "",
 			title: "",
 			imgUrl: "",
@@ -94,6 +91,16 @@ export default {
 				data.category_option = response;
 			});
 		};
+		/** 获取详情 */
+		const getDetailed = () => {
+			GetDetailed({id: form.id}).then(response => {
+				console.log(response.data)
+				const formData = reactive(form);
+				console.log(formData)
+				formData = response.data
+				// form = response.data
+			})
+		}
 		const handlerOnSuccess = (res, file) => {
 			let image = `http://qf7nt7g8b.hn-bkt.clouddn.com/${res.key}`;
             form.imgUrl = image;
@@ -152,8 +159,9 @@ export default {
 			})
 		}
 		onBeforeMount(() => {
-			getCategory()
+			getCategory();
 			getQiniuToken();
+			getDetailed();
 		});
 		onMounted(() => {
 			data.editor = new Editor(refs.editorDom);

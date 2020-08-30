@@ -23,7 +23,7 @@
     </el-col>
     <el-col :span="6">
       <div class="text-right">
-        <el-button type="danger" @click="toLink">新增</el-button>
+        <router-link to="/newsDetailed"><el-button type="danger">新增</el-button></router-link>
       </div>
     </el-col>
   </el-row>
@@ -40,9 +40,11 @@
     </el-table-column>
     <el-table-column prop="address" label="操作" width="200">
       <template slot-scope="scope">
-        <el-button type="danger" size="mini">编辑</el-button>
+        <router-link :to="{path: '/newsDetailed', query: { id: scope.row.id}}">
+          <el-button type="danger" size="mini">编辑</el-button>
+        </router-link>
         <el-button size="mini" @click="deleteConfirm(scope.row.id)">删除</el-button>
-      </template>
+      </template> 
     </el-table-column>
   </el-table>
   <div class="spacing-30"></div>
@@ -217,20 +219,6 @@ export default {
       return getDateTime(row.createDate * 1000)
     }
 
-    const toLink = () => {
-      let id = 100;
-      let name = "张三";
-      sessionStorage.setItem("id", id);
-      sessionStorage.setItem("name", name);
-      root.$router.push({
-        name: "NewsDetailed",
-        params: {
-          id, // 等价于 id: id
-          name // 等价于 name: name
-        }
-      })
-    }
-
     /** 生命周期 */
     onBeforeMount(() => {
       loadData();
@@ -245,8 +233,7 @@ export default {
       changeStatus,
       deleteConfirm,
       changeCheckbox,
-      search,
-      toLink
+      search
     }
   }
 }
