@@ -43,7 +43,7 @@
 <script>
 import { reactive, ref, onMounted, onBeforeMount, watch } from "@vue/composition-api";
 // API
-import { GetCategory, Add, GetDetailed } from "@/api/news";
+import { GetCategory, Add, GetDetailed, Edit } from "@/api/news";
 import { GetQiniuToken } from "@/api/common";
 // common
 import { getDateTime } from "@/utils/common";
@@ -138,22 +138,41 @@ export default {
 			refs[formName].validate((valid) => {
 				// 表单验证通过
 				if (valid) {
-					const requestData = JSON.parse(JSON.stringify(form.field));
-					// categoryId 重新赋值
-					requestData.categoryId = requestData.categoryId[requestData.categoryId.length - 1];
-					// 接口请求
-					Add(requestData).then(response => {
-						root.gMessage({
-							msg: response.message
-						})
-						// 重置表单
-						refs.form.resetFields();
-						// 清除内容
-						data.editor.txt.html("");
-					})
+					form.field.id ? handlerEdit() : handlerAdd();
 				} else {
 					console.log("error submit");
 				}
+			})
+		}
+		// 新增
+		const handlerAdd = () => {
+			const requestData = JSON.parse(JSON.stringify(form.field));
+			// categoryId 重新赋值
+			requestData.categoryId = requestData.categoryId[requestData.categoryId.length - 1];
+			// 接口请求
+			Add(requestData).then(response => {
+				root.gMessage({
+					msg: response.message
+				})
+				// 重置表单
+				refs.form.resetFields();
+				// 清除内容
+				data.editor.txt.html("");
+			})
+		}
+		// 编辑
+		const handlerEdit = () => {
+			const requestData = JSON.parse(JSON.stringify(form.field));
+			// categoryId 重新赋值
+			console.log(typeof requestData.categoryId)
+			if(typeof requestData.categoryId !== "string") {
+				requestData.categoryId = requestData.categoryId[requestData.categoryId.length - 1];
+			}
+			// 接口请求
+			Edit(requestData).then(response => {
+				root.gMessage({
+					msg: response.message
+				})
 			})
 		}
 		onBeforeMount(() => {

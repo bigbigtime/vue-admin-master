@@ -89,3 +89,12 @@ export function GetDetailed(data = {}){
         data
     })
 }
+
+/** 修改信息 */
+export function Edit(data = {}){
+    return service.request({
+        method: "post",
+        url: "/news/editInfo/",
+        data
+    })
+}
