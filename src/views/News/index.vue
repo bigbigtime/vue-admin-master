@@ -35,7 +35,7 @@
     <el-table-column prop="createDate" label="日期" :formatter="formatDate"></el-table-column>
     <el-table-column prop="status" label="发布状态">
       <template slot-scope="scope">
-        <el-switch v-model="scope.row.status" active-value="2" inactive-value="1" @change="changeStatus($event,scope.row)"></el-switch>
+        <el-switch v-model="scope.row.status" active-value="2" inactive-value="1" @change="changeStatus($event, scope.row)"></el-switch>
       </template>
     </el-table-column>
     <el-table-column prop="address" label="操作" width="200">
@@ -84,10 +84,10 @@ export default {
     }
   },
   setup(props, { root }){
-    const requestParams = {
+    const requestParams = reactive({
       pageNumber: 1,
       pageSize: 10
-    }
+    })
     const form_search = reactive({
       filter: {},
     });
@@ -218,7 +218,6 @@ export default {
     const formatDate = (row) => {
       return getDateTime(row.createDate * 1000)
     }
-
     /** 生命周期 */
     onBeforeMount(() => {
       loadData();
