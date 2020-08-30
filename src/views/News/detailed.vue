@@ -81,7 +81,7 @@ export default {
 		};
 		const handlerOnSuccess = (res, file) => {
 			let image = `http://qf7nt7g8b.hn-bkt.clouddn.com/${res.key}`;
-            form.imgUrl = image;
+            form.field.imgUrl = image;
 		}
 		const handlerOnError = (res, file) => {}
         const handlerBeforeOnUpload = (file) => {
