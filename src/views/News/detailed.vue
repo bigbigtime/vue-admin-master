@@ -25,7 +25,10 @@
 				<el-date-picker v-model="form.field.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
 			</el-form-item>
 			<el-form-item label="是否发布：">
-				<el-date-picker v-model="form.field.createDate" type="datetime" placeholder="选择日期时间"></el-date-picker>
+				<el-radio-group v-model="form.field.status">
+					<el-radio :label="'2'">是</el-radio>
+					<el-radio :label="'1'">否</el-radio>
+				</el-radio-group>
 			</el-form-item>
 			<el-form-item label="内容：" prop="content">
 				<div ref="editorDom" style="text-align:left;"></div>
@@ -62,6 +65,7 @@ export default {
 				title: "",
 				imgUrl: "",
 				content: "",
+				status: "2",
 				createDate: getDateTime(),
 				editorContent: ""
 			},
