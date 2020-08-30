@@ -86,10 +86,10 @@ export default {
     }
   },
   setup(props, { root }){
-    const requestParams = {
+    const requestParams = reactive({
       pageNumber: 1,
       pageSize: 10
-    }
+    })
     const data = reactive({
       category: 0,
       category_opacity: [
