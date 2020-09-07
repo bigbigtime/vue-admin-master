@@ -6,9 +6,7 @@
       <div class="inline">
         <div class="filter-item mr-25">
           <label>类别：</label>
-          <el-select v-model="data.category" class="width-160">
-            <el-option v-for="item in data.category_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
-          </el-select>
+          <el-cascader v-model="data.category_id" :options="data.category_option" :props="data.cascader_props"></el-cascader>
         </div>
       </div>
     <div class="inline">
@@ -18,7 +16,7 @@
           <el-option v-for="item in data.keyword_opacity" :key="item.value" :value="item.value" :label="item.label"></el-option>
         </el-select>
         <el-input v-model="data.keyword" placeholder="请输入关键字按enter搜索" class="width-200 mr-15"></el-input>
-        <el-button type="danger">搜索</el-button>
+        <el-button type="danger" @click="search">搜索</el-button>
       </div>
     </div>
     </div>
@@ -30,27 +28,29 @@
     </el-col>
   </el-row>
   <div class="spacing-30"></div>
-  <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui">
+  <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="title" label="标题" width="500"></el-table-column>
     <el-table-column prop="category_name" label="类别"></el-table-column>
     <el-table-column prop="createDate" label="日期" :formatter="formatDate"></el-table-column>
     <el-table-column prop="status" label="发布状态">
       <template slot-scope="scope">
-        <el-switch v-model="scope.row.status" active-value="2" inactive-value="1" @change="changeStatus($event,scope.row)"></el-switch>
+        <el-switch v-model="scope.row.status" active-value="2" inactive-value="1" @change="changeStatus($event, scope.row)"></el-switch>
       </template>
     </el-table-column>
     <el-table-column prop="address" label="操作" width="200">
-      <template>
-        <el-button type="danger" size="mini">编辑</el-button>
-        <el-button size="mini">删除</el-button>
-      </template>
+      <template slot-scope="scope">
+        <router-link :to="{path: '/newsDetailed', query: { id: scope.row.id}}">
+          <el-button type="danger" size="mini">编辑</el-button>
+        </router-link>
+        <el-button size="mini" @click="deleteConfirm(scope.row.id)">删除</el-button>
+      </template> 
     </el-table-column>
   </el-table>
   <div class="spacing-30"></div>
   <el-row>
     <el-col :span="6">
-      <el-button size="small">批量删除</el-button>
+      <el-button size="small" :disabled="!data.row_data_id" @click="deleteConfirm(data.row_data_id)">批量删除</el-button>
     </el-col>
     <el-col :span="18">
       <el-pagination 
@@ -74,7 +74,7 @@
 <script>
 import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition-api";
 // API
-import { GetList, Status } from "@/api/news";
+import { GetList, Status, Delete } from "@/api/news";
 import { getDateTime } from "@/utils/common";
 export default {
   name: "NewsIndex",
@@ -86,10 +86,13 @@ export default {
     }
   },
   setup(props, { root }){
-    const requestParams = {
+    const requestParams = reactive({
       pageNumber: 1,
       pageSize: 10
-    }
+    })
+    const form_search = reactive({
+      filter: {},
+    });
     const data = reactive({
       category: 0,
       category_opacity: [
@@ -107,13 +110,44 @@ export default {
       // 当前页码
       currentPage: 1,
       // 页码统计
-      total: 0
+      total: 0,
+      // id
+      row_data_id: "",
+      category_option: [],
+			cascader_props: {
+				label: "category_name",
+				value: "id"
+      },
+      category_id: ""
     });
+    // 搜索
+    const search = () => {
+      form_search.filter = {};
+      // 重置页码为1
+      requestParams.pageNumber = 1;
+      // 类别
+      if(data.category_id) {
+        form_search.filter.categoryId = data.category_id[data.category_id.length - 1];
+      }
+      // 关键字
+      if(data.key && data.keyword) {
+        form_search.filter[data.key] = data.keyword;
+      }
+      loadData();
+    }
     /** 获取列表 */
     const loadData = () => {
       const requestData = {
         pageNumber: requestParams.pageNumber,
         pageSize: requestParams.pageSize
+      }
+      // 检测搜索的参数
+      if(Object.keys(form_search.filter).length > 0) {
+      for(let key in form_search.filter) {
+        if(form_search.filter.hasOwnProperty(key)) {
+          requestData[key] = form_search.filter[key]
+        }
+      }
       }
       // 加载状态
       data.loading_table = true;
@@ -137,22 +171,59 @@ export default {
       loadData();
     }
     /** 发布状态 */
-  const changeStatus = (event, data) => {
-    Status({id: data.id, status: data.status}).then(response => {
-      root.gMessage({
-        msg: response.message
+    const changeStatus = (event, data) => {
+      Status({id: data.id, status: data.status}).then(response => {
+        root.gMessage({
+          msg: response.message
+        })
+      }).catch(error => {
+        data.status = event == "2" ? "1" : "2";
       })
-    }).catch(error => {
-      data.status = event == "2" ? "1" : "2";
-    })
-  }
+    }
+    /** 删除确认提示 */
+    const deleteConfirm = (id) => {
+      root.gComfirm({
+        msg: "确认删除此信息吗？",
+        thenFun: () => {
+          data.row_data_id = id;
+          handlerDelete();
+        }
+      })
+    }
+    const handlerDelete = () => {
+      Delete({id: data.row_data_id}).then(response =>{
+        root.gMessage({
+          msg: response.message
+        })
+        data.row_data_id = ""; // 清除ID
+        loadData()             // 请求接口加开列表
+      }).catch(error => {
+        // 清除ID
+        data.row_data_id = "";
+      })
+    }
+    /** 复选框 */
+    const changeCheckbox = (val) => {
+      if(val && val.length > 0) {
+        const idItem = val.map(item => item.id);
+        data.row_data_id = idItem.join();
+      }else{
+        data.row_data_id = ""
+      }
+    }
+    /** 获取分类 */
+		const getCategory = () => {
+			root.$store.dispatch("news/categoryAction").then(response => {
+				data.category_option = response;
+			});
+		};
     const formatDate = (row) => {
       return getDateTime(row.createDate * 1000)
     }
-
     /** 生命周期 */
     onBeforeMount(() => {
       loadData();
+      getCategory();
     })
 
     return { 
@@ -160,7 +231,10 @@ export default {
       handleSizeChange,
       handleCurrentChange,
       formatDate,
-      changeStatus
+      changeStatus,
+      deleteConfirm,
+      changeCheckbox,
+      search
     }
   }
 }

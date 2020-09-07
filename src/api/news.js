@@ -71,3 +71,30 @@ export function Status(data = {}){
         data
     })
 }
+
+/** 删除 */
+export function Delete(data = {}){
+    return service.request({
+        method: "post",
+        url: "/news/delete/",
+        data
+    })
+}
+
+/** 获取详情 */
+export function GetDetailed(data = {}){
+    return service.request({
+        method: "post",
+        url: "/news/detailed/",
+        data
+    })
+}
+
+/** 修改信息 */
+export function Edit(data = {}){
+    return service.request({
+        method: "post",
+        url: "/news/editInfo/",
+        data
+    })
+}
