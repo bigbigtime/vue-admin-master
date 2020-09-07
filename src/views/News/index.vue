@@ -28,6 +28,7 @@
     </el-col>
   </el-row>
   <div class="spacing-30"></div>
+  <BasisTable />
   <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="title" label="标题" width="500"></el-table-column>
@@ -67,7 +68,6 @@
       </el-pagination>
     </el-col>
   </el-row>
-
   </div>
 </template>
 
@@ -76,9 +76,11 @@ import { reactive, ref, onMounted, watch, onBeforeMount } from "@vue/composition
 // API
 import { GetList, Status, Delete } from "@/api/news";
 import { getDateTime } from "@/utils/common";
+// table component
+import BasisTable from "@/components/table";
 export default {
   name: "NewsIndex",
-  components: {},
+  components: { BasisTable },
   props: {},
   filters: {
     formatToDate(val){
