@@ -89,6 +89,7 @@ export default {
   },
   setup(props, { root }){
     const configTableData = reactive({
+      isRequest: false,
       thead: [
         { label: "日期", prop: "date" },
         { label: "姓名", prop: "name" },
