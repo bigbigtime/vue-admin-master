@@ -17,6 +17,7 @@ export default {
     },
     setup(props, context){
         const config = reactive({
+            isRequest: true,    // 接口请求关开
             checkbox: false,  // 列表复选框
             thead: [],        // 表头
             pagination: false // 页码
@@ -39,8 +40,15 @@ export default {
                 }
             }
         }
+        // 接口请求
+        const loadData = () => {
+            console.log(11)
+        }
         onBeforeMount(() => {
+            // 初始化配置
             initConfig()
+            // 是否请求接口
+            config.isRequest && loadData();
         })
         return { data, config }
     }
