@@ -28,7 +28,7 @@
     </el-col>
   </el-row>
   <div class="spacing-30"></div>
-  <BasisTable />
+  <BasisTable :configTable="configTableData" />
   <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="title" label="标题" width="500"></el-table-column>
@@ -88,6 +88,15 @@ export default {
     }
   },
   setup(props, { root }){
+    const configTableData = reactive({
+      thead: [
+        { label: "日期", prop: "date" },
+        { label: "姓名", prop: "name" },
+        { label: "地址", prop: "address" },
+        { label: "年龄", prop: "age" },
+        { label: "性别", prop: "gender" },
+      ]
+    })
     const requestParams = reactive({
       pageNumber: 1,
       pageSize: 10
@@ -236,7 +245,8 @@ export default {
       changeStatus,
       deleteConfirm,
       changeCheckbox,
-      search
+      search,
+      configTableData
     }
   }
 }
