@@ -2,7 +2,16 @@
     <div>
         <el-table :data="data.tableData" border style="width: 100%">
             <el-table-column v-if="config.checkbox" type="selection" width="40"></el-table-column>
-            <el-table-column v-for="item in config.thead" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
+            <template v-for="item in config.thead" >
+                <!-- 格式化 -->
+                <el-table-column v-if="item.type === 'function'" :key="item.prop" :label="item.label" :width="item.width">
+                    <template slot-scope="scope">
+                        <div v-html="item.callback && item.callback(scope.row)"></div>
+                    </template>
+                </el-table-column>
+                <!-- 默认输入文本 -->
+                <el-table-column v-else :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
+            </template>
         </el-table>
     </div>
 </template>

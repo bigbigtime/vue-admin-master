@@ -89,7 +89,6 @@ export default {
   },
   setup(props, { root }){
     const configTableData = reactive({
-      checkbox: false,
       onload: true,
       url: "/news/getList/",
       data: {
@@ -99,7 +98,14 @@ export default {
       thead: [
         { label: "标题", prop: "title", width: "500" },
         { label: "类别", prop: "category_name", width: "200" },
-        { label: "日期", prop: "createDate" },
+        { 
+          label: "日期", 
+          prop: "createDate",
+          type: "function",
+          callback: (data) => {
+            return getDateTime(data.createDate * 1000)
+          }
+        },
         { label: "发布状态", prop: "status" },
         { label: "操作", prop: "openation" },
       ]
