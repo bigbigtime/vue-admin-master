@@ -7,6 +7,8 @@
 </template>
 <script>
 import { onMounted, onBeforeMount, reactive } from "@vue/composition-api";
+// API
+import { GetListData } from "@/api/common";
 export default {
     name: "BasisTable",
     props: {
@@ -18,14 +20,14 @@ export default {
     setup(props, context){
         const config = reactive({
             isRequest: true,    // 接口请求关开
+            url: "",            // 请求地址
+            data: {},           // 请求参数
             checkbox: false,  // 列表复选框
             thead: [],        // 表头
             pagination: false // 页码
         })
         const data = reactive({
-            tableData: [
-                { date: '2016-05-02', name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', age: 18, gender: "男" }
-            ]
+            tableData: []
         })
         const initConfig = () => {
             // 获取 config 对象的所有 key（键名）
@@ -42,7 +44,18 @@ export default {
         }
         // 接口请求
         const loadData = () => {
-            console.log(11)
+            // 判断是否存在 url
+            if(!config.url) { return false; }
+            const requestData = {
+                url: config.url,
+                data: config.data
+            }
+            GetListData(requestData).then(response => {
+                const responseData = response.data;
+                if(responseData.data) { 
+                    data.tableData = responseData.data;
+                }
+            })
         }
         onBeforeMount(() => {
             // 初始化配置

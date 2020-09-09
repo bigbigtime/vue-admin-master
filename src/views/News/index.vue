@@ -89,13 +89,17 @@ export default {
   },
   setup(props, { root }){
     const configTableData = reactive({
-      isRequest: false,
+      url: "/news/getList/",
+      data: {
+        pageNumber: 1,
+        pageSize: 10
+      },
       thead: [
-        { label: "日期", prop: "date" },
-        { label: "姓名", prop: "name" },
-        { label: "地址", prop: "address" },
-        { label: "年龄", prop: "age" },
-        { label: "性别", prop: "gender" },
+        { label: "标题", prop: "title" },
+        { label: "类别", prop: "category_name" },
+        { label: "日期", prop: "createDate" },
+        { label: "发布状态", prop: "status" },
+        { label: "操作", prop: "openation" },
       ]
     })
     const requestParams = reactive({
