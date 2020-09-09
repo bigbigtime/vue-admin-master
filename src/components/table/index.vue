@@ -19,6 +19,7 @@ export default {
     },
     setup(props, context){
         const config = reactive({
+            onload: false,      // 加载完成回调
             isRequest: true,    // 接口请求关开
             url: "",            // 请求地址
             data: {},           // 请求参数
@@ -55,6 +56,8 @@ export default {
                 if(responseData.data) { 
                     data.tableData = responseData.data;
                 }
+                // 判断是否回调
+                context.emit("onload", data.tableData);
             })
         }
         onBeforeMount(() => {

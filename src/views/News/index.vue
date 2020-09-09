@@ -28,7 +28,7 @@
     </el-col>
   </el-row>
   <div class="spacing-30"></div>
-  <BasisTable :configTable="configTableData" />
+  <BasisTable :configTable="configTableData" @onload="onloadList" />
   <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
     <el-table-column type="selection" width="40"></el-table-column>
     <el-table-column prop="title" label="标题" width="500"></el-table-column>
@@ -236,6 +236,10 @@ export default {
     const formatDate = (row) => {
       return getDateTime(row.createDate * 1000)
     }
+    const onloadList = (data) => {
+      console.log(data)
+    }
+    
     /** 生命周期 */
     onBeforeMount(() => {
       loadData();
@@ -251,7 +255,8 @@ export default {
       deleteConfirm,
       changeCheckbox,
       search,
-      configTableData
+      configTableData,
+      onloadList
     }
   }
 }
