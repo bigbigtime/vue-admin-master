@@ -89,6 +89,7 @@ export default {
   },
   setup(props, { root }){
     const configTableData = reactive({
+      checkbox: false,
       onload: true,
       url: "/news/getList/",
       data: {

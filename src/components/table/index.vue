@@ -1,6 +1,7 @@
 <template>
     <div>
         <el-table :data="data.tableData" border style="width: 100%">
+            <el-table-column v-if="config.checkbox" type="selection" width="40"></el-table-column>
             <el-table-column v-for="item in config.thead" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
         </el-table>
     </div>
@@ -23,7 +24,7 @@ export default {
             isRequest: true,    // 接口请求关开
             url: "",            // 请求地址
             data: {},           // 请求参数
-            checkbox: false,  // 列表复选框
+            checkbox: true,    // 列表复选框
             thead: [],        // 表头
             pagination: false // 页码
         })
