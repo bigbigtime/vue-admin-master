@@ -57,7 +57,7 @@ export default {
                     data.tableData = responseData.data;
                 }
                 // 判断是否回调
-                context.emit("onload", data.tableData);
+                config.onload && context.emit("onload", data.tableData);
             })
         }
         onBeforeMount(() => {

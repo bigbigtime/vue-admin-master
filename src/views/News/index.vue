@@ -89,6 +89,7 @@ export default {
   },
   setup(props, { root }){
     const configTableData = reactive({
+      onload: true,
       url: "/news/getList/",
       data: {
         pageNumber: 1,
