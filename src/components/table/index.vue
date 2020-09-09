@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-table :data="data.tableData" border style="width: 100%">
-            <el-table-column v-for="item in config.thead" :key="item.prop" :prop="item.prop" :label="item.label"></el-table-column>
+            <el-table-column v-for="item in config.thead" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
         </el-table>
     </div>
 </template>

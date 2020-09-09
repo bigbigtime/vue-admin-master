@@ -96,7 +96,7 @@ export default {
         pageSize: 10
       },
       thead: [
-        { label: "标题", prop: "title" },
+        { label: "标题", prop: "title", width: "500" },
         { label: "类别", prop: "category_name" },
         { label: "日期", prop: "createDate" },
         { label: "发布状态", prop: "status" },
