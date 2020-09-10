@@ -13,7 +13,7 @@
                 <el-table-column v-else-if="item.type === 'switch'" :key="item.prop" :label="item.label" :width="item.width">
                     <template slot-scope="scope">
                         <el-switch 
-                            v-model="scope.row.status"
+                            v-model="scope.row[item.prop]"
                             :active-value="item.activeValue || true" 
                             :inactive-value="item.inactiveValue || false" 
                             @change="item.callback && item.callback($event, scope.row)"
