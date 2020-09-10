@@ -9,6 +9,18 @@
                         <div v-html="item.callback && item.callback(scope.row)"></div>
                     </template>
                 </el-table-column>
+                <!-- switch -->
+                <el-table-column v-else-if="item.type === 'switch'" :key="item.prop" :label="item.label" :width="item.width">
+                    <template slot-scope="scope">
+                        <el-switch 
+                            v-model="scope.row.status"
+                            :active-value="item.activeValue || true" 
+                            :inactive-value="item.inactiveValue || false" 
+                            @change="item.callback && item.callback($event, scope.row)"
+                        >
+                        </el-switch>
+                    </template>
+                </el-table-column>
                 <!-- 默认输入文本 -->
                 <el-table-column v-else :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
             </template>

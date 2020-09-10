@@ -106,7 +106,14 @@ export default {
             return getDateTime(data.createDate * 1000)
           }
         },
-        { label: "发布状态", prop: "status" },
+        { 
+          label: "发布状态", 
+          prop: "status",
+          type: "switch",
+          activeValue: "2",
+          inactiveValue: "1",
+          callback: ($event, scope) => changeStatus($event, scope)
+        },
         { label: "操作", prop: "openation" },
       ]
     })
