@@ -1,5 +1,6 @@
 <template>
     <div>
+        <slot name="start"></slot>
         <el-table :data="data.tableData" border style="width: 100%" class="table-ui">
             <el-table-column v-if="config.checkbox" type="selection" width="40"></el-table-column>
             <template v-for="item in config.thead" >
@@ -25,7 +26,7 @@
                 <el-table-column v-else :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
             </template>
         </el-table>
-        <slot></slot>
+        <slot name="bottom"></slot>
     </div>
 </template>
 <script>

@@ -29,9 +29,11 @@
   </el-row>
   <div class="spacing-30"></div>
   <BasisTable :configTable="configTableData" @onload="onloadList">
-    <p>这里是 插槽 分发内容</p>
-    <template>
-      <p>这里是 插槽 不aaa带指定名称的内容</p>
+    <template v-slot:start>
+      <p>这是 start 插槽分发的内容</p>
+    </template>
+    <template v-slot:bottom>
+      <p>这是 bottom 插槽分发的内容</p>
     </template>
   </BasisTable>
   <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
