@@ -25,6 +25,7 @@
                 <el-table-column v-else :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
             </template>
         </el-table>
+        <slot></slot>
     </div>
 </template>
 <script>
