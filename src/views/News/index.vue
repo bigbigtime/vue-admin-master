@@ -29,11 +29,17 @@
   </el-row>
   <div class="spacing-30"></div>
   <BasisTable :configTable="configTableData" @onload="onloadList">
-    <template v-slot:start>
-      <p>这是 start 插槽分发的内容</p>
+    <template v-slot:start="slotData">
+      <p>
+        这是 start 插槽分发的内容<br/>
+        姓名：{{ slotData.data.name }}<br/>
+        年龄：{{ slotData.data.age }}
+      </p>
     </template>
-    <template v-slot:bottom>
+    <template v-slot:bottom="data">
       <p>这是 bottom 插槽分发的内容</p>
+      姓名：{{ data.dataItem.name }}<br/>
+      年龄：{{ data.dataItem.age }}
     </template>
   </BasisTable>
   <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
