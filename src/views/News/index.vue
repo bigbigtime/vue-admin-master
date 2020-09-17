@@ -29,17 +29,11 @@
   </el-row>
   <div class="spacing-30"></div>
   <BasisTable :configTable="configTableData" @onload="onloadList">
-    <template v-slot:start="slotData">
-      <p>
-        这是 start 插槽分发的内容<br/>
-        姓名：{{ slotData.data.name }}<br/>
-        年龄：{{ slotData.data.age }}
-      </p>
-    </template>
-    <template v-slot:bottom="data">
-      <p>这是 bottom 插槽分发的内容</p>
-      姓名：{{ data.dataItem.name }}<br/>
-      年龄：{{ data.dataItem.age }}
+    <template v-slot:operation="slotData">
+      <router-link :to="{path: '/newsDetailed', query: { id: slotData.data.id}}">
+        <el-button type="danger" size="mini">编辑</el-button>
+      </router-link>
+      <el-button size="mini" @click="deleteConfirm(slotData.data.id)">删除</el-button>
     </template>
   </BasisTable>
   <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
@@ -127,7 +121,12 @@ export default {
           inactiveValue: "1",
           callback: ($event, scope) => changeStatus($event, scope)
         },
-        { label: "操作", prop: "openation" },
+        { 
+          label: "操作", 
+          type: "slot",
+          slotName: "operation",
+          width: "200"
+        },
       ]
     })
     const requestParams = reactive({
