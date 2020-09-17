@@ -1,6 +1,5 @@
 <template>
     <div>
-        <slot name="start" :data="{ name: '张三', age: 18 }"></slot>
         <el-table :data="data.tableData" border style="width: 100%" class="table-ui">
             <el-table-column v-if="config.checkbox" type="selection" width="40"></el-table-column>
             <template v-for="item in config.thead" >
@@ -22,11 +21,16 @@
                         </el-switch>
                     </template>
                 </el-table-column>
+                <!-- 插槽 -->
+                <el-table-column v-else-if="item.type === 'slot'" :key="item.prop" :label="item.label" :width="item.width">
+                    <template slot-scope="scope">
+                        <slot :name="item.slotName" :data="scope.row"></slot>
+                    </template>
+                </el-table-column>
                 <!-- 默认输入文本 -->
                 <el-table-column v-else :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
             </template>
         </el-table>
-        <slot name="bottom" :dataItem="{ name: '李四', age: 20 }"></slot>
     </div>
 </template>
 <script>
