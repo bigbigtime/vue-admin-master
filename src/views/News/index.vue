@@ -99,6 +99,8 @@ export default {
       onload: true,
       url: "/news/getList/",
       urlDelete: "/news/delete/",
+      deleteKey: "id",
+      deleteButton: false,
       data: {
         pageNumber: 1,
         pageSize: 10

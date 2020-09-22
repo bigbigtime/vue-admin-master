@@ -31,7 +31,7 @@
                 <el-table-column v-else-if="item.type === 'operation'" :key="item.prop" :label="item.label" :width="item.width">
                     <template slot-scope="scope">
                         <slot :name="item.slotName" :data="scope.row"></slot>
-                        <el-button size="mini" @click="deleteConfirm(scope.row.id)">删除</el-button>
+                        <el-button v-if="config.deleteButton" size="mini" @click="deleteConfirm(scope.row[config.deleteKey])">删除</el-button>
                     </template>
                 </el-table-column>
                 <!-- 默认输入文本 -->
@@ -60,8 +60,10 @@ export default {
             urlDelete: "",      // 删除接口
             data: {},           // 请求参数
             checkbox: true,    // 列表复选框
-            thead: [],        // 表头
-            pagination: false // 页码
+            thead: [],         // 表头
+            pagination: false, // 页码
+            deleteButton: true, // 是否需要删除按钮
+            deleteKey: "id"     // 删除接口的唯一标识
         })
         const data = reactive({
             tableData: [],
@@ -111,7 +113,7 @@ export default {
             const requestData = {
                 url: config.urlDelete,
                 data: {
-                    id: data.row_data_id
+                    [config.deleteKey]: data.row_data_id
                 }
             }
             DeleteData(requestData).then(response =>{
