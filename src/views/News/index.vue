@@ -123,7 +123,7 @@ export default {
         },
         { 
           label: "操作", 
-          type: "slot",
+          type: "operation",
           slotName: "operation",
           width: "200"
         },

@@ -27,6 +27,13 @@
                         <slot :name="item.slotName" :data="scope.row"></slot>
                     </template>
                 </el-table-column>
+                <!-- 操作 -->
+                <el-table-column v-else-if="item.type === 'operation'" :key="item.prop" :label="item.label" :width="item.width">
+                    <template slot-scope="scope">
+                        <slot :name="item.slotName" :data="scope.row"></slot>
+                        <el-button size="mini" @click="deleteConfirm(scope.row.id)">删除</el-button>
+                    </template>
+                </el-table-column>
                 <!-- 默认输入文本 -->
                 <el-table-column v-else :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
             </template>
