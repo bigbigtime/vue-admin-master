@@ -43,7 +43,7 @@
 <script>
 import { onMounted, onBeforeMount, reactive } from "@vue/composition-api";
 // API
-import { GetListData } from "@/api/common";
+import { GetListData, DeleteData } from "@/api/common";
 export default {
     name: "BasisTable",
     props: {
@@ -57,6 +57,7 @@ export default {
             onload: false,      // 加载完成回调
             isRequest: true,    // 接口请求关开
             url: "",            // 请求地址
+            urlDelete: "",      // 删除接口
             data: {},           // 请求参数
             checkbox: true,    // 列表复选框
             thead: [],        // 表头
@@ -107,7 +108,13 @@ export default {
             })
         }
         const handlerDelete = () => {
-            Delete({id: data.row_data_id}).then(response =>{
+            const requestData = {
+                url: config.urlDelete,
+                data: {
+                    id: data.row_data_id
+                }
+            }
+            DeleteData(requestData).then(response =>{
                 context.root.gMessage({
                     msg: response.message
                 })

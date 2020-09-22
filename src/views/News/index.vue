@@ -98,6 +98,7 @@ export default {
     const configTableData = reactive({
       onload: true,
       url: "/news/getList/",
+      urlDelete: "/news/delete/",
       data: {
         pageNumber: 1,
         pageSize: 10

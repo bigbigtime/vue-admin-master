@@ -16,3 +16,12 @@ export function GetListData(params = {}){
         data: params.data
     })
 }
+
+/** 删除列表数据 */
+export function DeleteData(params = {}){
+    return service.request({
+        method: params.method || "post",
+        url: params.url,
+        data: params.data
+    })
+}
