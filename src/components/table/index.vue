@@ -63,7 +63,8 @@ export default {
             pagination: false // 页码
         })
         const data = reactive({
-            tableData: []
+            tableData: [],
+            row_data_id: ""
         })
         const initConfig = () => {
             // 获取 config 对象的所有 key（键名）
@@ -95,13 +96,36 @@ export default {
                 config.onload && context.emit("onload", data.tableData);
             })
         }
+        /** 删除确认提示 */
+        const deleteConfirm = (id) => {
+            context.root.gComfirm({
+                msg: "确认删除此信息吗？",
+                thenFun: () => {
+                    data.row_data_id = id;
+                    handlerDelete();
+                }
+            })
+        }
+        const handlerDelete = () => {
+            Delete({id: data.row_data_id}).then(response =>{
+                context.root.gMessage({
+                    msg: response.message
+                })
+                data.row_data_id = ""; // 清除ID
+                loadData()             // 请求接口加开列表
+            }).catch(error => {
+                // 清除ID
+                data.row_data_id = "";
+            })
+        }
+        // 挂载完成时
         onBeforeMount(() => {
             // 初始化配置
             initConfig()
             // 是否请求接口
             config.isRequest && loadData();
         })
-        return { data, config }
+        return { data, config, deleteConfirm }
     }
 }
 </script>
