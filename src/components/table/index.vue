@@ -111,7 +111,7 @@ export default {
         }
         const handlerDelete = () => {
             const requestData = {
-                url: config.urlDelete,
+                url: config.url,
                 data: {
                     [config.deleteKey]: data.row_data_id
                 }

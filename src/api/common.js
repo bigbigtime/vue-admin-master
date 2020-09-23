@@ -1,4 +1,6 @@
 import service from "../utils/request";
+// api
+import api_url from "./apiUrl";
 /** 获取七牛云 token */
 export function GetQiniuToken(data){
     return service.request({
@@ -12,7 +14,7 @@ export function GetQiniuToken(data){
 export function GetListData(params = {}){
     return service.request({
         method: params.method || "post",
-        url: params.url,
+        url: api_url[params.url],
         data: params.data
     })
 }
@@ -21,7 +23,7 @@ export function GetListData(params = {}){
 export function DeleteData(params = {}){
     return service.request({
         method: params.method || "post",
-        url: params.url,
+        url: api_url[`${params.url}Delete`],
         data: params.data
     })
 }
