@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-table :data="data.tableData" border style="width: 100%" class="table-ui">
+        <el-table :data="data.tableData" border style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
             <el-table-column v-if="config.checkbox" type="selection" width="40"></el-table-column>
             <template v-for="item in config.thead" >
                 <!-- 格式化 -->
@@ -38,6 +38,26 @@
                 <el-table-column v-else :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
             </template>
         </el-table>
+        <div class="spacing-30"></div>
+        <el-row>
+            <el-col :span="6">
+            <el-button size="small" :disabled="!data.row_data_id" @click="deleteConfirm(data.row_data_id)">批量删除</el-button>
+            </el-col>
+            <el-col :span="18">
+            <el-pagination 
+                class="pull-right" 
+                sizs="small" 
+                background 
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page.sync="data.currentPage"
+                :page-size="10"
+                :page-sizes="[10, 20, 50, 100]"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="data.total">
+            </el-pagination>
+            </el-col>
+        </el-row>
     </div>
 </template>
 <script>
@@ -67,7 +87,11 @@ export default {
         })
         const data = reactive({
             tableData: [],
-            row_data_id: ""
+            row_data_id: "",
+            // 当前页码
+            currentPage: 1,
+            // 页码统计
+            total: 0,
         })
         const initConfig = () => {
             // 获取 config 对象的所有 key（键名）
@@ -95,6 +119,8 @@ export default {
                 if(responseData.data) { 
                     data.tableData = responseData.data;
                 }
+                // 页码统计
+                data.total = responseData.total;
                 // 判断是否回调
                 config.onload && context.emit("onload", data.tableData);
             })
@@ -127,6 +153,26 @@ export default {
                 data.row_data_id = "";
             })
         }
+        /** 复选框 */
+        const changeCheckbox = (val) => {
+            if(val && val.length > 0) {
+                const idItem = val.map(item => item.id);
+                data.row_data_id = idItem.join();
+            }else{
+                data.row_data_id = ""
+            }
+        }
+        // 页码下拉选项
+        const handleSizeChange = (val) => {
+            config.data.pageSize = val;
+            config.data.pageNumber = 1;
+            loadData();
+        }
+        // 点击页码
+        const handleCurrentChange = (val) => {
+            config.data.pageNumber = val;
+            loadData();
+        }
         // 挂载完成时
         onBeforeMount(() => {
             // 初始化配置
@@ -134,7 +180,7 @@ export default {
             // 是否请求接口
             config.isRequest && loadData();
         })
-        return { data, config, deleteConfirm }
+        return { data, config, deleteConfirm, handleSizeChange, handleCurrentChange, changeCheckbox }
     }
 }
 </script>
