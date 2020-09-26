@@ -38,12 +38,23 @@
                 <el-table-column v-else :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
             </template>
         </el-table>
+        <div class="spacing-30"></div>
+        <el-row>
+            <el-col :span="6">
+                <el-button size="small" :disabled="!data.row_data_id" @click="deleteConfirm(data.row_data_id)">批量删除</el-button>
+            </el-col>
+            <el-col :span="18">
+                <Pagination v-if="config.pagination" :total="data.total" @callbackComponent="handlerPagination" class="pull-right"  />
+            </el-col>
+        </el-row>
     </div>
 </template>
 <script>
 import { onMounted, onBeforeMount, reactive } from "@vue/composition-api";
 // API
 import { GetListData, DeleteData } from "@/api/common";
+// component
+import Pagination from "@/components/pagination";
 export default {
     name: "BasisTable",
     props: {
@@ -52,6 +63,7 @@ export default {
             default: () => ({})
         }
     },
+    components: { Pagination },
     setup(props, context){
         const config = reactive({
             onload: false,      // 加载完成回调
@@ -63,11 +75,13 @@ export default {
             thead: [],         // 表头
             pagination: false, // 页码
             deleteButton: true, // 是否需要删除按钮
-            deleteKey: "id"     // 删除接口的唯一标识
+            deleteKey: "id",    // 删除接口的唯一标识
+            pagination: true
         })
         const data = reactive({
             tableData: [],
-            row_data_id: ""
+            row_data_id: "",
+            total: 0
         })
         const initConfig = () => {
             // 获取 config 对象的所有 key（键名）
@@ -94,6 +108,7 @@ export default {
                 const responseData = response.data;
                 if(responseData.data) { 
                     data.tableData = responseData.data;
+                    data.total = responseData.total
                 }
                 // 判断是否回调
                 config.onload && context.emit("onload", data.tableData);
@@ -127,6 +142,12 @@ export default {
                 data.row_data_id = "";
             })
         }
+        const handlerPagination = (data) => {
+            config.data.pageNumber = data.pageNumber;
+            // 是否存在 pageSize，存在则替换
+            if(data.pageSize) { config.data.pageSize = data.pageSize; }
+            loadData();
+        }
         // 挂载完成时
         onBeforeMount(() => {
             // 初始化配置
@@ -134,7 +155,7 @@ export default {
             // 是否请求接口
             config.isRequest && loadData();
         })
-        return { data, config, deleteConfirm }
+        return { data, config, deleteConfirm, handlerPagination }
     }
 }
 </script>
