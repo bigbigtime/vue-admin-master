@@ -98,6 +98,7 @@ export default {
     const configTableData = reactive({
       onload: true,
       url: "infoList",
+      batchDelete: false,
       data: {
         pageNumber: 1,
         pageSize: 10

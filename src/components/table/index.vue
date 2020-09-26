@@ -40,8 +40,8 @@
         </el-table>
         <div class="spacing-30"></div>
         <el-row>
-            <el-col :span="6">
-            <el-button size="small" :disabled="!data.row_data_id" @click="deleteConfirm(data.row_data_id)">批量删除</el-button>
+            <el-col :span="6" class="min-height-1">
+                <el-button v-if="config.batchDelete" size="small" :disabled="!data.row_data_id" @click="deleteConfirm(data.row_data_id)">批量删除</el-button>
             </el-col>
             <el-col :span="18">
                 <Pagination v-if="config.pagination" :total="data.total" @callbackComponent="handlerPagination" class="pull-right"/>
@@ -75,7 +75,8 @@ export default {
             thead: [],         // 表头
             pagination: true, // 页码
             deleteButton: true, // 是否需要删除按钮
-            deleteKey: "id"    // 删除接口的唯一标识
+            deleteKey: "id",    // 删除接口的唯一标识
+            batchDelete: true   // 批量删除
         })
         const data = reactive({
             tableData: [],
@@ -155,6 +156,7 @@ export default {
             }else{
                 data.row_data_id = ""
             }
+            // 返回给父组件
             context.emit("update:checkboxId", data.row_data_id);
         }
         // 挂载完成时
