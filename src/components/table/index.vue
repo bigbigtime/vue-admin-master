@@ -99,7 +99,6 @@ export default {
                 const responseData = response.data;
                 if(responseData.data) { 
                     data.tableData = responseData.data;
-                    data.total = responseData.total
                 }
                 // 判断是否回调
                 config.onload && context.emit("onload", data.tableData);
@@ -140,7 +139,7 @@ export default {
             // 是否请求接口
             config.isRequest && loadData();
         })
-        return { data, config, deleteConfirm, handlerPagination }
+        return { data, config, deleteConfirm }
     }
 }
 </script>
