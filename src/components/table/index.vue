@@ -44,7 +44,7 @@
             <el-button size="small" :disabled="!data.row_data_id" @click="deleteConfirm(data.row_data_id)">批量删除</el-button>
             </el-col>
             <el-col :span="18">
-                <Pagination :total="data.total" @callbackComponent="handlerPagination" class="pull-right"/>
+                <Pagination v-if="config.pagination" :total="data.total" @callbackComponent="handlerPagination" class="pull-right"/>
             </el-col>
         </el-row>
     </div>
@@ -73,7 +73,7 @@ export default {
             data: {},           // 请求参数
             checkbox: true,    // 列表复选框
             thead: [],         // 表头
-            pagination: false, // 页码
+            pagination: true, // 页码
             deleteButton: true, // 是否需要删除按钮
             deleteKey: "id"    // 删除接口的唯一标识
         })
