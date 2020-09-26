@@ -28,7 +28,7 @@
     </el-col>
   </el-row>
   <div class="spacing-30"></div>
-  <BasisTable :configTable="configTableData" @onload="onloadList">
+  <BasisTable :configTable="configTableData" @onload="onloadList" :checkboxId.sync="data.checkout_id">
     <template v-slot:operation="slotData">
       <router-link :to="{path: '/newsDetailed', query: { id: slotData.data.id}}">
         <el-button type="danger" size="mini">编辑</el-button>
@@ -137,6 +137,7 @@ export default {
       filter: {},
     });
     const data = reactive({
+      checkout_id: [],
       category: 0,
       category_opacity: [
         { label: "人工智能", value: 0 },
@@ -165,6 +166,7 @@ export default {
     });
     // 搜索
     const search = () => {
+      console.log(data.checkout_id)
       form_search.filter = {};
       // 重置页码为1
       requestParams.pageNumber = 1;

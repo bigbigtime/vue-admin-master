@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-table :data="data.tableData" border style="width: 100%" class="table-ui">
+        <el-table :data="data.tableData" border style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
             <el-table-column v-if="config.checkbox" type="selection" width="40"></el-table-column>
             <template v-for="item in config.thead" >
                 <!-- 格式化 -->
@@ -147,6 +147,16 @@ export default {
             if(params.pageSize) { config.data.pageSize = params.pageSize; }
             loadData()
         }
+        /** 复选框 */
+        const changeCheckbox = (val) => {
+            if(val && val.length > 0) {
+                const idItem = val.map(item => item.id);
+                data.row_data_id = idItem.join();
+            }else{
+                data.row_data_id = ""
+            }
+            context.emit("update:checkboxId", data.row_data_id);
+        }
         // 挂载完成时
         onBeforeMount(() => {
             // 初始化配置
@@ -154,7 +164,7 @@ export default {
             // 是否请求接口
             config.isRequest && loadData();
         })
-        return { data, config, deleteConfirm, handlerPagination }
+        return { data, config, deleteConfirm, handlerPagination, changeCheckbox }
     }
 }
 </script>
