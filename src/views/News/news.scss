@@ -1,0 +1,15 @@
+.filter-wrap {
+    .inline { display: inline-block; }
+}
+.filter-item {
+    height: 40px;
+    label {
+        float: left;
+        padding-right: 10px;
+        line-height: 40px;
+        font-size: 14px;
+    }
+}
+.width-160 { width: 160px; }
+.width-100 { width: 100px; }
+.width-200 { width: 200px; }

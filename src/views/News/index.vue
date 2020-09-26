@@ -33,48 +33,8 @@
       <router-link :to="{path: '/newsDetailed', query: { id: slotData.data.id}}">
         <el-button type="danger" size="mini">编辑</el-button>
       </router-link>
-      <el-button size="mini" @click="deleteConfirm(slotData.data.id)">删除</el-button>
     </template>
   </BasisTable>
-  <el-table ref="table" border :data="data.tableData" style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
-    <el-table-column type="selection" width="40"></el-table-column>
-    <el-table-column prop="title" label="标题" width="500"></el-table-column>
-    <el-table-column prop="category_name" label="类别"></el-table-column>
-    <el-table-column prop="createDate" label="日期" :formatter="formatDate"></el-table-column>
-    <el-table-column prop="status" label="发布状态">
-      <template slot-scope="scope">
-        <el-switch v-model="scope.row.status" active-value="2" inactive-value="1" @change="changeStatus($event, scope.row)"></el-switch>
-      </template>
-    </el-table-column>
-    <el-table-column prop="address" label="操作" width="200">
-      <template slot-scope="scope">
-        <router-link :to="{path: '/newsDetailed', query: { id: scope.row.id}}">
-          <el-button type="danger" size="mini">编辑</el-button>
-        </router-link>
-        <el-button size="mini" @click="deleteConfirm(scope.row.id)">删除</el-button>
-      </template> 
-    </el-table-column>
-  </el-table>
-  <div class="spacing-30"></div>
-  <el-row>
-    <el-col :span="6">
-      <el-button size="small" :disabled="!data.row_data_id" @click="deleteConfirm(data.row_data_id)">批量删除</el-button>
-    </el-col>
-    <el-col :span="18">
-      <el-pagination 
-        class="pull-right" 
-        sizs="small" 
-        background 
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="data.currentPage"
-        :page-size="10"
-        :page-sizes="[10, 20, 50, 100]"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="data.total">
-      </el-pagination>
-    </el-col>
-  </el-row>
   </div>
 </template>
 
@@ -89,11 +49,6 @@ export default {
   name: "NewsIndex",
   components: { BasisTable },
   props: {},
-  filters: {
-    formatToDate(val){
-      return timestampToDate(val);
-    }
-  },
   setup(props, { root }){
     const configTableData = reactive({
       onload: true,
@@ -130,10 +85,6 @@ export default {
         },
       ]
     })
-    const requestParams = reactive({
-      pageNumber: 1,
-      pageSize: 10
-    })
     const form_search = reactive({
       filter: {},
     });
@@ -150,14 +101,6 @@ export default {
         { label: "ID", value: "id" }
       ],
       keyword: "",
-      // table data
-      tableData: [],
-      // 当前页码
-      currentPage: 1,
-      // 页码统计
-      total: 0,
-      // id
-      row_data_id: "",
       category_option: [],
 			cascader_props: {
 				label: "category_name",
@@ -181,82 +124,6 @@ export default {
       }
       loadData();
     }
-    /** 获取列表 */
-    const loadData = () => {
-      const requestData = {
-        pageNumber: requestParams.pageNumber,
-        pageSize: requestParams.pageSize
-      }
-      // 检测搜索的参数
-      if(Object.keys(form_search.filter).length > 0) {
-      for(let key in form_search.filter) {
-        if(form_search.filter.hasOwnProperty(key)) {
-          requestData[key] = form_search.filter[key]
-        }
-      }
-      }
-      // 加载状态
-      data.loading_table = true;
-      GetList(requestData).then(response => {
-        const responseData = response.data;
-        if(responseData.data) { 
-          data.tableData = responseData.data;
-          data.total = responseData.total;
-        }
-      })
-    }
-    // 页码下拉选项
-    const handleSizeChange = (val) => {
-      requestParams.pageSize = val;
-      requestParams.pageNumber = 1;
-      loadData();
-    }
-    // 点击页码
-    const handleCurrentChange = (val) => {
-      requestParams.pageNumber = val;
-      loadData();
-    }
-    /** 发布状态 */
-    const changeStatus = (event, data) => {
-      Status({id: data.id, status: data.status}).then(response => {
-        root.gMessage({
-          msg: response.message
-        })
-      }).catch(error => {
-        data.status = event == "2" ? "1" : "2";
-      })
-    }
-    /** 删除确认提示 */
-    const deleteConfirm = (id) => {
-      root.gComfirm({
-        msg: "确认删除此信息吗？",
-        thenFun: () => {
-          data.row_data_id = id;
-          handlerDelete();
-        }
-      })
-    }
-    const handlerDelete = () => {
-      Delete({id: data.row_data_id}).then(response =>{
-        root.gMessage({
-          msg: response.message
-        })
-        data.row_data_id = ""; // 清除ID
-        loadData()             // 请求接口加开列表
-      }).catch(error => {
-        // 清除ID
-        data.row_data_id = "";
-      })
-    }
-    /** 复选框 */
-    const changeCheckbox = (val) => {
-      if(val && val.length > 0) {
-        const idItem = val.map(item => item.id);
-        data.row_data_id = idItem.join();
-      }else{
-        data.row_data_id = ""
-      }
-    }
     /** 获取分类 */
 		const getCategory = () => {
 			root.$store.dispatch("news/categoryAction").then(response => {
@@ -272,18 +139,12 @@ export default {
     
     /** 生命周期 */
     onBeforeMount(() => {
-      loadData();
       getCategory();
     })
 
     return { 
       data,
-      handleSizeChange,
-      handleCurrentChange,
       formatDate,
-      changeStatus,
-      deleteConfirm,
-      changeCheckbox,
       search,
       configTableData,
       onloadList
@@ -292,19 +153,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.filter-wrap {
-  .inline { display: inline-block; }
-}
-.filter-item {
-  height: 40px;
-  label {
-    float: left;
-    padding-right: 10px;
-    line-height: 40px;
-    font-size: 14px;
-  }
-}
-.width-160 { width: 160px; }
-.width-100 { width: 100px; }
-.width-200 { width: 200px; }
+@import "./news.scss";
 </style>
