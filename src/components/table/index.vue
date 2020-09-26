@@ -38,6 +38,15 @@
                 <el-table-column v-else :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
             </template>
         </el-table>
+        <div class="spacing-30"></div>
+        <el-row>
+            <el-col :span="6">
+            <el-button size="small" :disabled="!data.row_data_id" @click="deleteConfirm(data.row_data_id)">批量删除</el-button>
+            </el-col>
+            <el-col :span="18">
+                <Pagination :total="data.total" @callbackComponent="handlerPagination" class="pull-right"/>
+            </el-col>
+        </el-row>
     </div>
 </template>
 <script>
@@ -66,8 +75,7 @@ export default {
             thead: [],         // 表头
             pagination: false, // 页码
             deleteButton: true, // 是否需要删除按钮
-            deleteKey: "id",    // 删除接口的唯一标识
-            pagination: true
+            deleteKey: "id"    // 删除接口的唯一标识
         })
         const data = reactive({
             tableData: [],
@@ -99,6 +107,7 @@ export default {
                 const responseData = response.data;
                 if(responseData.data) { 
                     data.tableData = responseData.data;
+                    data.total = responseData.total;
                 }
                 // 判断是否回调
                 config.onload && context.emit("onload", data.tableData);
@@ -132,6 +141,12 @@ export default {
                 data.row_data_id = "";
             })
         }
+        /** 分页 */
+        const handlerPagination = (params) => {
+            config.data.pageNumber = params.pageNumber;
+            if(params.pageSize) { config.data.pageSize = params.pageSize; }
+            loadData()
+        }
         // 挂载完成时
         onBeforeMount(() => {
             // 初始化配置
@@ -139,7 +154,7 @@ export default {
             // 是否请求接口
             config.isRequest && loadData();
         })
-        return { data, config, deleteConfirm }
+        return { data, config, deleteConfirm, handlerPagination }
     }
 }
 </script>
