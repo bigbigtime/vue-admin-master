@@ -129,7 +129,17 @@ export default {
 			root.$store.dispatch("news/categoryAction").then(response => {
 				data.category_option = response;
 			});
-		};
+    };
+    /** 发布状态 */
+    const changeStatus = (event, data) => {
+      Status({id: data.id, status: data.status}).then(response => {
+        root.gMessage({
+          msg: response.message
+        })
+      }).catch(error => {
+        data.status = event == "2" ? "1" : "2";
+      })
+    }
     const formatDate = (row) => {
       return getDateTime(row.createDate * 1000)
     }
