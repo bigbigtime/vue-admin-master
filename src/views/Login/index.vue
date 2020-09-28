@@ -45,6 +45,7 @@ import { mapStat } from "vuex";
 export default {
   name: "Login",
   setup(props, { root, refs }){
+    console.log(root)
     const menu_switch_item = reactive([
       { type: "login", label: "登录" },
       { type: "register", label: "注册" }
