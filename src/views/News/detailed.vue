@@ -1,5 +1,6 @@
 <template>
 	<div class="news-detailed">
+		<BasisForm :formItem="configFormData.formItem" />
 		<el-form ref="form" label-width="100px" :model="form.field" :rules="form.form_rules">
 			<el-form-item label="信息类别：" prop="categoryId">
 				<el-cascader v-model="form.field.categoryId" :options="data.category_option" :props="data.cascader_props"></el-cascader>
@@ -49,11 +50,23 @@ import { GetQiniuToken } from "@/api/common";
 import { getDateTime } from "@/utils/common";
 // 富文本编辑器
 import Editor from "wangeditor";
+// form 组件
+import BasisForm from "@c/form";
 export default {
 	name: "NewsDetail",
-	components: {},
+	components: { BasisForm },
 	props: {},
 	setup(props, { root, refs }) {
+		const configFormData = reactive({
+			formItem: [
+				{ label: "信息分类", prop: "categoryId"},
+				{ label: "信息标题", prop: "title"},
+				{ label: "缩略图", prop: "imgUrl"},
+				{ label: "发布日期", prop: "createDate"},
+				{ label: "是否发布", prop: "status"},
+				{ label: "内容描述", prop: "content"}
+			]
+		})
 		// form 表单
 		const form = reactive({
 			field: {
@@ -193,6 +206,7 @@ export default {
 			data,
 			form,
 			submitForm,
+			configFormData,
 			handlerOnSuccess, handlerOnError, handlerBeforeOnUpload
 		};
 	}

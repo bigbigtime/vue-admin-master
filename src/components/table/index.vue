@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-table :data="data.tableData" border style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
+        <el-table :data="tableData.data" border style="width: 100%" class="table-ui" @selection-change="changeCheckbox">
             <el-table-column v-if="config.checkbox" type="selection" width="40"></el-table-column>
             <template v-for="item in config.thead" >
                 <!-- 格式化 -->
@@ -44,17 +44,19 @@
                 <el-button v-if="config.batchDelete" size="small" :disabled="!data.row_data_id" @click="deleteConfirm(data.row_data_id)">批量删除</el-button>
             </el-col>
             <el-col :span="18">
-                <Pagination v-if="config.pagination" :total="data.total" @callbackComponent="handlerPagination" class="pull-right"/>
+                <Pagination v-if="config.pagination" :total="tableData.total" @callbackComponent="handlerPagination" class="pull-right"/>
             </el-col>
         </el-row>
     </div>
 </template>
 <script>
-import { onMounted, onBeforeMount, reactive } from "@vue/composition-api";
+import { onMounted, onBeforeMount, reactive, watch, watchEffect } from "@vue/composition-api";
 // API
 import { GetListData, DeleteData } from "@/api/common";
 // component
 import Pagination from "@/components/pagination";
+// business
+import { tableList } from "@/business/table";
 export default {
     name: "BasisTable",
     props: {
@@ -65,6 +67,18 @@ export default {
     },
     components: { Pagination },
     setup(props, context){
+        const { loadData, tableData } = tableList();
+
+        watchEffect((onInvalidate) => {
+            const token = tableData.data
+            onInvalidate(() => {
+                //每一次被触发的时候都会先执行onInvalidate内部逻辑,然后执行onInvalidate外部的逻辑
+                // id 改变时 或 停止侦听时
+                // 取消之前的异步操作
+                console.log(token)//这是一个形参函数 这是你的逻辑叫做cancle只是为了很好地去比喻
+            })
+        })
+
         const config = reactive({
             onload: false,      // 加载完成回调
             isRequest: true,    // 接口请求关开
@@ -97,23 +111,23 @@ export default {
             }
         }
         // 接口请求
-        const loadData = () => {
-            // 判断是否存在 url
-            if(!config.url) { return false; }
-            const requestData = {
-                url: config.url,
-                data: config.data
-            }
-            GetListData(requestData).then(response => {
-                const responseData = response.data;
-                if(responseData.data) { 
-                    data.tableData = responseData.data;
-                    data.total = responseData.total;
-                }
-                // 判断是否回调
-                config.onload && context.emit("onload", data.tableData);
-            })
-        }
+        // const loadData = () => {
+        //     // 判断是否存在 url
+        //     if(!config.url) { return false; }
+        //     const requestData = {
+        //         url: config.url,
+        //         data: config.data
+        //     }
+        //     GetListData(requestData).then(response => {
+        //         const responseData = response.data;
+        //         if(responseData.data) { 
+        //             data.tableData = responseData.data;
+        //             data.total = responseData.total;
+        //         }
+        //         // 判断是否回调
+        //         config.onload && context.emit("onload", data.tableData);
+        //     })
+        // }
         /** 删除确认提示 */
         const deleteConfirm = (id) => {
             context.root.gComfirm({
@@ -164,9 +178,9 @@ export default {
             // 初始化配置
             initConfig()
             // 是否请求接口
-            config.isRequest && loadData();
+            config.isRequest && loadData(config);
         })
-        return { data, config, deleteConfirm, handlerPagination, changeCheckbox }
+        return { data, config, deleteConfirm, handlerPagination, changeCheckbox, tableData }
     }
 }
 </script>
