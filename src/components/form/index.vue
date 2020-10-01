@@ -2,7 +2,7 @@
     <el-form>
         <template v-for="item in formItem">
             <!-- select -->
-            <el-form-item v-if="item.type === 'categoryInfo'" :key="item.prop" :label="item.label" :prop="item.prop">
+            <el-form-item v-if="item.type === 'cascader'" :key="item.prop" :label="item.label" :prop="item.prop">
                 
             </el-form-item>
             <!-- input -->
