@@ -1,5 +1,5 @@
 <template>
-    <el-cascader v-model="value" :options="data.category_option" :props="cascaderProps" @change="change"></el-cascader>
+    <el-cascader v-model="value" :options="data.category_option" :props="cascaderProps"></el-cascader>
 </template>
 
 <script>
@@ -38,16 +38,11 @@ export default {
                 data.category_option = response;
             });
         };
-        /** 触发分类 */
-        const change = (val) => {
-            const lastData = val[val.length - 1];
-            emit("update:value", lastData);
-        }
         // 生命周期
         onBeforeMount(() => {
             getCategory();
         })
-        return { data, change, props }
+        return { data, props }
     }
 }
 </script>

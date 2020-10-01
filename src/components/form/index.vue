@@ -2,8 +2,8 @@
     <el-form>
         <template v-for="item in formItem">
             <!-- select -->
-            <el-form-item v-if="item.type === 'categoryInfo'" :key="item.prop" :label="item.label" :prop="item.prop">
-                
+            <el-form-item v-if="item.type === 'cascader'" :key="item.prop" :label="item.label" :prop="item.prop">
+                <CascaderVue :url="item.url" />
             </el-form-item>
             <!-- input -->
             <el-form-item v-if="item.type === 'input'" :key="item.prop" :label="item.label" :prop="item.prop">
@@ -26,14 +26,15 @@
                 <el-button @click="get">fff</el-button>
             </el-form-item>
         </template>
-        
     </el-form>
 </template>
 <script>
+// components
+import CascaderVue from "@c/cascader";
 import { ref } from "@vue/composition-api";
 export default {
     name: 'BasisForm',
-    components: {},
+    components: { CascaderVue },
     props: {
         formItem: {
             type: Array,

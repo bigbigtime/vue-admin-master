@@ -59,7 +59,7 @@ export default {
 	setup(props, { root, refs }) {
 		const configFormData = reactive({
 			formItem: [
-				{ type: "categoryInfo", label: "信息分类", prop: "categoryId" },
+				{ type: "cascader", label: "信息分类", prop: "categoryId", url: "news/categoryAction" },
 				{ type: "input", label: "信息标题", prop: "title"},
 				{ type: "upload", label: "缩略图", prop: "imgUrl"},
 				{ type: "date", label: "发布日期", prop: "createDate"},
