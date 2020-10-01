@@ -23,13 +23,14 @@
             </el-form-item>
             <!-- date -->
             <el-form-item v-if="item.type === 'wangeditor'" :key="item.prop" :label="item.label" :prop="item.prop">
-                
+                <el-button @click="get">fff</el-button>
             </el-form-item>
         </template>
         
     </el-form>
 </template>
 <script>
+import { ref } from "@vue/composition-api";
 export default {
     name: 'BasisForm',
     components: {},
@@ -38,6 +39,16 @@ export default {
             type: Array,
             default: () => ([])
         }
+    },
+    setup(props){
+
+        const bookTitle = ref("");
+
+        const get = () => {
+            console.log(bookTitle.value)
+        }
+
+        return { get, bookTitle }
     }
 }
 </script>
