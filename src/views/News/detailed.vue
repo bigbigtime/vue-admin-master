@@ -59,12 +59,12 @@ export default {
 	setup(props, { root, refs }) {
 		const configFormData = reactive({
 			formItem: [
-				{ type: "categoryInfo", label: "信息分类", prop: "categoryId"},
-				{ type: "input", label: "信息标题", prop: "title"},
-				{ type: "upload", label: "缩略图", prop: "imgUrl"},
-				{ type: "date", label: "发布日期", prop: "createDate"},
-				{ type: "radio", label: "是否发布", prop: "status"},
-				{ type: "wangeditor", label: "内容描述", prop: "content"}
+				{ label: "信息分类", prop: "categoryId"},
+				{ label: "信息标题", prop: "title"},
+				{ label: "缩略图", prop: "imgUrl"},
+				{ label: "发布日期", prop: "createDate"},
+				{ label: "是否发布", prop: "status"},
+				{ label: "内容描述", prop: "content"}
 			]
 		})
 		// form 表单
