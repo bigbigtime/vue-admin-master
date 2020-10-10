@@ -11,7 +11,7 @@
         </el-form-item>
         <!-- upload -->
         <el-form-item v-if="item.type === 'upload'" :key="item.prop" :label="item.label" :prop="item.prop">
-            
+            <UploadVue :requestData="item.requestData" :url="item.url" />
         </el-form-item>
         <!-- date -->
         <el-form-item v-if="item.type === 'date'" :key="item.prop" :label="item.label" :prop="item.prop">
@@ -31,10 +31,11 @@
 <script>
 // components
 import CascaderVue from "@c/cascader";
+import UploadVue from "@c/upload";
 import { ref } from "@vue/composition-api";
 export default {
     name: 'BasisForm',
-    components: { CascaderVue },
+    components: { CascaderVue, UploadVue },
     props: {
         formItem: {
             type: Array,
