@@ -1,13 +1,13 @@
 <template>
     <el-form>
         <template v-for="item in formItem">
-            <!-- select -->
+            <!-- cascader -->
             <el-form-item v-if="item.type === 'cascader'" :key="item.prop" :label="item.label" :prop="item.prop">
                 <CascaderVue :url="item.url" />
             </el-form-item>
             <!-- input -->
             <el-form-item v-if="item.type === 'input'" :key="item.prop" :label="item.label" :prop="item.prop">
-                
+                <el-input />
             </el-form-item>
             <!-- upload -->
             <el-form-item v-if="item.type === 'upload'" :key="item.prop" :label="item.label" :prop="item.prop">
@@ -17,11 +17,11 @@
             <el-form-item v-if="item.type === 'date'" :key="item.prop" :label="item.label" :prop="item.prop">
                 
             </el-form-item>
-            <!-- date -->
+            <!-- radio -->
             <el-form-item v-if="item.type === 'radio'" :key="item.prop" :label="item.label" :prop="item.prop">
                 
             </el-form-item>
-            <!-- date -->
+            <!-- wangeditor -->
             <el-form-item v-if="item.type === 'wangeditor'" :key="item.prop" :label="item.label" :prop="item.prop">
                 <WangEditor />
             </el-form-item>
