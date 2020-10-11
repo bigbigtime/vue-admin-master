@@ -1,29 +1,29 @@
 <template>
     <el-form>
         <template v-for="item in formItem">
-            <!-- select -->
+            <!-- cascader -->
             <el-form-item v-if="item.type === 'cascader'" :key="item.prop" :label="item.label" :prop="item.prop">
                 <CascaderVue :url="item.url" />
             </el-form-item>
             <!-- input -->
             <el-form-item v-if="item.type === 'input'" :key="item.prop" :label="item.label" :prop="item.prop">
-                
+                <el-input :maxlength="item.max" :minlength="item.min" :style="`width: ${item.width}`" :placeholder="item.placeholder" />
             </el-form-item>
             <!-- upload -->
             <el-form-item v-if="item.type === 'upload'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <UploadVue :requestData="item.requestData" />
+                <UploadVue :requestData="item.requestData" :url="item.url" />
             </el-form-item>
             <!-- date -->
             <el-form-item v-if="item.type === 'date'" :key="item.prop" :label="item.label" :prop="item.prop">
                 
             </el-form-item>
-            <!-- date -->
+            <!-- radio -->
             <el-form-item v-if="item.type === 'radio'" :key="item.prop" :label="item.label" :prop="item.prop">
                 
             </el-form-item>
-            <!-- date -->
+            <!-- wangeditor -->
             <el-form-item v-if="item.type === 'wangeditor'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <el-button @click="get">fff</el-button>
+                <WangEditor />
             </el-form-item>
         </template>
     </el-form>
@@ -32,10 +32,11 @@
 // components
 import CascaderVue from "@c/cascader";
 import UploadVue from "@c/upload";
+import WangEditor from "@c/wangEditor";
 import { ref } from "@vue/composition-api";
 export default {
     name: 'BasisForm',
-    components: { CascaderVue, UploadVue },
+    components: { CascaderVue, UploadVue, WangEditor },
     props: {
         formItem: {
             type: Array,

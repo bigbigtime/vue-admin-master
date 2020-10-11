@@ -60,7 +60,15 @@ export default {
 		const configFormData = reactive({
 			formItem: [
 				{ type: "cascader", label: "信息分类", prop: "categoryId", url: "news/categoryAction" },
-				{ type: "input", label: "信息标题", prop: "title"},
+				{ 
+					type: "input", 
+					label: "信息标题", 
+					prop: "title", 
+					placeholder: "请输入标题", 
+					width: '200px',
+					max: 50,
+					min: 1
+				},
 				{ 
 					type: "upload", 
 					label: "缩略图", 
