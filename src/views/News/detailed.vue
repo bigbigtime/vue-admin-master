@@ -56,39 +56,43 @@ export default {
 	name: "NewsDetail",
 	components: { BasisForm },
 	props: {},
-	setup(props, { root, refs }) {
-		const configFormData = reactive({
-			formItem: [
-				{ type: "cascader", label: "信息分类", prop: "categoryId", url: "news/categoryAction" },
-				{ 
-					type: "input", 
-					label: "信息标题", 
-					prop: "title", 
-					placeholder: "请输入标题", 
-					width: '200px',
-					max: 50,
-					min: 1
-				},
-				{ 
-					type: "upload", 
-					label: "缩略图", 
-					prop: "imgUrl",
-					requestData: {
-						ak: "Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj",
-						sk: "l9AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw",
-						buckety: "bigbigtime"
-					}
-				},
-				{ 
-					type: "date", 
-					label: "发布日期", 
-					prop: "createDate",
-					placeholder: "请选择日期",
-				},
-				{ type: "radio", label: "是否发布", prop: "status"},
-				{ type: "wangeditor", label: "内容描述", prop: "content"}
-			]
-		})
+setup(props, { root, refs }) {
+	const configFormData = reactive({
+		formItem: [
+			{ type: "cascader", label: "信息分类", prop: "categoryId", url: "news/categoryAction" },
+			{ 
+				type: "input", 
+				label: "信息标题", 
+				prop: "title", 
+				placeholder: "请输入标题", 
+				width: '200px',
+				max: 50,
+				min: 1
+			},
+			{ 
+				type: "upload", 
+				label: "缩略图", 
+				prop: "imgUrl",
+				requestData: {
+					ak: "Avh-EZZAa4TxqPQZsEW42fXBUbTMFi-RKSZTRKJj",
+					sk: "l9AXtnhCVkZexXNRcmHXzmecXiCUiLynwGboMeUw",
+					buckety: "bigbigtime"
+				}
+			},
+			{ 
+				type: "date", 
+				label: "发布日期", 
+				prop: "createDate",
+				mode: "daterange",
+				range: "至",
+				startLabel: "开始",
+				endLabel: "结束",
+				placeholder: "请选择日期",
+			},
+			{ type: "radio", label: "是否发布", prop: "status"},
+			{ type: "wangeditor", label: "内容描述", prop: "content"}
+		]
+	})
 		// form 表单
 		const form = reactive({
 			field: {

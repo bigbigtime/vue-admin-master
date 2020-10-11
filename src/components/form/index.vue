@@ -1,32 +1,39 @@
 <template>
-<el-form>
-    <template v-for="item in formItem">
-        <!-- cascader -->
-        <el-form-item v-if="item.type === 'cascader'" :key="item.prop" :label="item.label" :prop="item.prop">
-            <CascaderVue :url="item.url" />
-        </el-form-item>
-        <!-- input -->
-        <el-form-item v-if="item.type === 'input'" :key="item.prop" :label="item.label" :prop="item.prop">
-            <el-input :maxlength="item.max" :minlength="item.min" :style="`width: ${item.width}`" :placeholder="item.placeholder" />
-        </el-form-item>
-        <!-- upload -->
-        <el-form-item v-if="item.type === 'upload'" :key="item.prop" :label="item.label" :prop="item.prop">
-            <UploadVue :requestData="item.requestData" :url="item.url" />
-        </el-form-item>
-        <!-- date -->
-        <el-form-item v-if="item.type === 'date'" :key="item.prop" :label="item.label" :prop="item.prop">
-            <el-date-picker :type="item.mode || 'date'" :placeholder="item.placeholder" :style="`width: ${item.width}`"></el-date-picker>
-        </el-form-item>
-        <!-- radio -->
-        <el-form-item v-if="item.type === 'radio'" :key="item.prop" :label="item.label" :prop="item.prop">
-            
-        </el-form-item>
-        <!-- wangeditor -->
-        <el-form-item v-if="item.type === 'wangeditor'" :key="item.prop" :label="item.label" :prop="item.prop">
-            <WangEditor />
-        </el-form-item>
-    </template>
-</el-form>
+    <el-form>
+        <template v-for="item in formItem">
+            <!-- cascader -->
+            <el-form-item v-if="item.type === 'cascader'" :key="item.prop" :label="item.label" :prop="item.prop">
+                <CascaderVue :url="item.url" />
+            </el-form-item>
+            <!-- input -->
+            <el-form-item v-if="item.type === 'input'" :key="item.prop" :label="item.label" :prop="item.prop">
+                <el-input :maxlength="item.max" :minlength="item.min" :style="`width: ${item.width}`" :placeholder="item.placeholder" />
+            </el-form-item>
+            <!-- upload -->
+            <el-form-item v-if="item.type === 'upload'" :key="item.prop" :label="item.label" :prop="item.prop">
+                <UploadVue :requestData="item.requestData" :url="item.url" />
+            </el-form-item>
+            <!-- date -->
+            <el-form-item v-if="item.type === 'date'" :key="item.prop" :label="item.label" :prop="item.prop">
+                <el-date-picker 
+                    :type="item.mode || 'date'" 
+                    :placeholder="item.placeholder" 
+                    :style="`width: ${item.width}`"
+                    :range-separator="item.range || '至'"
+                    :start-placeholder="item.startLabel || '开始日期'"
+                    :end-placeholder="item.endLabel || '结束日期'"
+                ></el-date-picker>
+            </el-form-item>
+            <!-- radio -->
+            <el-form-item v-if="item.type === 'radio'" :key="item.prop" :label="item.label" :prop="item.prop">
+                
+            </el-form-item>
+            <!-- wangeditor -->
+            <el-form-item v-if="item.type === 'wangeditor'" :key="item.prop" :label="item.label" :prop="item.prop">
+                <WangEditor />
+            </el-form-item>
+        </template>
+    </el-form>
 </template>
 <script>
 // components
