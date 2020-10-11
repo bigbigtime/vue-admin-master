@@ -79,7 +79,12 @@ export default {
 						buckety: "bigbigtime"
 					}
 				},
-				{ type: "date", label: "发布日期", prop: "createDate"},
+				{ 
+					type: "date", 
+					label: "发布日期", 
+					prop: "createDate",
+					placeholder: "请选择日期",
+				},
 				{ type: "radio", label: "是否发布", prop: "status"},
 				{ type: "wangeditor", label: "内容描述", prop: "content"}
 			]
