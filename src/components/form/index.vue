@@ -26,7 +26,9 @@
             </el-form-item>
             <!-- radio -->
             <el-form-item v-if="item.type === 'radio'" :key="item.prop" :label="item.label" :prop="item.prop">
-                
+                <el-radio-group>
+                    <el-radio v-for="item in item.options" :key="item.value" :label="item.value">{{ item.label }}</el-radio>
+                </el-radio-group>
             </el-form-item>
             <!-- wangeditor -->
             <el-form-item v-if="item.type === 'wangeditor'" :key="item.prop" :label="item.label" :prop="item.prop">
