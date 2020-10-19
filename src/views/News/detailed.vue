@@ -107,7 +107,17 @@ export default {
 						{ value: "2", label: "否" },
 					]
 				},
-				
+				{ 
+					type: "checkbox", 
+					label: "城市", 
+					prop: "status",
+					options: [
+						{ value: "1", label: "深圳" },
+						{ value: "2", label: "广州" },
+						{ value: "3", label: "上海" },
+						{ value: "4", label: "北京" },
+					]
+				},
 				{ type: "wangeditor", label: "内容描述", prop: "content"}
 			]
 		})

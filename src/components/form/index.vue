@@ -30,6 +30,12 @@
                     <el-radio v-for="item in item.options" :key="item.value" :label="item.value">{{ item.label }}</el-radio>
                 </el-radio-group>
             </el-form-item>
+            <!-- checkbox -->
+            <el-form-item v-if="item.type === 'checkbox'" :key="item.prop" :label="item.label" :prop="item.prop">
+                <el-checkbox-group :value=[]>
+                    <el-checkbox v-for="item in item.options" :key="item.value" :label="item.value">{{ item.label }}</el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
             <!-- select -->
             <el-form-item v-if="item.type === 'select'" :key="item.prop" :label="item.label" :prop="item.prop">
                 <el-select :placeholder="item.placeholder">
