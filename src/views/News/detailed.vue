@@ -61,6 +61,15 @@ export default {
 			formItem: [
 				{ type: "cascader", label: "信息分类", prop: "categoryId", url: "news/categoryAction" },
 				{ 
+					type: "select", 
+					label: "是否发布", 
+					prop: "status",
+					options: [
+						{ value: "1", label: "是" },
+						{ value: "2", label: "否" },
+					]
+				},
+				{ 
 					type: "input", 
 					label: "信息标题", 
 					prop: "title", 
@@ -98,6 +107,7 @@ export default {
 						{ value: "2", label: "否" },
 					]
 				},
+				
 				{ type: "wangeditor", label: "内容描述", prop: "content"}
 			]
 		})
