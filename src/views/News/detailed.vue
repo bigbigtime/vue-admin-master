@@ -1,6 +1,6 @@
 <template>
 	<div class="news-detailed">
-		<BasisForm :formItem="configFormData.formItem" />
+		<BasisForm :formItem="configFormData.formItem" :formData="configFormData.formData" />
 		<el-form ref="form" label-width="100px" :model="form.field" :rules="form.form_rules">
 			<el-form-item label="信息类别：" prop="categoryId">
 				<el-cascader v-model="form.field.categoryId" :options="data.category_option" :props="data.cascader_props"></el-cascader>
@@ -61,15 +61,6 @@ export default {
 			formItem: [
 				{ type: "cascader", label: "信息分类", prop: "categoryId", url: "news/categoryAction" },
 				{ 
-					type: "select", 
-					label: "是否发布", 
-					prop: "status",
-					options: [
-						{ value: "1", label: "是" },
-						{ value: "2", label: "否" },
-					]
-				},
-				{ 
 					type: "input", 
 					label: "信息标题", 
 					prop: "title", 
@@ -107,19 +98,16 @@ export default {
 						{ value: "2", label: "否" },
 					]
 				},
-				{ 
-					type: "checkbox", 
-					label: "城市", 
-					prop: "status",
-					options: [
-						{ value: "1", label: "深圳" },
-						{ value: "2", label: "广州" },
-						{ value: "3", label: "上海" },
-						{ value: "4", label: "北京" },
-					]
-				},
 				{ type: "wangeditor", label: "内容描述", prop: "content"}
-			]
+			],
+			formData: {
+				categoryId: "",
+				title: "",
+				imgUrl: "",
+				createDate: "",
+				status: "",
+				content: ""
+			}
 		})
 		// form 表单
 		const form = reactive({

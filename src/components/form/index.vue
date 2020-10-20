@@ -3,15 +3,15 @@
         <template v-for="item in formItem">
             <!-- cascader -->
             <el-form-item v-if="item.type === 'cascader'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <CascaderVue :url="item.url" />
+                <CascaderVue :value="formData[item.prop]" :url="item.url" />
             </el-form-item>
             <!-- input -->
             <el-form-item v-if="item.type === 'input'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <el-input :maxlength="item.max" :minlength="item.min" :style="`width: ${item.width}`" :placeholder="item.placeholder" />
+                <el-input v-model="formData[item.prop]" :maxlength="item.max" :minlength="item.min" :style="`width: ${item.width}`" :placeholder="item.placeholder" />
             </el-form-item>
             <!-- upload -->
             <el-form-item v-if="item.type === 'upload'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <UploadVue :requestData="item.requestData" :url="item.url" />
+                <UploadVue :value="formData[item.prop]" :requestData="item.requestData" :url="item.url" />
             </el-form-item>
             <!-- date -->
             <el-form-item v-if="item.type === 'date'" :key="item.prop" :label="item.label" :prop="item.prop">
@@ -21,30 +21,31 @@
                     :style="`width: ${item.width}`"
                     :range-separator="item.range || '至'"
                     :start-placeholder="item.startLabel || '开始日期'"
-                    :end-placeholder="item.endLabel || '结束日期'"
+                    :end-placeholder="item.endLabel || '结束日期'" 
+                    v-model="formData[item.prop]"
                 ></el-date-picker>
             </el-form-item>
             <!-- radio -->
             <el-form-item v-if="item.type === 'radio'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <el-radio-group>
+                <el-radio-group v-model="formData[item.prop]">
                     <el-radio v-for="item in item.options" :key="item.value" :label="item.value">{{ item.label }}</el-radio>
                 </el-radio-group>
             </el-form-item>
             <!-- checkbox -->
             <el-form-item v-if="item.type === 'checkbox'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <el-checkbox-group :value=[]>
+                <el-checkbox-group v-model="formData[item.prop]">
                     <el-checkbox v-for="item in item.options" :key="item.value" :label="item.value">{{ item.label }}</el-checkbox>
                 </el-checkbox-group>
             </el-form-item>
             <!-- select -->
             <el-form-item v-if="item.type === 'select'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <el-select :placeholder="item.placeholder">
+                <el-select v-model="formData[item.prop]" :placeholder="item.placeholder">
                     <el-option v-for="item in item.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
             </el-form-item>
             <!-- wangeditor -->
             <el-form-item v-if="item.type === 'wangeditor'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <WangEditor />
+                <WangEditor :value="formData[item.prop]" />
             </el-form-item>
         </template>
     </el-form>
@@ -62,7 +63,11 @@ export default {
         formItem: {
             type: Array,
             default: () => ([])
-        }
+        },
+        formData: {
+            type: Object,
+            default: () => ({})
+        },
     },
     setup(props){
 
