@@ -3,7 +3,7 @@
         <template v-for="item in formItem">
             <!-- cascader -->
             <el-form-item v-if="item.type === 'cascader'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <CascaderVue :value="formData[item.prop]" :url="item.url" />
+                <CascaderVue :value.sync="formData[item.prop]" :url="item.url" />
             </el-form-item>
             <!-- input -->
             <el-form-item v-if="item.type === 'input'" :key="item.prop" :label="item.label" :prop="item.prop">
@@ -11,7 +11,7 @@
             </el-form-item>
             <!-- upload -->
             <el-form-item v-if="item.type === 'upload'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <UploadVue :value="formData[item.prop]" :requestData="item.requestData" :url="item.url" />
+                <UploadVue :value.sync="formData[item.prop]" :requestData="item.requestData" :url="item.url" />
             </el-form-item>
             <!-- date -->
             <el-form-item v-if="item.type === 'date'" :key="item.prop" :label="item.label" :prop="item.prop">
@@ -45,7 +45,7 @@
             </el-form-item>
             <!-- wangeditor -->
             <el-form-item v-if="item.type === 'wangeditor'" :key="item.prop" :label="item.label" :prop="item.prop">
-                <WangEditor :value="formData[item.prop]" />
+                <WangEditor :value.sync="formData[item.prop]" />
             </el-form-item>
         </template>
     </el-form>
