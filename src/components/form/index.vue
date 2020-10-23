@@ -46,6 +46,7 @@
             <el-form-item v-if="item.type === 'wangeditor'" :key="item.prop" :label="item.label" :prop="item.prop">
                 <WangEditor />
             </el-form-item>
+            
         </template>
     </el-form>
 </template>
