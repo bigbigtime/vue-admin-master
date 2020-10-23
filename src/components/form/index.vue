@@ -1,5 +1,5 @@
 <template>
-    <el-form>
+    <el-form ref="form">
         <template v-for="item in formItem">
             <!-- cascader -->
             <el-form-item v-if="item.type === 'cascader'" :key="item.prop" :label="item.label" :prop="item.prop">
@@ -48,6 +48,12 @@
                 <WangEditor :value.sync="formData[item.prop]" />
             </el-form-item>
         </template>
+        <!-- button -->
+        <el-form-item>
+            <el-button :type="formConfig.submitType" @click="formConfig.submitFunction && formConfig.submitFunction()">{{ formConfig.submitLabel || "确定" }}</el-button>
+            <el-button v-if="formConfig.resetButton" :type="formConfig.resetType" @click="reset">{{ formConfig.resetLabel || "重置" }}</el-button>
+            <el-button v-if="formConfig.backButton" :type="formConfig.backType" @click="back">{{ formConfig.backLabel || "返回" }}</el-button>
+        </el-form-item>
     </el-form>
 </template>
 <script>
@@ -68,16 +74,21 @@ export default {
             type: Object,
             default: () => ({})
         },
-    },
-    setup(props){
-
-        const bookTitle = ref("");
-
-        const get = () => {
-            console.log(bookTitle.value)
+        formConfig: {
+            type: Object,
+            default: () => ({})
         }
-
-        return { get, bookTitle }
+    },
+    setup(props, { root, refs }){
+        // 返回
+        const back = () => {
+            root.$router.go(-1);
+        }
+        // 重置
+        const reset = () => {
+            refs.form.resetFields()
+        }
+        return { back, reset }
     }
 }
 </script>
