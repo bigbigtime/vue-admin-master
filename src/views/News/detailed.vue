@@ -1,6 +1,6 @@
 <template>
 	<div class="news-detailed">
-		<BasisForm :formItem="configFormData.formItem" :formData="configFormData.formData" />
+		<BasisForm :formItem="configFormData.formItem" :formConfig="configFormData.formConfig" />
 		<el-form ref="form" label-width="100px" :model="form.field" :rules="form.form_rules">
 			<el-form-item label="信息类别：" prop="categoryId">
 				<el-cascader v-model="form.field.categoryId" :options="data.category_option" :props="data.cascader_props"></el-cascader>
@@ -62,7 +62,7 @@ export default {
 				{ type: "cascader", label: "信息分类", prop: "categoryId", url: "news/categoryAction" },
 				{ 
 					type: "input", 
-					label: "标题", 
+					label: "信息标题", 
 					prop: "title", 
 					placeholder: "请输入标题", 
 					width: '200px',
@@ -100,6 +100,20 @@ export default {
 				},
 				{ type: "wangeditor", label: "内容描述", prop: "content"}
 			],
+			formConfig: {
+				// 提交按钮
+				submitFunction: () => submitForm(),  // 提交按钮触发的方法
+				submitType: "danger",                // 提交按钮主题
+				submitLabel: "提交",                 // 提交按钮文本
+				// 重置按钮
+				resetButton: true,                   // 是否显示重置按钮
+				resetType: "primary",                // 重置按钮主题
+				resetLabel: "清空",                  // 重置按钮文本
+				// 返回按钮 
+				backButton: true,                    // 返回按钮是否显示
+				backType:"primary",                  // 返回按钮主题
+				backLabel: "返回上一页"               // 返回按钮文本
+			},
 			formData: {
 				categoryId: "",
 				title: "",
@@ -190,6 +204,7 @@ export default {
 			})
 		}
 		const submitForm = (formName) => {
+			alert(11)
 			refs[formName].validate((valid) => {
 				// 表单验证通过
 				if (valid) {
