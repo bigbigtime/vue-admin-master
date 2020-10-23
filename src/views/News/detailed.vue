@@ -1,6 +1,6 @@
 <template>
 	<div class="news-detailed">
-		<BasisForm :formItem="configFormData.formItem" />
+		<BasisForm :formItem="configFormData.formItem" :formConfig="configFormData.formConfig" />
 		<el-form ref="form" label-width="100px" :model="form.field" :rules="form.form_rules">
 			<el-form-item label="信息类别：" prop="categoryId">
 				<el-cascader v-model="form.field.categoryId" :options="data.category_option" :props="data.cascader_props"></el-cascader>
@@ -119,7 +119,12 @@ export default {
 					]
 				},
 				{ type: "wangeditor", label: "内容描述", prop: "content"}
-			]
+			],
+			formConfig: {
+				submitFunction: () => submitForm(),
+				resetButton: true,
+				backButton: true
+			}
 		})
 		// form 表单
 		const form = reactive({
