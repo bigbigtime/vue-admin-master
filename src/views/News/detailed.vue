@@ -121,9 +121,18 @@ export default {
 				{ type: "wangeditor", label: "内容描述", prop: "content"}
 			],
 			formConfig: {
+				// 提交按钮
 				submitFunction: () => submitForm(),
+				submitType: "danger",
+				submitLabel: "提交",
+				// 重置按钮
 				resetButton: true,
-				backButton: true
+				resetType: "primary",
+				resetLabel: "清空",
+				// 返回按钮
+				backButton: true,
+				backType:"primary",
+				backLabel: "返回上一页"
 			}
 		})
 		// form 表单
