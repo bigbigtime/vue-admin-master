@@ -1,5 +1,5 @@
 <template>
-    <el-form>
+    <el-form :label-width="labelWidth">
         <template v-for="item in formItem">
             <!-- cascader -->
             <el-form-item v-if="item.type === 'cascader'" :key="item.prop" :label="item.label" :prop="item.prop">
@@ -67,6 +67,13 @@ export default {
         formData: {
             type: Object,
             default: () => ({})
+<<<<<<< HEAD
+=======
+        },
+        labelWidth: {
+            type: String,
+            default: "100px"
+>>>>>>> e76ff2fc0e9f801d4966ed9b42051ed82638bb9d
         }
     },
     setup(props){

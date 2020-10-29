@@ -27,7 +27,7 @@ export default {
 		},
 		url: {
 			type: String,
-			default: "http://qf7nt7g8b.hn-bkt.clouddn.com/"
+			default: "http://www-web-jshtml-cn-idva7mx.web-jshtml.cn/"
 		}
 	},
 	setup(props, { root }){

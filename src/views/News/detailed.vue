@@ -62,7 +62,7 @@ export default {
 				{ type: "cascader", label: "信息分类", prop: "categoryId", url: "news/categoryAction" },
 				{ 
 					type: "input", 
-					label: "信息标题", 
+					label: "标题", 
 					prop: "title", 
 					placeholder: "请输入标题", 
 					width: '200px',
