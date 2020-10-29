@@ -67,13 +67,10 @@ export default {
         formData: {
             type: Object,
             default: () => ({})
-<<<<<<< HEAD
-=======
         },
         labelWidth: {
             type: String,
             default: "100px"
->>>>>>> e76ff2fc0e9f801d4966ed9b42051ed82638bb9d
         }
     },
     setup(props){
